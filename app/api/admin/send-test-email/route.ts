@@ -1,0 +1,52 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { sendDealEmail } from '@/lib/email'
+import { DealData } from '@/lib/types'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { email } = body
+
+    if (!email) {
+      return NextResponse.json(
+        { error: 'Email requis' },
+        { status: 400 }
+      )
+    }
+
+    // Create a test deal
+    const testDeal: DealData = {
+      id: 'test',
+      from: 'Paris',
+      to: 'Tokyo',
+      price: 439,
+      originalPrice: 800,
+      currency: 'EUR',
+      dates: 'Avril - Juin 2026',
+      url: 'https://example.com/booking',
+      discount: 45,
+      createdAt: new Date(),
+    }
+
+    // Send test email
+    const success = await sendDealEmail(email, testDeal)
+
+    if (!success) {
+      return NextResponse.json(
+        { error: 'Erreur lors de l\'envoi de l\'email' },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Email de test envoyé avec succès',
+    })
+  } catch (error: any) {
+    console.error('Send test email error:', error)
+    return NextResponse.json(
+      { error: 'Erreur lors de l\'envoi' },
+      { status: 500 }
+    )
+  }
+}

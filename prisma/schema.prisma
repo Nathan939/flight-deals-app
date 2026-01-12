@@ -1,0 +1,76 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  name          String?
+  phone         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subscription  Subscription?
+  destinations  Destination[]
+  alerts        Alert[]
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plan              String   // "free", "email", "sms"
+  status            String   // "active", "canceled", "past_due"
+  stripeCustomerId  String?  @unique
+  stripeSubscriptionId String? @unique
+  currentPeriodEnd  DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model Destination {
+  id             String   @id @default(cuid())
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  city           String
+  country        String
+  code           String   // Airport code like "TYO", "MAD"
+  notifyChannel  String   @default("email") // "email" or "sms" - for premium users
+  createdAt      DateTime @default(now())
+
+  @@unique([userId, code])
+}
+
+model Deal {
+  id            String   @id @default(cuid())
+  from          String
+  to            String
+  price         Float
+  originalPrice Float
+  currency      String   @default("EUR")
+  dates         String?  // JSON string with available dates
+  url           String?
+  discount      Int      // percentage
+  createdAt     DateTime @default(now())
+  expiresAt     DateTime?
+  alerts        Alert[]
+}
+
+model Alert {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dealId    String
+  deal      Deal     @relation(fields: [dealId], references: [id], onDelete: Cascade)
+  sent      Boolean  @default(false)
+  sentAt    DateTime?
+  channel   String   // "email" or "sms"
+  createdAt DateTime @default(now())
+
+  @@unique([userId, dealId, channel])
+}

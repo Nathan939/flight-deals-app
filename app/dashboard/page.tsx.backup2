@@ -1,0 +1,343 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import Link from 'next/link'
+import { DESTINATIONS } from '@/lib/utils'
+
+interface UserData {
+  id: string
+  email: string
+  name?: string
+  subscription: {
+    plan: string
+    status: string
+  }
+  destinations: Array<{
+    id: string
+    city: string
+    country: string
+    code: string
+  }>
+}
+
+export default function Dashboard() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const success = searchParams.get('success')
+  const upgraded = searchParams.get('upgraded')
+
+  const [user, setUser] = useState<UserData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [showAddDestination, setShowAddDestination] = useState(false)
+  const [cancelLoading, setCancelLoading] = useState(false)
+
+  useEffect(() => {
+    // Simplified auth check - in production, you'd use proper session management
+    const storedUser = localStorage.getItem('user')
+    if (!storedUser) {
+      router.push('/login')
+      return
+    }
+
+    try {
+      const userData = JSON.parse(storedUser)
+      setUser(userData)
+    } catch (error) {
+      router.push('/login')
+    } finally {
+      setLoading(false)
+    }
+  }, [router])
+
+  const handleCancelSubscription = async () => {
+    if (!confirm('Êtes-vous sûr de vouloir annuler votre abonnement?')) {
+      return
+    }
+
+    setCancelLoading(true)
+    try {
+      const response = await fetch('/api/stripe/cancel-subscription', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user?.id }),
+      })
+
+      if (response.ok) {
+        alert('Votre abonnement a été annulé avec succès')
+        // Update user data
+        if (user) {
+          const updatedUser = {
+            ...user,
+            subscription: { plan: 'free', status: 'active' },
+          }
+          setUser(updatedUser)
+          localStorage.setItem('user', JSON.stringify(updatedUser))
+        }
+      }
+    } catch (error) {
+      alert('Erreur lors de l\'annulation')
+    } finally {
+      setCancelLoading(false)
+    }
+  }
+
+  const handleAddDestination = async (code: string) => {
+    // API call to add destination
+    const destination = DESTINATIONS.find((d) => d.code === code)
+    if (!destination || !user) return
+
+    // Simulate adding destination
+    const newDestination = {
+      id: Date.now().toString(),
+      ...destination,
+    }
+
+    const updatedUser = {
+      ...user,
+      destinations: [...(user.destinations || []), newDestination],
+    }
+
+    setUser(updatedUser)
+    localStorage.setItem('user', JSON.stringify(updatedUser))
+    setShowAddDestination(false)
+  }
+
+  const handleRemoveDestination = async (destinationId: string) => {
+    if (!user) return
+
+    const updatedUser = {
+      ...user,
+      destinations: user.destinations.filter((d) => d.id !== destinationId),
+    }
+
+    setUser(updatedUser)
+    localStorage.setItem('user', JSON.stringify(updatedUser))
+  }
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-16 text-center">
+        <p className="text-gray-400">Chargement...</p>
+      </div>
+    )
+  }
+
+  if (!user) {
+    return null
+  }
+
+  const isPremium = user.subscription.plan === 'premium'
+  const displayName = user.name || 'User'
+
+  return (
+    <div className="container mx-auto px-4 py-16 max-w-6xl">
+      {success === 'true' && (
+        <div className="bg-green-500/10 border border-green-500 text-green-500 px-4 py-3 rounded-lg mb-6">
+          🎉 Félicitations! Votre abonnement premium a été activé avec succès.
+        </div>
+      )}
+
+      {upgraded === 'true' && (
+        <div className="bg-green-500/10 border border-green-500 text-green-500 px-4 py-3 rounded-lg mb-6">
+          🎉 Excellent! Vous êtes maintenant Premium! Profitez de toutes les fonctionnalités.
+        </div>
+      )}
+
+      {/* Welcome Section */}
+      <div className="bg-gradient-to-br from-primary/10 to-black border border-primary/30 rounded-2xl p-8 mb-8">
+        <h1 className="text-4xl font-bold mb-4">
+          Bienvenue {displayName} ! 👋
+        </h1>
+
+        {!isPremium ? (
+          <div className="space-y-4">
+            <p className="text-xl text-gray-300">
+              Vous êtes actuellement sur le <span className="text-primary font-bold">plan gratuit</span>.
+            </p>
+
+            <div className="bg-black/50 rounded-lg p-6 space-y-3">
+              <h2 className="text-lg font-bold text-primary mb-3">Comment ça fonctionne :</h2>
+
+              <div className="flex items-start gap-3">
+                <span className="text-primary text-xl">✉️</span>
+                <div>
+                  <p className="font-bold">Alertes par email</p>
+                  <p className="text-gray-400 text-sm">
+                    Vous recevrez les bons plans directement dans votre boîte mail dès qu'ils sont disponibles.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <span className="text-primary text-xl">📊</span>
+                <div>
+                  <p className="font-bold">Historique dans le dashboard</p>
+                  <p className="text-gray-400 text-sm">
+                    Retrouvez tous les deals envoyés ici même, dans votre dashboard personnel.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <span className="text-primary text-xl">🌍</span>
+                <div>
+                  <p className="font-bold">Destinations automatiques</p>
+                  <p className="text-gray-400 text-sm">
+                    Nous vous envoyons les meilleurs deals pour toutes les destinations populaires.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-primary/20 to-transparent border-l-4 border-primary rounded p-4 mt-6">
+              <p className="font-bold mb-2">💎 Envie d'aller plus loin ?</p>
+              <p className="text-gray-300 text-sm mb-3">
+                Avec le plan Premium, choisissez vos destinations préférées, recevez les alertes en temps réel par SMS, et bénéficiez d'un accès prioritaire aux deals !
+              </p>
+              <Link
+                href="/upgrade"
+                className="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg transition-colors text-sm font-bold"
+              >
+                Découvrir le Premium
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <p className="text-xl text-gray-300">
+              Vous profitez du <span className="text-primary font-bold">plan Premium</span> ! 🚀
+            </p>
+            <p className="text-gray-400">
+              Accédez à toutes les fonctionnalités : destinations personnalisées, alertes SMS instantanées, et accès prioritaire aux meilleurs deals.
+            </p>
+          </div>
+        )}
+      </div>
+
+      {/* Subscription Status */}
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-xl font-bold mb-2">Abonnement</h2>
+            <p className="text-gray-300">
+              Plan actuel:{' '}
+              <span className="text-primary font-bold">
+                {isPremium ? 'Premium' : 'Gratuit'}
+              </span>
+            </p>
+            <p className="text-gray-400 text-sm mt-1">
+              Statut: {user.subscription.status === 'active' ? '✓ Actif' : 'Inactif'}
+            </p>
+          </div>
+          <div>
+            {isPremium ? (
+              <button
+                onClick={handleCancelSubscription}
+                disabled={cancelLoading}
+                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50"
+              >
+                {cancelLoading ? 'Annulation...' : 'Annuler l\'abonnement'}
+              </button>
+            ) : (
+              <Link
+                href="/upgrade"
+                className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors inline-block"
+              >
+                Passer au premium
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Destinations - LOCKED for free plan */}
+      <div className={`bg-gray-900 border border-gray-800 rounded-xl p-6 mb-6 ${!isPremium ? 'relative' : ''}`}>
+        {!isPremium && (
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm rounded-xl flex flex-col items-center justify-center z-10">
+            <div className="text-center p-6">
+              <div className="text-6xl mb-4">🔒</div>
+              <h3 className="text-2xl font-bold mb-2 text-primary">Fonctionnalité Premium</h3>
+              <p className="text-gray-300 mb-4 max-w-md">
+                Débloquez la sélection de destinations personnalisées avec le plan Premium !
+              </p>
+              <Link
+                href="/upgrade"
+                className="inline-block bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg transition-colors font-bold"
+              >
+                Passer au Premium
+              </Link>
+            </div>
+          </div>
+        )}
+
+        <div className={!isPremium ? 'blur-sm pointer-events-none' : ''}>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold">Mes destinations</h2>
+            <button
+              onClick={() => setShowAddDestination(!showAddDestination)}
+              className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              {showAddDestination ? 'Annuler' : '+ Ajouter'}
+            </button>
+          </div>
+
+          {showAddDestination && (
+            <div className="mb-4 max-h-60 overflow-y-auto bg-black border border-gray-700 rounded-lg p-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                {DESTINATIONS.filter(
+                  (d) => !user.destinations?.some((ud) => ud.code === d.code)
+                ).map((dest) => (
+                  <button
+                    key={dest.code}
+                    onClick={() => handleAddDestination(dest.code)}
+                    className="text-left hover:bg-gray-800 p-2 rounded transition-colors"
+                  >
+                    <span className="text-sm">
+                      {dest.city}, {dest.country}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {user.destinations && user.destinations.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {user.destinations.map((dest) => (
+                <div
+                  key={dest.id}
+                  className="bg-black border border-gray-700 rounded-lg p-4 flex items-center justify-between"
+                >
+                  <div>
+                    <p className="font-bold">{dest.city}</p>
+                    <p className="text-sm text-gray-400">{dest.country}</p>
+                  </div>
+                  <button
+                    onClick={() => handleRemoveDestination(dest.id)}
+                    className="text-red-500 hover:text-red-400 transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-400 text-center py-8">
+              Aucune destination ajoutée. Ajoutez vos destinations préférées pour
+              recevoir des alertes personnalisées.
+            </p>
+          )}
+        </div>
+      </div>
+
+      {/* Recent Alerts */}
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
+        <h2 className="text-xl font-bold mb-4">Historique des deals reçus</h2>
+        <p className="text-gray-400 text-center py-8">
+          Aucun deal pour le moment. Vous serez notifié par email dès qu'un deal exceptionnel sera disponible !
+        </p>
+      </div>
+    </div>
+  )
+}
