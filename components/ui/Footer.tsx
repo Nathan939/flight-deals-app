@@ -6,9 +6,13 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-primary font-bold text-xl mb-4">✈️ FlightDeals</h3>
+            <h3 className="text-primary font-bold text-xl mb-4">✈️ FlightAlert</h3>
             <p className="text-gray-400 text-sm">
               Les meilleurs deals de vols avant tout le monde
+            </p>
+            <p className="text-gray-500 text-xs mt-4">
+              Conformité RGPD 🇪🇺<br />
+              Données hébergées en Europe
             </p>
           </div>
 
@@ -18,6 +22,11 @@ export default function Footer() {
               <li>
                 <Link href="/" className="hover:text-primary transition-colors">
                   Accueil
+                </Link>
+              </li>
+              <li>
+                <Link href="/recherche" className="hover:text-primary transition-colors">
+                  Rechercher des vols
                 </Link>
               </li>
               <li>
@@ -48,11 +57,11 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/cgv" className="hover:text-primary transition-colors">
-                  CGV
+                  Conditions Générales de Vente
                 </Link>
               </li>
               <li>
-                <Link href="/confidentialite" className="hover:text-primary transition-colors">
+                <Link href="/politique-confidentialite" className="hover:text-primary transition-colors">
                   Politique de confidentialité
                 </Link>
               </li>
@@ -67,14 +76,26 @@ export default function Footer() {
           <div>
             <h4 className="font-bold mb-4">Contact</h4>
             <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: contact@flightdeals.com</li>
-              <li>Support: support@flightdeals.com</li>
+              <li>📧 Email: contact@flightalert.fr</li>
+              <li>🛡️ DPO: dpo@flightalert.fr</li>
+              <li>🌐 Site: www.flightalert.fr</li>
             </ul>
+            <div className="mt-6">
+              <Link
+                href="/signup"
+                className="inline-block bg-primary hover:bg-primary-dark text-white text-sm font-bold py-2 px-4 rounded-lg transition-all duration-200"
+              >
+                Commencer gratuitement →
+              </Link>
+            </div>
           </div>
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} FlightDeals. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} FlightAlert. Tous droits réservés.</p>
+          <p className="text-xs text-gray-500 mt-2">
+            FlightAlert est un service d'agrégation de deals de vols. Nous ne vendons pas de billets d'avion.
+          </p>
         </div>
       </div>
     </footer>

@@ -41,13 +41,35 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo gauche */}
           <Link href="/" className="text-2xl font-bold text-white font-mono hover:text-primary transition-colors">
-            FlightDeals
+            ✈️ FlightAlert
           </Link>
 
           {/* Desktop Menu - Droite */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Search Button - Always visible */}
+            <Link
+              href="/recherche"
+              className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-200 group"
+              title="Rechercher des vols"
+            >
+              <svg className="w-6 h-6 text-gray-300 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </Link>
+
             {isLoggedIn ? (
               <>
+                {/* History Icon Button */}
+                <Link
+                  href="/historique"
+                  className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-200 group"
+                  title="Historique"
+                >
+                  <svg className="w-6 h-6 text-gray-300 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </Link>
+
                 {/* User Icon Button - Destinations */}
                 <Link
                   href="/destinations"
@@ -121,13 +143,6 @@ export default function Header() {
                   {settingsOpen && (
                     <div className="absolute right-0 mt-2 w-48 glass-card py-2 animate-scale-in">
                       <Link
-                        href="/destinations"
-                        className="block px-4 py-2 hover:bg-white/10 transition-colors"
-                        onClick={() => setSettingsOpen(false)}
-                      >
-                        🌍 Destinations
-                      </Link>
-                      <Link
                         href="/signup"
                         className="block px-4 py-2 hover:bg-white/10 transition-colors"
                         onClick={() => setSettingsOpen(false)}
@@ -166,8 +181,22 @@ export default function Header() {
         {/* Mobile Menu */}
         {mobileMenuOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-2 glass-card animate-fade-in-up">
+            <Link
+              href="/recherche"
+              className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              🔍 Rechercher des vols
+            </Link>
             {isLoggedIn ? (
               <>
+                <Link
+                  href="/historique"
+                  className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  📧 Historique
+                </Link>
                 <Link
                   href="/destinations"
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
