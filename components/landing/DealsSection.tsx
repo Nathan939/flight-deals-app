@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import DealCard from './DealCard'
+import FlightTicketCard from '@/components/ui/FlightTicketCard'
 import { DealData } from '@/lib/types'
 import { useInViewport } from '@/hooks/useInViewport'
 import Badge from '@/components/ui/Badge'
@@ -73,7 +74,17 @@ export default function DealsSection() {
               className={`transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
               style={{ transitionDelay: `${index * 150}ms` }}
             >
-              <DealCard deal={deal} />
+              <FlightTicketCard
+                from={deal.from.split(' ')[0].substring(0, 3).toUpperCase()}
+                to={deal.to.split(' ')[0].substring(0, 3).toUpperCase()}
+                fromCity={deal.from}
+                toCity={deal.to}
+                price={deal.price}
+                originalPrice={deal.originalPrice}
+                discount={deal.discount}
+                currency={deal.currency}
+                dates={deal.dates}
+              />
             </div>
           ))}
         </div>

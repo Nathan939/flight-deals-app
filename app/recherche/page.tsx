@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { FlightSearchParams, FlightResult } from '../api/flights/search/route'
+import FlightTicketCard from '@/components/ui/FlightTicketCard'
 
 export default function SearchFlights() {
   const [searchParams, setSearchParams] = useState<FlightSearchParams>({
@@ -383,67 +384,29 @@ export default function SearchFlights() {
               </div>
             )}
 
-            {results.map((flight) => (
-              <div key={flight.id} className="glass-card hover:border-primary/50 transition-all">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  {/* Flight Info */}
-                  <div className="flex-1">
-                    <div className="flex items-center gap-4 mb-2">
-                      <span className="text-2xl font-bold text-primary">
-                        {flight.price.toFixed(0)} {flight.currency}
-                      </span>
-                      {flight.route[0] && (
-                        <span className="text-sm text-gray-400">
-                          {flight.route[0].airline}
-                        </span>
-                      )}
-                    </div>
-                    {flight.route.length > 0 && (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-4 text-sm">
-                          <div>
-                            <div className="font-bold">{flight.route[0].flyFrom}</div>
-                            <div className="text-gray-400">
-                              {formatDate(flight.route[0].local_departure)}
-                            </div>
-                          </div>
-                          <div className="flex-1 flex items-center gap-2">
-                            <div className="h-px bg-gradient-to-r from-primary/50 to-primary flex-1" />
-                            <span className="text-xs text-gray-400">
-                              {flight.route.length === 1 ? 'Direct' : `${flight.route.length} escales`}
-                            </span>
-                            <div className="h-px bg-gradient-to-r from-primary to-primary/50 flex-1" />
-                          </div>
-                          <div>
-                            <div className="font-bold">{flight.route[flight.route.length - 1].flyTo}</div>
-                            <div className="text-gray-400">
-                              {formatDate(flight.route[flight.route.length - 1].local_arrival)}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+            {results.map((flight) => {
+              const departureRoute = flight.route[0]
+              const arrivalRoute = flight.route[flight.route.length - 1]
 
-                  {/* CTA */}
-                  <div className="flex flex-col gap-2">
-                    <a
-                      href={flight.deep_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 text-center"
-                    >
-                      Réserver →
-                    </a>
-                    {flight.availability && (
-                      <span className="text-xs text-gray-400 text-center">
-                        {flight.availability.seats} places restantes
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
+              return (
+                <FlightTicketCard
+                  key={flight.id}
+                  from={departureRoute?.flyFrom || flight.flyFrom}
+                  to={arrivalRoute?.flyTo || flight.flyTo}
+                  fromCity={departureRoute?.cityFrom}
+                  toCity={arrivalRoute?.cityTo}
+                  price={flight.price}
+                  currency={flight.currency}
+                  airline={departureRoute?.airline}
+                  flightNumber={departureRoute?.flight_no}
+                  departureTime={departureRoute ? formatDate(departureRoute.local_departure) : undefined}
+                  arrivalTime={arrivalRoute ? formatDate(arrivalRoute.local_arrival) : undefined}
+                  duration={flight.duration ? formatDuration(flight.duration.total) : undefined}
+                  bookingUrl={flight.deep_link}
+                  className="animate-fade-in-up"
+                />
+              )
+            })}
           </div>
         )}
       </div>

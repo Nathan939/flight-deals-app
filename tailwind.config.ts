@@ -15,6 +15,16 @@ const config: Config = {
           dark: '#991B1B',
           light: '#EF4444',
         },
+        secondary: {
+          DEFAULT: '#0EA5E9',
+          dark: '#0369A1',
+          light: '#38BDF8',
+        },
+        accent: {
+          DEFAULT: '#F59E0B',
+          dark: '#D97706',
+          light: '#FBB028',
+        },
         background: {
           DEFAULT: '#000000',
           dark: '#0A0A0A',
