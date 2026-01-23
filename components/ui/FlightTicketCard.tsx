@@ -177,7 +177,7 @@ export default function FlightTicketCard({
                   rel="noopener noreferrer"
                   className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/20 text-sm uppercase tracking-wide"
                 >
-                  ✈️ Réserver
+                  Reserver
                 </a>
               )}
             </div>

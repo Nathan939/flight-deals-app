@@ -145,7 +145,7 @@ export default function AdminPage() {
 
       if (res.ok) {
         const result = await res.json()
-        alert(`✅ Offre envoyée avec succès à ${result.notificationsSent} utilisateur(s) !`)
+        alert(`Offre envoyee avec succes a ${result.notificationsSent} utilisateur(s) !`)
 
         // Réinitialiser le formulaire
         setOfferForm({
@@ -158,11 +158,11 @@ export default function AdminPage() {
         setSelectedDestCode('')
       } else {
         const error = await res.json()
-        alert(`❌ Erreur: ${error.error}`)
+        alert(`Erreur: ${error.error}`)
       }
     } catch (error) {
       console.error('Error sending offer:', error)
-      alert('❌ Une erreur est survenue')
+      alert('Une erreur est survenue')
     } finally {
       setLoading(false)
     }
@@ -231,7 +231,7 @@ export default function AdminPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-black via-gray-900 to-black px-4">
         <div className="glass-card max-w-md w-full p-8">
           <h1 className="text-3xl font-bold mb-6 text-center">
-            🔐 Admin Dashboard
+            Admin Dashboard
           </h1>
           <p className="text-gray-400 mb-6 text-center">
             Connexion requise pour accéder au tableau de bord
@@ -296,7 +296,7 @@ export default function AdminPage() {
       <div className="container mx-auto px-4 py-16 max-w-7xl relative z-10">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold">
-            🛫 Dashboard Admin - <span className="text-primary">FlightDeals</span>
+            Dashboard Admin - <span className="text-primary">FlightDeals</span>
           </h1>
           <button
             onClick={() => {
@@ -320,7 +320,7 @@ export default function AdminPage() {
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              ✈️ Envoyer des offres
+              Envoyer des offres
             </button>
             <button
               onClick={() => setActiveTab('users')}
@@ -330,7 +330,7 @@ export default function AdminPage() {
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              👥 Utilisateurs ({users.length})
+              Utilisateurs ({users.length})
             </button>
             <button
               onClick={() => setActiveTab('tests')}
@@ -340,7 +340,7 @@ export default function AdminPage() {
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              🧪 Tests
+              Tests
             </button>
           </div>
         </div>
@@ -350,7 +350,7 @@ export default function AdminPage() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Formulaire d'envoi d'offre */}
             <div className="glass-card">
-              <h2 className="text-2xl font-bold mb-6">📨 Envoyer une offre de vol</h2>
+              <h2 className="text-2xl font-bold mb-6">Envoyer une offre de vol</h2>
 
               <form onSubmit={handleSendOffer}>
                 <div className="mb-4">
@@ -463,14 +463,14 @@ export default function AdminPage() {
                   disabled={loading || !selectedDestCode}
                   className="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Envoi en cours...' : '📤 Envoyer l\'offre'}
+                  {loading ? 'Envoi en cours...' : 'Envoyer l\'offre'}
                 </button>
               </form>
             </div>
 
             {/* Liste des destinations avec utilisateurs */}
             <div className="glass-card">
-              <h2 className="text-2xl font-bold mb-6">📍 Destinations suivies</h2>
+              <h2 className="text-2xl font-bold mb-6">Destinations suivies</h2>
 
               {loading ? (
                 <div className="text-center py-8">
@@ -506,7 +506,7 @@ export default function AdminPage() {
                             key={idx}
                             className="flex items-center gap-2 text-xs text-gray-400 pl-2 border-l-2 border-white/10"
                           >
-                            <span>{user.notifyChannel === 'sms' ? '📱' : '📧'}</span>
+                            <span>{user.notifyChannel === 'sms' ? 'SMS' : '@'}</span>
                             <span>{user.name || user.email}</span>
                           </div>
                         ))}
@@ -608,13 +608,13 @@ export default function AdminPage() {
                 onClick={handleSendTestEmail}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105"
               >
-                📧 Envoyer un email de test
+                Envoyer un email de test
               </button>
               <button
                 onClick={handleSendTestSMS}
                 className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105"
               >
-                📱 Envoyer un SMS de test
+                Envoyer un SMS de test
               </button>
             </div>
           </div>

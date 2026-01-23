@@ -9,7 +9,7 @@ const DEALS_DATA: Record<string, any> = {
   'bangkok': {
     country: 'Thaïlande',
     city: 'Bangkok',
-    flag: '🇹🇭',
+    flag: 'TH',
     description: 'Bangkok, la capitale vibrante de la Thaïlande, vous offre un mélange fascinant de temples dorés, de marchés flottants animés et d\'une vie nocturne électrisante. Découvrez le Grand Palais, dégustez la street food légendaire et explorez les canaux historiques de la ville.',
     activities: [
       'Visite du Grand Palais et du Wat Pho',
@@ -24,7 +24,7 @@ const DEALS_DATA: Record<string, any> = {
     departureAirport: 'CDG',
     arrivalAirport: 'BKK',
     airline: 'Thai Airways',
-    airlineLogo: '✈️',
+    airlineLogo: '',
     dates: {
       'Mars 2026': [
         { date: '15-22 Mars', price: 249, url: 'https://www.skyscanner.fr' },
@@ -46,7 +46,7 @@ const DEALS_DATA: Record<string, any> = {
   'tokyo': {
     country: 'Japon',
     city: 'Tokyo',
-    flag: '🇯🇵',
+    flag: 'JP',
     description: 'Tokyo, la capitale hypermoderne du Japon, marie tradition et innovation. Entre temples millénaires et gratte-ciels futuristes, découvrez une culture unique, une gastronomie exceptionnelle et une technologie de pointe. Un voyage inoubliable vous attend.',
     activities: [
       'Découverte du temple Senso-ji à Asakusa',
@@ -61,7 +61,7 @@ const DEALS_DATA: Record<string, any> = {
     departureAirport: 'CDG',
     arrivalAirport: 'NRT',
     airline: 'Japan Airlines',
-    airlineLogo: '✈️',
+    airlineLogo: '',
     dates: {
       'Avril 2026': [
         { date: '10-20 Avril', price: 329, url: 'https://www.skyscanner.fr' },
@@ -83,7 +83,7 @@ const DEALS_DATA: Record<string, any> = {
   'new-york': {
     country: 'États-Unis',
     city: 'New York',
-    flag: '🇺🇸',
+    flag: 'US',
     description: 'New York, la ville qui ne dort jamais, vous promet une expérience unique. De Times Square à Central Park, en passant par la Statue de la Liberté et les musées de classe mondiale, chaque coin de rue raconte une histoire. Vivez le rêve américain!',
     activities: [
       'Visite de la Statue de la Liberté',
@@ -98,7 +98,7 @@ const DEALS_DATA: Record<string, any> = {
     departureAirport: 'CDG',
     arrivalAirport: 'JFK',
     airline: 'Air France',
-    airlineLogo: '✈️',
+    airlineLogo: '',
     dates: {
       'Mars 2026': [
         { date: '10-17 Mars', price: 189, url: 'https://www.skyscanner.fr' },
@@ -120,7 +120,7 @@ const DEALS_DATA: Record<string, any> = {
   'marrakech': {
     country: 'Maroc',
     city: 'Marrakech',
-    flag: '🇲🇦',
+    flag: 'MA',
     description: 'Marrakech, la perle du Sud marocain, vous transporte dans un univers de couleurs, de saveurs et de traditions. Explorez les souks animés de la médina, admirez les palais somptueux et détendez-vous dans un hammam traditionnel. Le dépaysement garanti!',
     activities: [
       'Exploration de la place Jemaa el-Fna',
@@ -135,7 +135,7 @@ const DEALS_DATA: Record<string, any> = {
     departureAirport: 'LYS',
     arrivalAirport: 'RAK',
     airline: 'Royal Air Maroc',
-    airlineLogo: '✈️',
+    airlineLogo: '',
     dates: {
       'Février 2026': [
         { date: '10-17 Fév', price: 30, url: 'https://www.skyscanner.fr' },

@@ -22,7 +22,7 @@ export default function PricingSection() {
         {/* Header */}
         <div className={`text-center mb-20 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Badge variant="primary" className="mb-6">
-            💎 Tarifs
+            Tarifs
           </Badge>
           <h2 className="heading-lg mb-6">
             Choisissez votre <span className="text-primary">plan</span>
@@ -73,7 +73,7 @@ export default function PricingSection() {
             {/* Popular badge with pulse */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <Badge variant="primary" className="animate-pulse-slow shadow-lg shadow-primary/50">
-                🔥 POPULAIRE
+                POPULAIRE
               </Badge>
             </div>
 

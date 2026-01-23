@@ -41,7 +41,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo gauche */}
           <Link href="/" className="text-2xl font-bold text-white font-mono hover:text-primary transition-colors">
-            ✈️ FlightAlert
+            FlightAlert
           </Link>
 
           {/* Desktop Menu - Droite */}
@@ -102,13 +102,13 @@ export default function Header() {
                         className="block px-4 py-2 hover:bg-white/10 transition-colors"
                         onClick={() => setSettingsOpen(false)}
                       >
-                        ⭐ Mon Abonnement
+                        Mon Abonnement
                       </Link>
                       <button
                         onClick={handleLogout}
                         className="w-full text-left px-4 py-2 hover:bg-white/10 transition-colors text-red-400"
                       >
-                        🚪 Déconnexion
+                        Deconnexion
                       </button>
                     </div>
                   )}
@@ -147,14 +147,14 @@ export default function Header() {
                         className="block px-4 py-2 hover:bg-white/10 transition-colors"
                         onClick={() => setSettingsOpen(false)}
                       >
-                        ✨ S'inscrire
+                        S'inscrire
                       </Link>
                       <Link
                         href="/login"
                         className="block px-4 py-2 hover:bg-white/10 transition-colors"
                         onClick={() => setSettingsOpen(false)}
                       >
-                        🔐 Se connecter
+                        Se connecter
                       </Link>
                     </div>
                   )}
@@ -186,7 +186,7 @@ export default function Header() {
               className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
               onClick={() => setMobileMenuOpen(false)}
             >
-              🔍 Rechercher des vols
+              Rechercher des vols
             </Link>
             {isLoggedIn ? (
               <>
@@ -195,27 +195,27 @@ export default function Header() {
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  📧 Historique
+                  Historique
                 </Link>
                 <Link
                   href="/destinations"
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  🌍 Mes Destinations
+                  Mes Destinations
                 </Link>
                 <Link
                   href="/upgrade"
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  ⭐ Mon Abonnement
+                  Mon Abonnement
                 </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors rounded-lg text-red-400"
                 >
-                  🚪 Déconnexion
+                  Deconnexion
                 </button>
               </>
             ) : (
@@ -225,14 +225,14 @@ export default function Header() {
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  ✨ S'inscrire
+                  S'inscrire
                 </Link>
                 <Link
                   href="/login"
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  🔐 Se connecter
+                  Se connecter
                 </Link>
               </>
             )}

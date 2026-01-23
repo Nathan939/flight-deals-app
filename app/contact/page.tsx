@@ -36,7 +36,7 @@ export default function Contact() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h3 className="text-xl font-bold mb-3">📧 Email</h3>
+          <h3 className="text-xl font-bold mb-3">Email</h3>
           <p className="text-gray-300 mb-2">contact@flightdeals.com</p>
           <p className="text-gray-400 text-sm">
             Nous répondons sous 24h
@@ -44,7 +44,7 @@ export default function Contact() {
         </div>
 
         <div className="bg-gray-900 border border-gray-800 rounded-xl p-6">
-          <h3 className="text-xl font-bold mb-3">💬 Support</h3>
+          <h3 className="text-xl font-bold mb-3">Support</h3>
           <p className="text-gray-300 mb-2">support@flightdeals.com</p>
           <p className="text-gray-400 text-sm">
             Pour toute question technique

@@ -249,7 +249,7 @@ export default function DestinationsPage() {
         {isLoggedIn && !searchQuery && followedDestinations.length > 0 && (
           <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '200ms' }}>
             <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <span className="text-primary">⭐</span>
+              <span className="text-primary">*</span>
               Destinations récemment aimées
               <span className="text-sm text-gray-400 font-normal">({followedDestinations.length})</span>
             </h2>
@@ -289,7 +289,7 @@ export default function DestinationsPage() {
                         className="absolute top-3 right-3 z-20 p-2 rounded-full bg-yellow-500/90 hover:bg-yellow-600/90 backdrop-blur-sm transition-all"
                         title="Ne plus suivre"
                       >
-                        <span className="text-white text-lg">⭐</span>
+                        <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                       </button>
                     </div>
 
@@ -313,7 +313,7 @@ export default function DestinationsPage() {
                                   : 'bg-white/5 text-gray-400 hover:bg-white/10'
                               }`}
                             >
-                              📧 Email
+                              Email
                             </button>
                             <button
                               onClick={() => updateNotifyChannel(dest.id, 'sms')}
@@ -323,7 +323,7 @@ export default function DestinationsPage() {
                                   : 'bg-white/5 text-gray-400 hover:bg-white/10'
                               }`}
                             >
-                              📱 SMS
+                              SMS
                             </button>
                           </div>
                         </div>
@@ -333,7 +333,7 @@ export default function DestinationsPage() {
                       {!isPremium && (
                         <div className="mt-3 pt-3 border-t border-white/10">
                           <div className="flex items-center gap-2 text-xs text-gray-400">
-                            <span>📧</span>
+                            <span>@</span>
                             <span>Notifications par email</span>
                           </div>
                         </div>
@@ -375,7 +375,7 @@ export default function DestinationsPage() {
                             </div>
                           )}
                           <div className="text-xs bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded">
-                            {location.type === 'airport' ? '✈️' : location.type === 'city' ? '🏙️' : '🌍'}
+                            {location.type === 'airport' ? 'Airport' : location.type === 'city' ? 'City' : 'Region'}
                           </div>
                         </div>
                         {/* Follow button */}
@@ -391,9 +391,9 @@ export default function DestinationsPage() {
                             title={followed ? 'Ne plus suivre' : 'Suivre cette destination'}
                           >
                             {followed ? (
-                              <span className="text-white text-lg">⭐</span>
+                              <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
                             ) : (
-                              <span className="text-white text-lg">☆</span>
+                              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
                             )}
                           </button>
                         )}
@@ -427,7 +427,7 @@ export default function DestinationsPage() {
               </div>
             ) : (
               <div className="glass-card py-16 text-center animate-scale-in">
-                <div className="text-6xl mb-4">🔍</div>
+                <div className="text-4xl mb-4 text-gray-400">?</div>
                 <h3 className="text-2xl font-bold mb-2">Aucun aéroport trouvé</h3>
                 <p className="text-gray-400">
                   Essayez de modifier votre recherche (ville, pays, code IATA...)
@@ -440,7 +440,7 @@ export default function DestinationsPage() {
         {/* Message initial (pas de recherche) */}
         {!searchQuery && followedDestinations.length === 0 && (
           <div className="glass-card py-16 text-center animate-scale-in">
-            <div className="text-6xl mb-4">✈️</div>
+            <svg className="w-16 h-16 mx-auto mb-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
             <h3 className="text-2xl font-bold mb-2">
               {isLoggedIn ? 'Commencez votre recherche' : 'Recherchez votre prochaine destination'}
             </h3>
@@ -474,21 +474,21 @@ export default function DestinationsPage() {
             <h2 className="text-3xl font-bold mb-4">Comment ça marche ?</h2>
             <div className="grid md:grid-cols-3 gap-8 text-left max-w-4xl mx-auto">
               <div>
-                <div className="text-3xl mb-3">🔍</div>
+                <div className="text-2xl mb-3 font-bold text-primary">1</div>
                 <h3 className="font-bold mb-2">1. Recherchez</h3>
                 <p className="text-sm text-gray-400">
                   Trouvez votre destination parmi des milliers d'aéroports
                 </p>
               </div>
               <div>
-                <div className="text-3xl mb-3">⭐</div>
+                <div className="text-2xl mb-3 font-bold text-primary">2</div>
                 <h3 className="font-bold mb-2">2. Suivez</h3>
                 <p className="text-sm text-gray-400">
                   Cliquez sur l'étoile pour suivre une destination
                 </p>
               </div>
               <div>
-                <div className="text-3xl mb-3">📧</div>
+                <div className="text-2xl mb-3 font-bold text-primary">3</div>
                 <h3 className="font-bold mb-2">3. Recevez</h3>
                 <p className="text-sm text-gray-400">
                   Alertes email (gratuit) ou SMS (premium) quand un deal apparaît

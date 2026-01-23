@@ -151,7 +151,7 @@ export default function UpgradePage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h2 className="text-2xl font-bold mb-2">
-                {isPremium ? '⭐ Plan Premium' : '🆓 Plan Gratuit'}
+                {isPremium ? 'Plan Premium' : 'Plan Gratuit'}
               </h2>
               <p className="text-gray-400">
                 {isPremium
@@ -258,7 +258,7 @@ export default function UpgradePage() {
                 disabled={actionLoading}
                 className="flex-1 bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {actionLoading ? 'Chargement...' : '⭐ Passer en Premium - 9,99€/mois'}
+                {actionLoading ? 'Chargement...' : 'Passer en Premium - 9,99€/mois'}
               </button>
             ) : (
               <>
@@ -275,7 +275,7 @@ export default function UpgradePage() {
                   onClick={handleManageBilling}
                   className="flex-1 glass hover:bg-white/10 text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 border border-white/20"
                 >
-                  💳 Gérer la facturation
+                  Gerer la facturation
                 </button>
               </>
             )}
@@ -284,7 +284,7 @@ export default function UpgradePage() {
           {isCancelled && (
             <div className="mt-4 p-4 bg-orange-500/10 border border-orange-500/30 rounded-lg">
               <p className="text-sm text-orange-300">
-                ⚠️ Votre abonnement a été annulé mais reste actif jusqu'à la fin de la période payée.
+                Votre abonnement a ete annule mais reste actif jusqu'à la fin de la période payée.
                 Vous pouvez le réactiver à tout moment.
               </p>
             </div>
@@ -298,21 +298,21 @@ export default function UpgradePage() {
 
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               <div className="text-center">
-                <div className="text-4xl mb-3">📱</div>
+                <div className="text-2xl mb-3 font-bold text-primary">SMS</div>
                 <h3 className="font-bold mb-2">SMS Instantanés</h3>
                 <p className="text-sm text-gray-400">
                   Recevez les deals par SMS en temps réel, ne manquez plus jamais une bonne affaire
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-3">⚡</div>
+                <div className="text-2xl mb-3 font-bold text-yellow-400">FAST</div>
                 <h3 className="font-bold mb-2">Réactivité</h3>
                 <p className="text-sm text-gray-400">
                   Les meilleurs deals partent vite. Le SMS est 10x plus rapide que l'email
                 </p>
               </div>
               <div className="text-center">
-                <div className="text-4xl mb-3">💰</div>
+                <div className="text-2xl mb-3 font-bold text-green-400">$$$</div>
                 <h3 className="font-bold mb-2">Économies</h3>
                 <p className="text-sm text-gray-400">
                   Un seul vol économisé et l'abonnement est remboursé pour l'année entière
@@ -343,27 +343,27 @@ export default function UpgradePage() {
           <h2 className="text-2xl font-bold mb-6">Questions fréquentes</h2>
           <div className="space-y-4">
             <div>
-              <h3 className="font-bold mb-2">💳 Comment fonctionne le paiement ?</h3>
+              <h3 className="font-bold mb-2">Comment fonctionne le paiement ?</h3>
               <p className="text-sm text-gray-400">
                 Paiement sécurisé via Stripe. Carte bancaire, Apple Pay, Google Pay acceptés.
                 Facturation mensuelle automatique.
               </p>
             </div>
             <div>
-              <h3 className="font-bold mb-2">❌ Puis-je annuler à tout moment ?</h3>
+              <h3 className="font-bold mb-2">Puis-je annuler a tout moment ?</h3>
               <p className="text-sm text-gray-400">
                 Oui, sans engagement. Vous gardez l'accès Premium jusqu'à la fin de la période payée.
               </p>
             </div>
             <div>
-              <h3 className="font-bold mb-2">🔄 Que se passe-t-il si j'annule ?</h3>
+              <h3 className="font-bold mb-2">Que se passe-t-il si j'annule ?</h3>
               <p className="text-sm text-gray-400">
                 Vous repassez automatiquement en plan gratuit (emails uniquement) à la fin de votre période.
                 Vos destinations suivies sont conservées.
               </p>
             </div>
             <div>
-              <h3 className="font-bold mb-2">📧 Que comprend le plan gratuit ?</h3>
+              <h3 className="font-bold mb-2">Que comprend le plan gratuit ?</h3>
               <p className="text-sm text-gray-400">
                 Alertes par email illimitées, destinations illimitées. Seuls les SMS sont réservés au Premium.
               </p>

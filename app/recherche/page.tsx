@@ -1,9 +1,128 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
+import { useState, useRef, useEffect } from 'react'
 import { FlightSearchParams, FlightResult } from '../api/flights/search/route'
 import FlightTicketCard from '@/components/ui/FlightTicketCard'
+
+// Composant sélecteur de mois style Skyscanner
+function MonthPicker({
+  value,
+  onChange,
+  label,
+  placeholder = "Sélectionner un mois"
+}: {
+  value: string
+  onChange: (value: string) => void
+  label: string
+  placeholder?: string
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  const currentYear = new Date().getFullYear()
+  const years = [currentYear, currentYear + 1]
+
+  const months = [
+    { value: '01', label: 'Janvier' },
+    { value: '02', label: 'Février' },
+    { value: '03', label: 'Mars' },
+    { value: '04', label: 'Avril' },
+    { value: '05', label: 'Mai' },
+    { value: '06', label: 'Juin' },
+    { value: '07', label: 'Juillet' },
+    { value: '08', label: 'Août' },
+    { value: '09', label: 'Septembre' },
+    { value: '10', label: 'Octobre' },
+    { value: '11', label: 'Novembre' },
+    { value: '12', label: 'Décembre' },
+  ]
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const handleSelect = (year: number, month: string) => {
+    onChange(`${year}-${month}`)
+    setIsOpen(false)
+  }
+
+  const getDisplayValue = () => {
+    if (!value) return placeholder
+    const [year, month] = value.split('-')
+    const monthObj = months.find(m => m.value === month)
+    return monthObj ? `${monthObj.label} ${year}` : value
+  }
+
+  const isMonthDisabled = (year: number, monthValue: string) => {
+    const now = new Date()
+    const selectedDate = new Date(year, parseInt(monthValue) - 1)
+    return selectedDate < new Date(now.getFullYear(), now.getMonth())
+  }
+
+  return (
+    <div className="relative" ref={ref}>
+      <label className="block text-sm font-medium mb-2 text-gray-300">
+        {label}
+      </label>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="input-glass w-full text-left flex items-center justify-between"
+      >
+        <span className={value ? 'text-white' : 'text-gray-400'}>
+          {getDisplayValue()}
+        </span>
+        <svg
+          className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className="absolute z-50 mt-2 w-full bg-gray-900 border border-white/10 rounded-xl shadow-2xl overflow-hidden">
+          {years.map((year) => (
+            <div key={year} className="p-4">
+              <div className="text-sm font-semibold text-primary mb-3">{year}</div>
+              <div className="grid grid-cols-3 gap-2">
+                {months.map((month) => {
+                  const disabled = isMonthDisabled(year, month.value)
+                  const isSelected = value === `${year}-${month.value}`
+                  return (
+                    <button
+                      key={`${year}-${month.value}`}
+                      type="button"
+                      disabled={disabled}
+                      onClick={() => handleSelect(year, month.value)}
+                      className={`py-2 px-3 rounded-lg text-sm transition-all ${
+                        isSelected
+                          ? 'bg-primary text-white'
+                          : disabled
+                          ? 'text-gray-600 cursor-not-allowed'
+                          : 'text-gray-300 hover:bg-white/10'
+                      }`}
+                    >
+                      {month.label.slice(0, 3)}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 export default function SearchFlights() {
   const [searchParams, setSearchParams] = useState<FlightSearchParams>({
@@ -18,14 +137,28 @@ export default function SearchFlights() {
     infants: 0,
     cabinBaggage: true,
     checkedBaggage: 0,
-    tripType: 'oneway',
+    tripType: 'return',
     currency: 'EUR',
   })
+
+  // État pour les mois sélectionnés
+  const [departureMonth, setDepartureMonth] = useState('')
+  const [returnMonth, setReturnMonth] = useState('')
 
   const [results, setResults] = useState<FlightResult[]>([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [searched, setSearched] = useState(false)
+
+  // Convertir mois en plage de dates
+  const monthToDateRange = (monthStr: string) => {
+    if (!monthStr) return { from: '', to: '' }
+    const [year, month] = monthStr.split('-')
+    const firstDay = `${year}-${month}-01`
+    const lastDay = new Date(parseInt(year), parseInt(month), 0).getDate()
+    const lastDayStr = `${year}-${month}-${lastDay.toString().padStart(2, '0')}`
+    return { from: firstDay, to: lastDayStr }
+  }
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,9 +167,21 @@ export default function SearchFlights() {
     setSearched(true)
 
     try {
+      // Convertir les mois en dates
+      const depRange = monthToDateRange(departureMonth)
+      const retRange = monthToDateRange(returnMonth)
+
+      const finalParams = {
+        ...searchParams,
+        dateFrom: depRange.from,
+        dateTo: depRange.to,
+        returnFrom: searchParams.tripType === 'return' ? retRange.from : '',
+        returnTo: searchParams.tripType === 'return' ? retRange.to : '',
+      }
+
       // Build query string
       const params = new URLSearchParams()
-      Object.entries(searchParams).forEach(([key, value]) => {
+      Object.entries(finalParams).forEach(([key, value]) => {
         if (value !== '' && value !== undefined && value !== null) {
           params.append(key, value.toString())
         }
@@ -79,7 +224,7 @@ export default function SearchFlights() {
       <div className="container mx-auto max-w-7xl">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="heading-lg mb-4">🔍 Rechercher des vols</h1>
+          <h1 className="heading-lg mb-4">Rechercher des vols</h1>
           <p className="text-gray-300 text-lg">
             Trouvez les meilleurs deals de vols avec notre moteur de recherche
           </p>
@@ -103,7 +248,7 @@ export default function SearchFlights() {
                       : 'border-white/10 text-gray-400 hover:border-white/20'
                   }`}
                 >
-                  ✈️ Aller simple
+                  Aller simple
                 </button>
                 <button
                   type="button"
@@ -114,7 +259,7 @@ export default function SearchFlights() {
                       : 'border-white/10 text-gray-400 hover:border-white/20'
                   }`}
                 >
-                  🔄 Aller-retour
+                  Aller-retour
                 </button>
               </div>
             </div>
@@ -123,7 +268,7 @@ export default function SearchFlights() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Aéroport de départ *
+                  Aeroport de depart *
                 </label>
                 <input
                   type="text"
@@ -156,193 +301,64 @@ export default function SearchFlights() {
               </div>
             </div>
 
-            {/* Dates */}
+            {/* Month Pickers */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Date de départ (de)
-                </label>
-                <input
-                  type="date"
-                  value={searchParams.dateFrom || ''}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, dateFrom: e.target.value })
-                  }
-                  className="input-glass w-full"
+              <MonthPicker
+                label="Mois de depart"
+                value={departureMonth}
+                onChange={setDepartureMonth}
+                placeholder="Choisir le mois"
+              />
+              {searchParams.tripType === 'return' && (
+                <MonthPicker
+                  label="Mois de retour"
+                  value={returnMonth}
+                  onChange={setReturnMonth}
+                  placeholder="Choisir le mois"
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Date de départ (à)
-                </label>
-                <input
-                  type="date"
-                  value={searchParams.dateTo || ''}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, dateTo: e.target.value })
-                  }
-                  className="input-glass w-full"
-                />
-              </div>
+              )}
             </div>
 
-            {/* Return Dates (if return trip) */}
-            {searchParams.tripType === 'return' && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in-up">
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Date de retour (de)
-                  </label>
-                  <input
-                    type="date"
-                    value={searchParams.returnFrom || ''}
-                    onChange={(e) =>
-                      setSearchParams({ ...searchParams, returnFrom: e.target.value })
-                    }
-                    className="input-glass w-full"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Date de retour (à)
-                  </label>
-                  <input
-                    type="date"
-                    value={searchParams.returnTo || ''}
-                    onChange={(e) =>
-                      setSearchParams({ ...searchParams, returnTo: e.target.value })
-                    }
-                    className="input-glass w-full"
-                  />
-                </div>
-              </div>
-            )}
-
-            {/* Passengers */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Adultes (12+)
-                </label>
-                <input
-                  type="number"
-                  min="1"
-                  max="9"
-                  value={searchParams.adults}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, adults: parseInt(e.target.value) })
-                  }
-                  className="input-glass w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Enfants (2-11)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="9"
-                  value={searchParams.children}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, children: parseInt(e.target.value) })
-                  }
-                  className="input-glass w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Bébés (0-2)
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="9"
-                  value={searchParams.infants}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, infants: parseInt(e.target.value) })
-                  }
-                  className="input-glass w-full"
-                />
-              </div>
-            </div>
-
-            {/* Baggage */}
+            {/* Baggage - simplified to checkbox */}
             <div>
               <label className="block text-sm font-medium mb-3 text-gray-300">
-                Bagages
+                Options
               </label>
-              <div className="space-y-4">
-                <label className="flex items-center space-x-3 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={searchParams.cabinBaggage}
-                    onChange={(e) =>
-                      setSearchParams({ ...searchParams, cabinBaggage: e.target.checked })
-                    }
-                    className="w-5 h-5 rounded border-white/20 bg-white/5 text-primary focus:ring-primary"
-                  />
-                  <span className="text-gray-300">🎒 Bagage cabine / main</span>
-                </label>
-                <div>
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Bagages en soute
-                  </label>
-                  <select
-                    value={searchParams.checkedBaggage}
-                    onChange={(e) =>
-                      setSearchParams({
-                        ...searchParams,
-                        checkedBaggage: parseInt(e.target.value),
-                      })
-                    }
-                    className="input-glass w-full md:w-48"
-                  >
-                    <option value="0">0 bagage en soute</option>
-                    <option value="1">1 bagage en soute</option>
-                    <option value="2">2 bagages en soute</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            {/* Max Price */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Prix maximum (optionnel)
-                </label>
+              <label className="flex items-center space-x-3 cursor-pointer">
                 <input
-                  type="number"
-                  min="0"
-                  step="10"
-                  value={searchParams.maxPrice || ''}
+                  type="checkbox"
+                  checked={(searchParams.checkedBaggage ?? 0) > 0}
                   onChange={(e) =>
                     setSearchParams({
                       ...searchParams,
-                      maxPrice: e.target.value ? parseInt(e.target.value) : undefined,
+                      checkedBaggage: e.target.checked ? 1 : 0
                     })
                   }
-                  className="input-glass w-full"
-                  placeholder="Ex: 500"
+                  className="w-5 h-5 rounded border-white/20 bg-white/5 text-primary focus:ring-primary"
                 />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2 text-gray-300">
-                  Devise
-                </label>
-                <select
-                  value={searchParams.currency}
-                  onChange={(e) =>
-                    setSearchParams({ ...searchParams, currency: e.target.value })
-                  }
-                  className="input-glass w-full"
-                >
-                  <option value="EUR">EUR (€)</option>
-                  <option value="USD">USD ($)</option>
-                  <option value="GBP">GBP (£)</option>
-                </select>
-              </div>
+                <span className="text-gray-300">Inclure bagage en soute</span>
+              </label>
+            </div>
+
+            {/* Max Price */}
+            <div>
+              <label className="block text-sm font-medium mb-2 text-gray-300">
+                Prix maximum (optionnel)
+              </label>
+              <input
+                type="number"
+                min="0"
+                step="10"
+                value={searchParams.maxPrice || ''}
+                onChange={(e) =>
+                  setSearchParams({
+                    ...searchParams,
+                    maxPrice: e.target.value ? parseInt(e.target.value) : undefined,
+                  })
+                }
+                className="input-glass w-full md:w-64"
+                placeholder="Ex: 500"
+              />
             </div>
 
             {/* Submit */}
@@ -351,7 +367,7 @@ export default function SearchFlights() {
               disabled={loading}
               className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 disabled:opacity-50 transform hover:scale-105 shadow-lg shadow-primary/20"
             >
-              {loading ? '🔍 Recherche en cours...' : '🚀 Rechercher des vols'}
+              {loading ? 'Recherche en cours...' : 'Rechercher des vols'}
             </button>
           </form>
         </div>
@@ -359,7 +375,7 @@ export default function SearchFlights() {
         {/* Error */}
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 px-6 py-4 rounded-lg mb-8">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
@@ -369,17 +385,16 @@ export default function SearchFlights() {
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-2xl font-bold">
                 {results.length > 0
-                  ? `${results.length} vols trouvés`
-                  : 'Aucun vol trouvé'}
+                  ? `${results.length} vols trouves`
+                  : 'Aucun vol trouve'}
               </h2>
             </div>
 
             {results.length === 0 && !error && (
               <div className="glass-card text-center py-12">
-                <div className="text-6xl mb-4">✈️</div>
-                <p className="text-gray-300 text-lg mb-2">Aucun vol trouvé</p>
+                <p className="text-gray-300 text-lg mb-2">Aucun vol trouve</p>
                 <p className="text-gray-400">
-                  Essayez de modifier vos critères de recherche
+                  Essayez de modifier vos criteres de recherche
                 </p>
               </div>
             )}

@@ -85,7 +85,7 @@ export default function DealsHistory() {
       <div className="container mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="heading-lg mb-4">📧 Historique de vos deals</h1>
+          <h1 className="heading-lg mb-4">Historique de vos deals</h1>
           <p className="text-gray-300 text-lg">
             Retrouvez tous les deals que vous avez reçus par email ou SMS
           </p>
@@ -94,14 +94,14 @@ export default function DealsHistory() {
         {/* Error */}
         {error && (
           <div className="bg-red-500/10 border border-red-500 text-red-500 px-6 py-4 rounded-lg mb-8">
-            ⚠️ {error}
+            {error}
           </div>
         )}
 
         {/* Empty State */}
         {deals.length === 0 && !error && (
           <div className="glass-card text-center py-16">
-            <div className="text-6xl mb-6">📭</div>
+            <svg className="w-16 h-16 mx-auto mb-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             <h2 className="text-2xl font-bold mb-4">Aucun deal reçu pour le moment</h2>
             <p className="text-gray-400 mb-8 max-w-md mx-auto">
               Vous n'avez pas encore reçu de deals. Configurez vos destinations favorites pour
@@ -143,7 +143,7 @@ export default function DealsHistory() {
                         </span>
                       )}
                       <span className="text-xs bg-white/10 text-gray-300 px-2 py-1 rounded">
-                        {deal.channel === 'email' ? '📧 Email' : '📱 SMS'}
+                        {deal.channel === 'email' ? 'Email' : 'SMS'}
                       </span>
                     </div>
 
@@ -160,10 +160,10 @@ export default function DealsHistory() {
                     </div>
 
                     <div className="text-sm text-gray-400 space-y-1">
-                      <div>📅 Reçu le {formatDate(deal.sentAt)}</div>
+                      <div>Recu le {formatDate(deal.sentAt)}</div>
                       {deal.expiresAt && (
                         <div>
-                          ⏰ Expire le{' '}
+                          Expire le{' '}
                           {formatDate(deal.expiresAt)}
                         </div>
                       )}

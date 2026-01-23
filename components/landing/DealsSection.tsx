@@ -56,7 +56,7 @@ export default function DealsSection() {
         {/* Header with improved spacing */}
         <div className={`text-center mb-16 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Badge variant="primary" className="mb-6 animate-pulse-slow">
-            🔥 Deals récents
+            Deals recents
           </Badge>
           <h2 className="heading-lg mb-6">
             Exemples de <span className="text-primary">deals exclusifs</span>
@@ -93,7 +93,7 @@ export default function DealsSection() {
         <div className={`text-center mt-16 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '600ms' }}>
           <div className="glass-card max-w-2xl mx-auto p-8">
             <p className="text-primary font-bold text-2xl mb-4">
-              ⚡ Ne ratez plus jamais un bon plan !
+              Ne ratez plus jamais un bon plan !
             </p>
             <p className="text-gray-400 mb-6">
               Recevez les meilleures offres directement dans votre boîte mail

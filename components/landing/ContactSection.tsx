@@ -14,7 +14,7 @@ export default function ContactSection() {
       <div className="container mx-auto max-w-3xl relative z-10">
         <div className={`text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Badge variant="primary" className="mb-6">
-            📧 Contact
+            Contact
           </Badge>
           <h2 className="heading-lg mb-6">
             Une question ?

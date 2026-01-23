@@ -86,49 +86,49 @@ export default function RGPD() {
 
             <div className="space-y-4 mt-4">
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">✅ Droit d'accès (Article 15)</h3>
+                <h3 className="font-bold text-white mb-2">Droit d'acces (Article 15)</h3>
                 <p className="text-sm">
                   Vous pouvez obtenir une copie de toutes vos données personnelles que nous détenons.
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">✏️ Droit de rectification (Article 16)</h3>
+                <h3 className="font-bold text-white mb-2">Droit de rectification (Article 16)</h3>
                 <p className="text-sm">
                   Vous pouvez corriger vos données personnelles si elles sont inexactes ou incomplètes.
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">🗑️ Droit à l'effacement (Article 17)</h3>
+                <h3 className="font-bold text-white mb-2">Droit a l'effacement (Article 17)</h3>
                 <p className="text-sm">
                   Vous pouvez demander la suppression de vos données personnelles ("droit à l'oubli").
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">⏸️ Droit à la limitation du traitement (Article 18)</h3>
+                <h3 className="font-bold text-white mb-2">Droit a la limitation du traitement (Article 18)</h3>
                 <p className="text-sm">
                   Vous pouvez demander la limitation du traitement de vos données dans certaines circonstances.
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">📦 Droit à la portabilité (Article 20)</h3>
+                <h3 className="font-bold text-white mb-2">Droit a la portabilite (Article 20)</h3>
                 <p className="text-sm">
                   Vous pouvez recevoir vos données dans un format structuré et les transmettre à un autre responsable.
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">🚫 Droit d'opposition (Article 21)</h3>
+                <h3 className="font-bold text-white mb-2">Droit d'opposition (Article 21)</h3>
                 <p className="text-sm">
                   Vous pouvez vous opposer au traitement de vos données pour des raisons tenant à votre situation particulière.
                 </p>
               </div>
 
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">🔄 Droit de retrait du consentement (Article 7)</h3>
+                <h3 className="font-bold text-white mb-2">Droit de retrait du consentement (Article 7)</h3>
                 <p className="text-sm">
                   Vous pouvez retirer votre consentement à tout moment pour les traitements basés sur celui-ci.
                 </p>

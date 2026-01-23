@@ -164,7 +164,7 @@ export default function Signup() {
                       : 'glass border-white/10 hover:border-white/20'
                   }`}
                 >
-                  <div className="text-2xl mb-2">🎁</div>
+                  <div className="text-lg mb-2 font-bold text-green-400">FREE</div>
                   <div className="font-bold text-lg mb-1">Gratuit</div>
                   <div className="text-sm text-gray-400">Alertes email uniquement</div>
                 </button>
@@ -180,7 +180,7 @@ export default function Signup() {
                   <div className="absolute -top-3 -right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
                     POPULAIRE
                   </div>
-                  <div className="text-2xl mb-2">⭐</div>
+                  <div className="text-lg mb-2 font-bold text-primary">PRO</div>
                   <div className="font-bold text-lg mb-1">Premium</div>
                   <div className="text-sm text-gray-400">4€/mois ou 40€/an</div>
                 </button>

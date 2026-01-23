@@ -52,7 +52,7 @@ export default function HowItWorks() {
         {/* Header */}
         <div className={`text-center mb-20 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <Badge variant="primary" className="mb-6">
-            ⚡ Simple & Efficace
+            Simple & Efficace
           </Badge>
           <h2 className="heading-lg mb-6">
             Comment ça marche ?
@@ -95,7 +95,7 @@ export default function HowItWorks() {
         <div className={`mt-20 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{ transitionDelay: '600ms' }}>
           <div className="glass-card max-w-3xl mx-auto p-10 text-center border-2 border-primary/30">
             <div className="mb-6">
-              <span className="text-6xl">💰</span>
+              <span className="text-4xl font-bold text-primary">$$$</span>
             </div>
             <h3 className="text-3xl md:text-4xl font-bold mb-4">
               En moyenne, nos membres économisent{' '}
