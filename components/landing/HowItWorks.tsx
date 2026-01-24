@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { useInViewport } from '@/hooks/useInViewport';
-import Badge from '@/components/ui/Badge'
 
 export default function HowItWorks() {
   const { elementRef, isInViewport } = useInViewport({ threshold: 0.2, triggerOnce: true });
@@ -17,7 +16,7 @@ export default function HowItWorks() {
       ),
       title: 'Inscrivez-vous gratuitement',
       description:
-        'Créez votre compte en 30 secondes. Choisissez vos destinations préférées ou suivez le monde entier.',
+        'Creez votre compte en 30 secondes. Choisissez vos destinations preferees ou suivez le monde entier.',
     },
     {
       number: '2',
@@ -28,7 +27,7 @@ export default function HowItWorks() {
       ),
       title: 'Nous trouvons les deals',
       description:
-        'Notre algorithme scanne des milliers de vols chaque jour pour dénicher les meilleurs prix et erreurs tarifaires.',
+        'Nous scannons les meilleures offres de vols pour denicher les meilleurs prix et erreurs tarifaires.',
     },
     {
       number: '3',
@@ -39,34 +38,49 @@ export default function HowItWorks() {
       ),
       title: 'Recevez les alertes',
       description:
-        'Soyez averti par email (gratuit) ou SMS (premium) dès qu\'un deal correspond à vos critères. Réservez avant qu\'il ne disparaisse!',
+        'Nous vous envoyons par mail les meilleurs deals des qu\'on en trouve !',
+    },
+  ]
+
+  const reviews = [
+    {
+      name: 'Marie L.',
+      location: 'Paris',
+      avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
+      rating: 5,
+      text: 'J\'ai economise plus de 400€ sur mon vol pour Bangkok ! Le deal est arrive dans ma boite mail et j\'ai reserve dans la foulee. Incroyable service.',
+    },
+    {
+      name: 'Thomas D.',
+      location: 'Lyon',
+      avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+      rating: 5,
+      text: 'Grace a FlightAlert, j\'ai pu partir a New York pour 280€ A/R au lieu de 650€. Je recommande a tous les voyageurs !',
+    },
+    {
+      name: 'Sophie M.',
+      location: 'Bordeaux',
+      avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
+      rating: 5,
+      text: 'En 6 mois, j\'ai fait 3 voyages grace aux deals recus. Marrakech, Lisbonne et Rome pour moins de 200€ au total. Merci FlightAlert !',
     },
   ]
 
   return (
-    <section ref={elementRef as React.RefObject<HTMLElement>} className="py-32 px-4 relative overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/20 to-black" />
-
+    <section ref={elementRef as React.RefObject<HTMLElement>} className="py-16 px-4 relative">
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
-        <div className={`text-center mb-20 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <Badge variant="primary" className="mb-6">
-            Simple & Efficace
-          </Badge>
-          <h2 className="heading-lg mb-6">
-            Comment ça marche ?
+        <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="heading-lg mb-4">
+            Comment ca marche ?
           </h2>
           <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
-            3 étapes simples pour ne plus jamais rater un bon plan
+            3 etapes simples pour ne plus jamais rater un bon plan
           </p>
         </div>
 
-        {/* Steps with timeline */}
+        {/* Steps without timeline */}
         <div className="relative max-w-5xl mx-auto">
-          {/* Timeline line (desktop only) */}
-          <div className="hidden md:block absolute top-24 left-0 right-0 h-0.5 bg-gradient-to-r from-primary/20 via-primary/50 to-primary/20" />
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {steps.map((step, index) => (
               <div
@@ -91,24 +105,54 @@ export default function HowItWorks() {
           </div>
         </div>
 
-        {/* CTA Card */}
-        <div className={`mt-20 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{ transitionDelay: '600ms' }}>
-          <div className="glass-card max-w-3xl mx-auto p-10 text-center border-2 border-primary/30">
-            <div className="mb-6">
-              <span className="text-4xl font-bold text-primary">$$$</span>
-            </div>
-            <h3 className="text-3xl md:text-4xl font-bold mb-4">
-              En moyenne, nos membres économisent{' '}
-              <span className="text-primary font-mono">300€</span> par an
-            </h3>
-            <p className="text-gray-400 text-lg mb-8 leading-relaxed">
-              Rejoignez plus de 10 000 voyageurs malins qui ne payent plus jamais le prix fort
-            </p>
-            <Link href="/signup">
-              <button className="bg-white text-black hover:bg-gray-100 font-bold py-4 px-10 rounded-lg transition-all duration-200 transform hover:scale-105">
-                Je veux économiser aussi
-              </button>
-            </Link>
+        {/* Tip */}
+        <div className={`mt-12 text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '600ms' }}>
+          <div className="inline-flex items-center gap-3 bg-primary/10 border border-primary/30 rounded-full px-6 py-3">
+            <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span className="text-gray-300">
+              <span className="font-bold text-primary">Astuce :</span> Les prix peuvent tres vite varier, reservez avant qu'il ne disparaisse !
+            </span>
+          </div>
+        </div>
+
+        {/* Reviews Section */}
+        <div className={`mt-14 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{ transitionDelay: '700ms' }}>
+          <h3 className="text-2xl font-bold text-center mb-8">Ce que disent nos membres</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {reviews.map((review, index) => (
+              <div
+                key={index}
+                className="glass-card hover-lift"
+                style={{ transitionDelay: `${800 + index * 100}ms` }}
+              >
+                {/* Header with avatar */}
+                <div className="flex items-center gap-4 mb-4">
+                  <img
+                    src={review.avatar}
+                    alt={review.name}
+                    className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                  />
+                  <div>
+                    <div className="font-bold">{review.name}</div>
+                    <div className="text-sm text-gray-400">{review.location}</div>
+                  </div>
+                </div>
+
+                {/* Rating */}
+                <div className="flex gap-1 mb-3">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+
+                {/* Text */}
+                <p className="text-gray-300 text-sm leading-relaxed">"{review.text}"</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>

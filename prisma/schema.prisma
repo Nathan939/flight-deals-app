@@ -74,3 +74,20 @@ model Alert {
 
   @@unique([userId, dealId, channel])
 }
+
+model SearchRequest {
+  id             String   @id @default(cuid())
+  userId         String
+  userEmail      String
+  userName       String?
+  from           String
+  fromCity       String
+  to             String
+  toCity         String
+  departureMonth String?
+  returnMonth    String?
+  tripType       String   @default("return")
+  maxPrice       Int?
+  status         String   @default("pending") // "pending", "processed", "sent"
+  createdAt      DateTime @default(now())
+}

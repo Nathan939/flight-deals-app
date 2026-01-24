@@ -104,14 +104,14 @@ export default function DealsHistory() {
             <svg className="w-16 h-16 mx-auto mb-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             <h2 className="text-2xl font-bold mb-4">Aucun deal reçu pour le moment</h2>
             <p className="text-gray-400 mb-8 max-w-md mx-auto">
-              Vous n'avez pas encore reçu de deals. Configurez vos destinations favorites pour
-              commencer à recevoir des alertes !
+              Vous n'avez pas encore reçu de deals. Recherchez des vols pour
+              trouver les meilleures offres !
             </p>
             <Link
-              href="/destinations"
+              href="/recherche"
               className="inline-block bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-all duration-200"
             >
-              Configurer mes destinations →
+              Rechercher des vols →
             </Link>
           </div>
         )}
@@ -225,8 +225,8 @@ export default function DealsHistory() {
 
         {/* Back Link */}
         <div className="mt-8 text-center">
-          <Link href="/destinations" className="text-primary hover:text-primary-light transition-colors">
-            ← Retour à mes destinations
+          <Link href="/" className="text-primary hover:text-primary-light transition-colors">
+            ← Retour à l'accueil
           </Link>
         </div>
       </div>

@@ -16,7 +16,7 @@ export default function CGV() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4 mt-4">
               <li><strong>Formule Gratuite</strong> : alertes par email uniquement</li>
-              <li><strong>Formule Premium</strong> : alertes par email et SMS, tarif de 4€/mois ou 40€/an</li>
+              <li><strong>Formule Premium</strong> : alertes par email et SMS, tarif de 4,99€/mois, 11,99€/trimestre ou 44,99€/an</li>
             </ul>
           </section>
 
@@ -55,7 +55,7 @@ export default function CGV() {
               <li>Historique des deals envoyés</li>
             </ul>
 
-            <h3 className="text-xl font-semibold mb-3 text-white mt-6">4.2 Formule Premium (4€/mois ou 40€/an)</h3>
+            <h3 className="text-xl font-semibold mb-3 text-white mt-6">4.2 Formule Premium (4,99€/mois, 11,99€/trimestre ou 44,99€/an)</h3>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>Tous les avantages de la formule gratuite</li>
               <li>Alertes par SMS en temps réel</li>
@@ -71,8 +71,9 @@ export default function CGV() {
               Les tarifs de l'abonnement Premium sont les suivants :
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li><strong>Mensuel</strong> : 4€ TTC par mois</li>
-              <li><strong>Annuel</strong> : 40€ TTC par an (économie de 2 mois)</li>
+              <li><strong>Mensuel</strong> : 4,99€ TTC par mois</li>
+              <li><strong>Trimestriel</strong> : 11,99€ TTC par trimestre</li>
+              <li><strong>Annuel</strong> : 44,99€ TTC par an</li>
             </ul>
             <p className="mt-4">
               Les paiements sont effectués de manière sécurisée via Stripe. Les moyens de paiement acceptés

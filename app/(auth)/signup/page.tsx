@@ -138,7 +138,7 @@ export default function Signup() {
 
             <div>
               <label htmlFor="name" className="block text-sm font-medium mb-2 text-gray-300">
-                Nom (optionnel)
+                Prénom (optionnel)
               </label>
               <input
                 type="text"
@@ -148,7 +148,7 @@ export default function Signup() {
                   setFormData({ ...formData, name: e.target.value })
                 }
                 className="input-glass w-full"
-                placeholder="Votre nom"
+                placeholder="Votre prénom"
               />
             </div>
 
@@ -160,12 +160,12 @@ export default function Signup() {
                   onClick={() => setFormData({ ...formData, plan: 'free' })}
                   className={`p-6 rounded-xl border-2 transition-all duration-200 transform hover:scale-105 ${
                     formData.plan === 'free'
-                      ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20'
+                      ? 'border-green-500 bg-green-500/10 shadow-lg shadow-green-500/20'
                       : 'glass border-white/10 hover:border-white/20'
                   }`}
                 >
-                  <div className="text-lg mb-2 font-bold text-green-400">FREE</div>
-                  <div className="font-bold text-lg mb-1">Gratuit</div>
+                  <div className="text-2xl mb-2 font-bold text-green-400">Gratuit</div>
+                  <div className="font-bold text-lg mb-1">0€/mois</div>
                   <div className="text-sm text-gray-400">Alertes email uniquement</div>
                 </button>
                 <button
@@ -180,9 +180,9 @@ export default function Signup() {
                   <div className="absolute -top-3 -right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
                     POPULAIRE
                   </div>
-                  <div className="text-lg mb-2 font-bold text-primary">PRO</div>
-                  <div className="font-bold text-lg mb-1">Premium</div>
-                  <div className="text-sm text-gray-400">4€/mois ou 40€/an</div>
+                  <div className="text-2xl mb-2 font-bold text-primary">Premium</div>
+                  <div className="font-bold text-lg mb-1">4,99€/mois</div>
+                  <div className="text-sm text-gray-400">ou 11,99€/trimestre ou 44,99€/an</div>
                 </button>
               </div>
             </div>

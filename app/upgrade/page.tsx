@@ -244,7 +244,7 @@ export default function UpgradePage() {
                 )}
                 <div className="flex justify-between">
                   <span className="text-gray-400">Prix :</span>
-                  <span className="font-medium">9,99€ / mois</span>
+                  <span className="font-medium">4,99€ / mois</span>
                 </div>
               </div>
             </div>
@@ -258,7 +258,7 @@ export default function UpgradePage() {
                 disabled={actionLoading}
                 className="flex-1 bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {actionLoading ? 'Chargement...' : 'Passer en Premium - 9,99€/mois'}
+                {actionLoading ? 'Chargement...' : 'Passer en Premium - 4,99€/mois'}
               </button>
             ) : (
               <>
@@ -322,7 +322,7 @@ export default function UpgradePage() {
 
             <div className="bg-white/5 rounded-lg p-6 text-center">
               <p className="text-2xl font-bold mb-2">
-                9,99€ <span className="text-lg text-gray-400">/ mois</span>
+                4,99€ <span className="text-lg text-gray-400">/ mois</span>
               </p>
               <p className="text-sm text-gray-400 mb-4">
                 Sans engagement • Annulez à tout moment

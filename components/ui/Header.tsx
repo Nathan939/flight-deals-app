@@ -3,16 +3,31 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
+// Liste des emails admin
+const ADMIN_EMAILS = ['sylvain.raynaud31@orange.fr']
+
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
 
   useEffect(() => {
     // Check if user is logged in
     const checkAuth = () => {
-      const user = localStorage.getItem('user')
-      setIsLoggedIn(!!user)
+      const userStr = localStorage.getItem('user')
+      setIsLoggedIn(!!userStr)
+
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr)
+          setIsAdmin(ADMIN_EMAILS.includes(user.email?.toLowerCase()))
+        } catch {
+          setIsAdmin(false)
+        }
+      } else {
+        setIsAdmin(false)
+      }
     }
 
     checkAuth()
@@ -46,11 +61,11 @@ export default function Header() {
 
           {/* Desktop Menu - Droite */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Search Button - Always visible */}
+            {/* Search Button - Premium Flight Search */}
             <Link
               href="/recherche"
               className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-200 group"
-              title="Rechercher des vols"
+              title="Recherche de vols (Premium)"
             >
               <svg className="w-6 h-6 text-gray-300 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -70,16 +85,18 @@ export default function Header() {
                   </svg>
                 </Link>
 
-                {/* User Icon Button - Destinations */}
-                <Link
-                  href="/destinations"
-                  className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-200 group"
-                  title="Mes destinations"
-                >
-                  <svg className="w-6 h-6 text-gray-300 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </Link>
+                {/* Admin Icon - Only for admin users */}
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="p-2.5 rounded-full hover:bg-white/10 transition-all duration-200 group"
+                    title="Console Admin"
+                  >
+                    <svg className="w-6 h-6 text-primary group-hover:text-primary-light transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </Link>
+                )}
 
                 {/* Settings Menu */}
                 <div className="relative">
@@ -186,7 +203,7 @@ export default function Header() {
               className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
               onClick={() => setMobileMenuOpen(false)}
             >
-              Rechercher des vols
+              Recherche de vols
             </Link>
             {isLoggedIn ? (
               <>
@@ -198,19 +215,21 @@ export default function Header() {
                   Historique
                 </Link>
                 <Link
-                  href="/destinations"
-                  className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Mes Destinations
-                </Link>
-                <Link
                   href="/upgrade"
                   className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Mon Abonnement
                 </Link>
+                {isAdmin && (
+                  <Link
+                    href="/admin"
+                    className="block px-4 py-3 hover:bg-white/10 transition-colors rounded-lg text-primary"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Console Admin
+                  </Link>
+                )}
                 <button
                   onClick={handleLogout}
                   className="w-full text-left px-4 py-3 hover:bg-white/10 transition-colors rounded-lg text-red-400"

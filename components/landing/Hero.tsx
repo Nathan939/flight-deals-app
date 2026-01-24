@@ -24,40 +24,27 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="relative py-32 px-4 overflow-hidden min-h-[85vh] flex items-center">
-      {/* Animated gradient background */}
-      <div className="absolute inset-0 gradient-radial-primary pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-transparent to-black pointer-events-none" />
-
-      {/* Floating particles effect */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-      </div>
-
+    <section className="relative py-20 px-4 min-h-[75vh] flex items-center overflow-hidden">
       <div className="container mx-auto relative z-10">
         <div className="max-w-5xl mx-auto text-center">
-          {/* Main heading with improved typography */}
-          <h1 className="heading-xl mb-8 animate-fade-in-up">
+          {/* Main heading */}
+          <h1 className="heading-xl mb-6 animate-fade-in-up">
             Marre de payer vos{' '}
-            <span className="text-primary relative inline-block">
-              billets trop cher
-              <span className="absolute -bottom-2 left-0 w-full h-1 bg-primary/30 blur-sm" />
-            </span>{' '}
+            <span className="text-primary">billets trop cher</span>{' '}
             ?
           </h1>
 
-          {/* Subheading with better spacing */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 leading-relaxed animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
+          {/* Subheading */}
+          <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
             On déniche pour vous les meilleures affaires de vols et vous alerte en temps réel
           </p>
 
           {/* CTA with glass effect */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up mb-8" style={{ animationDelay: '0.2s' }}>
             {isLoggedIn ? (
-              <Link href="/destinations">
+              <Link href="/recherche">
                 <Button variant="primary" size="large" className="text-xl px-12 py-4 shadow-lg shadow-primary/30">
-                  Rechercher des destinations
+                  Rechercher des vols
                 </Button>
               </Link>
             ) : (
@@ -84,22 +71,6 @@ export default function Hero() {
               Pas de carte bancaire requise pour le plan gratuit
             </p>
           )}
-
-          {/* Stats section */}
-          <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="glass-card text-center hover-lift">
-              <div className="text-4xl font-bold text-primary mb-2">-76%</div>
-              <div className="text-gray-400 text-sm">Économie moyenne</div>
-            </div>
-            <div className="glass-card text-center hover-lift">
-              <div className="text-4xl font-bold text-primary mb-2">2x/sem</div>
-              <div className="text-gray-400 text-sm">Nouveaux deals</div>
-            </div>
-            <div className="glass-card text-center hover-lift">
-              <div className="text-4xl font-bold text-primary mb-2">12h</div>
-              <div className="text-gray-400 text-sm">d'avance (Premium)</div>
-            </div>
-          </div>
         </div>
       </div>
     </section>

@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
     // Create user
     const user = await createUser(email, password, name, phone)
 
-    // Update subscription plan if not free
-    if (plan === 'sms') {
+    // Update subscription plan if premium
+    if (plan === 'premium') {
       await prisma.subscription.update({
         where: { userId: user.id },
-        data: { plan: 'sms' },
+        data: { plan: 'premium' },
       })
     }
 

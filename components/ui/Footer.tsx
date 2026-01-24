@@ -75,19 +75,12 @@ export default function Footer() {
 
           <div>
             <h4 className="font-bold mb-4">Contact</h4>
-            <ul className="space-y-2 text-gray-400 text-sm">
-              <li>Email: contact@flightalert.fr</li>
-              <li>DPO: dpo@flightalert.fr</li>
-              <li>Site: www.flightalert.fr</li>
-            </ul>
-            <div className="mt-6">
-              <Link
-                href="/signup"
-                className="inline-block bg-primary hover:bg-primary-dark text-white text-sm font-bold py-2 px-4 rounded-lg transition-all duration-200"
-              >
-                Commencer gratuitement →
-              </Link>
-            </div>
+            <a
+              href="mailto:contact@flightdeals.com"
+              className="text-gray-400 text-sm hover:text-primary transition-colors"
+            >
+              contact@flightdeals.com
+            </a>
           </div>
         </div>
 

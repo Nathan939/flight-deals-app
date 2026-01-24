@@ -109,8 +109,8 @@ export default function DealsPage() {
               <a href="/signup" className="btn-primary">
                 S'inscrire gratuitement
               </a>
-              <a href="/destinations" className="btn-outline">
-                Suivre des destinations
+              <a href="/recherche" className="btn-outline">
+                Rechercher des vols
               </a>
             </div>
           </div>

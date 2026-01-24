@@ -37,7 +37,7 @@ export default function Login() {
       // Trigger auth change event for header update
       window.dispatchEvent(new Event('auth-change'))
 
-      router.push('/destinations')
+      router.push('/')
     } catch (err: any) {
       setError(err.message)
     } finally {
@@ -103,6 +103,11 @@ export default function Login() {
                 placeholder="Votre mot de passe"
                 required
               />
+              <div className="mt-2 text-right">
+                <Link href="/forgot-password" className="text-sm text-gray-400 hover:text-primary transition-colors">
+                  Mot de passe oublié ?
+                </Link>
+              </div>
             </div>
 
             <button

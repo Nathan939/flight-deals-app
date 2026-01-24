@@ -16,7 +16,7 @@ export default function FAQ() {
     {
       question: 'Quelle est la différence entre email et SMS ?',
       answer:
-        'Les alertes email sont gratuites et illimitées. Les alertes SMS sont payantes (9€/mois) mais vous permettent d\'être averti instantanément, même sans connexion internet, pour ne jamais rater un deal.',
+        'Les alertes email sont gratuites et illimitées. Les alertes SMS sont payantes (4,99€/mois ou 44,99€/an) mais vous permettent d\'être averti instantanément, même sans connexion internet, pour ne jamais rater un deal.',
     },
     {
       question: 'Combien de temps les deals restent-ils disponibles ?',
@@ -45,10 +45,10 @@ export default function FAQ() {
   };
 
   return (
-    <section ref={elementRef as React.RefObject<HTMLElement>} className="py-20 px-4 bg-gradient-to-b from-black via-gray-900 to-black">
-      <div className="container mx-auto max-w-4xl">
-        <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+    <section ref={elementRef as React.RefObject<HTMLElement>} className="py-14 px-4 relative">
+      <div className="container mx-auto max-w-4xl relative z-10">
+        <div className={`text-center mb-8 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <h2 className="text-4xl md:text-5xl font-bold mb-3">
             Questions fréquentes
           </h2>
           <p className="text-gray-300 text-lg">
@@ -60,12 +60,12 @@ export default function FAQ() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className={`bg-gradient-to-r from-gray-900 to-black border border-gray-800 rounded-lg overflow-hidden transition-all duration-500 ${isInViewport ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
+              className={`glass-card !p-0 overflow-hidden transition-all duration-500 ${isInViewport ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10'}`}
               style={{ transitionDelay: `${index * 100}ms` }}
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-gray-800/50 transition-colors"
+                className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
               >
                 <span className="font-bold text-lg pr-4">{faq.question}</span>
                 <span className="text-primary text-2xl flex-shrink-0 transition-transform duration-300" style={{ transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)' }}>
@@ -82,13 +82,9 @@ export default function FAQ() {
         </div>
 
         <div className={`mt-12 text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '600ms' }}>
-          <p className="text-gray-400 mb-4">Vous avez d'autres questions ?</p>
-          <a
-            href="/contact"
-            className="inline-block bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-all duration-200"
-          >
-            Contactez-nous
-          </a>
+          <p className="text-gray-400">
+            Vous avez d'autres questions ? <a href="mailto:contact@flightdeals.com" className="text-primary hover:text-primary-light transition-colors font-medium">contact@flightdeals.com</a>
+          </p>
         </div>
       </div>
     </section>
