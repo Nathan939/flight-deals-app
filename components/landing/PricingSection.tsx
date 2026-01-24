@@ -1,12 +1,49 @@
 'use client'
 
 import Link from 'next/link'
+import { useState, useEffect } from 'react'
 import { PLANS } from '@/lib/utils'
 import Badge from '@/components/ui/Badge'
 import { useInViewport } from '@/hooks/useInViewport'
 
+interface User {
+  id: string
+  email: string
+  subscription?: {
+    plan: 'free' | 'premium'
+    status: 'active' | 'inactive' | 'cancelled'
+  }
+}
+
 export default function PricingSection() {
   const { elementRef, isInViewport } = useInViewport({ threshold: 0.1, triggerOnce: true })
+  const [user, setUser] = useState<User | null>(null)
+
+  useEffect(() => {
+    const checkAuth = () => {
+      const storedUser = localStorage.getItem('user')
+      if (storedUser) {
+        try {
+          setUser(JSON.parse(storedUser))
+        } catch {
+          setUser(null)
+        }
+      } else {
+        setUser(null)
+      }
+    }
+
+    checkAuth()
+    window.addEventListener('storage', checkAuth)
+    window.addEventListener('auth-change', checkAuth)
+
+    return () => {
+      window.removeEventListener('storage', checkAuth)
+      window.removeEventListener('auth-change', checkAuth)
+    }
+  }, [])
+
+  const isPremium = user?.subscription?.plan === 'premium' && user?.subscription?.status === 'active'
 
   return (
     <section
@@ -59,11 +96,19 @@ export default function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/signup?plan=free" className="mt-auto">
-              <button className="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105">
-                Commencer gratuitement
-              </button>
-            </Link>
+            {user ? (
+              <Link href="/upgrade" className="mt-auto">
+                <button className="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105">
+                  {user.subscription?.plan === 'free' ? 'Mon abonnement' : 'Voir mon abonnement'}
+                </button>
+              </Link>
+            ) : (
+              <Link href="/signup?plan=free" className="mt-auto">
+                <button className="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105">
+                  Commencer gratuitement
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Premium Plan */}
@@ -74,7 +119,7 @@ export default function PricingSection() {
             {/* Popular badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
               <div className="bg-white text-black text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
-                POPULAIRE
+                {isPremium ? 'VOTRE PLAN' : 'POPULAIRE'}
               </div>
             </div>
 
@@ -102,11 +147,27 @@ export default function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/signup?plan=premium" className="mt-auto">
-              <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
-                Passer au premium
-              </button>
-            </Link>
+            {user ? (
+              isPremium ? (
+                <Link href="/upgrade" className="mt-auto">
+                  <button className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-green-600/30">
+                    Gerer mon abonnement
+                  </button>
+                </Link>
+              ) : (
+                <Link href="/upgrade" className="mt-auto">
+                  <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
+                    Passer au premium
+                  </button>
+                </Link>
+              )
+            ) : (
+              <Link href="/signup?plan=premium" className="mt-auto">
+                <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
+                  Passer au premium
+                </button>
+              </Link>
+            )}
           </div>
         </div>
 

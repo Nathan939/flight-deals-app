@@ -146,6 +146,21 @@ export default function UpgradePage() {
           </p>
         </div>
 
+        {/* Account Info */}
+        <div className="glass-card mb-8 animate-fade-in-up" style={{ animationDelay: '50ms' }}>
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+              <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <p className="text-sm text-gray-400">Connecte en tant que</p>
+              <p className="font-bold text-lg">{user.email}</p>
+            </div>
+          </div>
+        </div>
+
         {/* Current Plan */}
         <div className="glass-card mb-8 animate-fade-in-up" style={{ animationDelay: '100ms' }}>
           <div className="flex items-center justify-between mb-6">
@@ -167,7 +182,7 @@ export default function UpgradePage() {
                 : 'bg-gray-500/20 text-gray-400'
             }`}>
               {isPremium
-                ? isCancelled ? 'Annulé' : 'Actif'
+                ? isCancelled ? 'Annule' : 'Actif'
                 : 'Gratuit'}
             </div>
           </div>
