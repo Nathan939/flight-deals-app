@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { PLANS } from '@/lib/utils'
 
 interface Subscription {
   plan: 'free' | 'premium'
@@ -19,11 +20,37 @@ interface User {
   subscription: Subscription
 }
 
+type BillingPeriod = 'monthly' | 'quarterly' | 'yearly'
+
+const PRICING = {
+  monthly: {
+    price: PLANS.premium.price,
+    period: 'mois',
+    total: PLANS.premium.price,
+    savings: null,
+  },
+  quarterly: {
+    price: PLANS.premium.priceQuarterly,
+    period: 'trimestre',
+    total: PLANS.premium.priceQuarterly,
+    savings: Math.round((1 - (PLANS.premium.priceQuarterly / (PLANS.premium.price * 3))) * 100),
+    monthlyEquivalent: (PLANS.premium.priceQuarterly / 3).toFixed(2),
+  },
+  yearly: {
+    price: PLANS.premium.priceYearly,
+    period: 'an',
+    total: PLANS.premium.priceYearly,
+    savings: Math.round((1 - (PLANS.premium.priceYearly / (PLANS.premium.price * 12))) * 100),
+    monthlyEquivalent: (PLANS.premium.priceYearly / 12).toFixed(2),
+  },
+}
+
 export default function UpgradePage() {
   const router = useRouter()
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const [actionLoading, setActionLoading] = useState(false)
+  const [selectedPlan, setSelectedPlan] = useState<BillingPeriod>('quarterly')
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -42,22 +69,20 @@ export default function UpgradePage() {
     }
   }, [router])
 
-  const handleUpgrade = async () => {
+  const handleUpgrade = async (plan: BillingPeriod) => {
     if (!user) return
 
     setActionLoading(true)
     try {
-      // Créer une session Stripe Checkout
       const response = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id })
+        body: JSON.stringify({ userId: user.id, billingPeriod: plan })
       })
 
       const data = await response.json()
 
       if (data.url) {
-        // Rediriger vers Stripe Checkout
         window.location.href = data.url
       } else {
         alert('Erreur lors de la création de la session de paiement')
@@ -265,36 +290,26 @@ export default function UpgradePage() {
             </div>
           )}
 
-          {/* Actions */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            {!isPremium ? (
-              <button
-                onClick={handleUpgrade}
-                disabled={actionLoading}
-                className="flex-1 bg-primary hover:bg-primary-dark text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {actionLoading ? 'Chargement...' : 'Passer en Premium - 4,99€/mois'}
-              </button>
-            ) : (
-              <>
-                {!isCancelled && (
-                  <button
-                    onClick={handleCancelSubscription}
-                    disabled={actionLoading}
-                    className="flex-1 glass hover:bg-white/10 text-red-400 border border-red-400/50 px-6 py-4 rounded-lg font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {actionLoading ? 'Chargement...' : 'Annuler l\'abonnement'}
-                  </button>
-                )}
+          {/* Actions for Premium users */}
+          {isPremium && (
+            <div className="flex flex-col sm:flex-row gap-4">
+              {!isCancelled && (
                 <button
-                  onClick={handleManageBilling}
-                  className="flex-1 glass hover:bg-white/10 text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 border border-white/20"
+                  onClick={handleCancelSubscription}
+                  disabled={actionLoading}
+                  className="flex-1 glass hover:bg-white/10 text-red-400 border border-red-400/50 px-6 py-4 rounded-lg font-bold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  Gerer la facturation
+                  {actionLoading ? 'Chargement...' : 'Annuler l\'abonnement'}
                 </button>
-              </>
-            )}
-          </div>
+              )}
+              <button
+                onClick={handleManageBilling}
+                className="flex-1 glass hover:bg-white/10 text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 border border-white/20"
+              >
+                Gerer la facturation
+              </button>
+            </div>
+          )}
 
           {isCancelled && (
             <div className="mt-4 p-4 bg-orange-500/10 border border-orange-500/30 rounded-lg">
@@ -306,49 +321,166 @@ export default function UpgradePage() {
           )}
         </div>
 
-        {/* Pricing Comparison */}
+        {/* Pricing Selection for Free users */}
         {!isPremium && (
-          <div className="glass-card animate-fade-in-up" style={{ animationDelay: '200ms' }}>
-            <h2 className="text-2xl font-bold mb-6">Pourquoi passer en Premium ?</h2>
+          <div className="animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+            <h2 className="text-2xl font-bold mb-2 text-center">Choisissez votre formule</h2>
+            <p className="text-gray-400 text-center mb-8">Sans engagement, annulez a tout moment</p>
 
-            <div className="grid md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="text-2xl mb-3 font-bold text-primary">SMS</div>
-                <h3 className="font-bold mb-2">SMS Instantanés</h3>
+            <div className="grid md:grid-cols-3 gap-4 mb-8">
+              {/* Monthly */}
+              <button
+                onClick={() => setSelectedPlan('monthly')}
+                className={`relative p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
+                  selectedPlan === 'monthly'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-white/10 hover:border-white/30 bg-white/5'
+                }`}
+              >
+                <div className="mb-4">
+                  <p className="text-sm text-gray-400 mb-1">Mensuel</p>
+                  <p className="text-3xl font-bold">
+                    {PRICING.monthly.price}€
+                    <span className="text-base font-normal text-gray-400">/mois</span>
+                  </p>
+                </div>
+                <p className="text-sm text-gray-400">Facture chaque mois</p>
+                {selectedPlan === 'monthly' && (
+                  <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+
+              {/* Quarterly - Popular */}
+              <button
+                onClick={() => setSelectedPlan('quarterly')}
+                className={`relative p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
+                  selectedPlan === 'quarterly'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-white/10 hover:border-white/30 bg-white/5'
+                }`}
+              >
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                    POPULAIRE
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <p className="text-sm text-gray-400 mb-1">Trimestriel</p>
+                  <p className="text-3xl font-bold">
+                    {PRICING.quarterly.price}€
+                    <span className="text-base font-normal text-gray-400">/3 mois</span>
+                  </p>
+                </div>
                 <p className="text-sm text-gray-400">
-                  Recevez les deals par SMS en temps réel, ne manquez plus jamais une bonne affaire
+                  Soit {PRICING.quarterly.monthlyEquivalent}€/mois
                 </p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl mb-3 font-bold text-yellow-400">FAST</div>
-                <h3 className="font-bold mb-2">Réactivité</h3>
+                <p className="text-sm text-green-400 font-medium mt-1">
+                  Economisez {PRICING.quarterly.savings}%
+                </p>
+                {selectedPlan === 'quarterly' && (
+                  <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )}
+              </button>
+
+              {/* Yearly */}
+              <button
+                onClick={() => setSelectedPlan('yearly')}
+                className={`relative p-6 rounded-2xl border-2 transition-all duration-200 text-left ${
+                  selectedPlan === 'yearly'
+                    ? 'border-primary bg-primary/10'
+                    : 'border-white/10 hover:border-white/30 bg-white/5'
+                }`}
+              >
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+                    MEILLEURE OFFRE
+                  </span>
+                </div>
+                <div className="mb-4">
+                  <p className="text-sm text-gray-400 mb-1">Annuel</p>
+                  <p className="text-3xl font-bold">
+                    {PRICING.yearly.price}€
+                    <span className="text-base font-normal text-gray-400">/an</span>
+                  </p>
+                </div>
                 <p className="text-sm text-gray-400">
-                  Les meilleurs deals partent vite. Le SMS est 10x plus rapide que l'email
+                  Soit {PRICING.yearly.monthlyEquivalent}€/mois
                 </p>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl mb-3 font-bold text-green-400">$$$</div>
-                <h3 className="font-bold mb-2">Économies</h3>
-                <p className="text-sm text-gray-400">
-                  Un seul vol économisé et l'abonnement est remboursé pour l'année entière
+                <p className="text-sm text-green-400 font-medium mt-1">
+                  Economisez {PRICING.yearly.savings}%
                 </p>
-              </div>
+                {selectedPlan === 'yearly' && (
+                  <div className="absolute top-4 right-4 w-6 h-6 bg-primary rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                )}
+              </button>
             </div>
 
-            <div className="bg-white/5 rounded-lg p-6 text-center">
-              <p className="text-2xl font-bold mb-2">
-                4,99€ <span className="text-lg text-gray-400">/ mois</span>
-              </p>
-              <p className="text-sm text-gray-400 mb-4">
-                Sans engagement • Annulez à tout moment
-              </p>
+            {/* CTA Button */}
+            <div className="text-center">
               <button
-                onClick={handleUpgrade}
+                onClick={() => handleUpgrade(selectedPlan)}
                 disabled={actionLoading}
-                className="bg-primary hover:bg-primary-dark text-white px-8 py-3 rounded-lg font-bold transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-primary hover:bg-primary-dark text-white px-12 py-4 rounded-lg font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {actionLoading ? 'Chargement...' : 'Commencer maintenant'}
+                {actionLoading ? (
+                  <span className="flex items-center gap-2">
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Redirection vers le paiement...
+                  </span>
+                ) : (
+                  `Passer a Premium - ${PRICING[selectedPlan].price}€`
+                )}
               </button>
+              <p className="text-sm text-gray-500 mt-4">
+                Paiement securise par Stripe
+              </p>
+            </div>
+
+            {/* Features reminder */}
+            <div className="mt-12 grid md:grid-cols-3 gap-6">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
+                  <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-1">Alertes prioritaires</h3>
+                <p className="text-sm text-gray-400">Recevez les deals avant tout le monde</p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
+                  <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-1">Vos destinations</h3>
+                <p className="text-sm text-gray-400">On surveille vos destinations preferees</p>
+              </div>
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">
+                  <svg className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-1">Alertes SMS</h3>
+                <p className="text-sm text-gray-400">Ne ratez plus jamais un deal</p>
+              </div>
             </div>
           </div>
         )}

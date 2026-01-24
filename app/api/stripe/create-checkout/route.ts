@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { createCheckoutSession } from '@/lib/stripe'
+import { createCheckoutSession, BillingPeriod } from '@/lib/stripe'
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { userId } = body
+    const { userId, billingPeriod = 'monthly' } = body
 
     if (!userId) {
       return NextResponse.json(
@@ -13,6 +13,10 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
+
+    // Validate billing period
+    const validPeriods: BillingPeriod[] = ['monthly', 'quarterly', 'yearly']
+    const period: BillingPeriod = validPeriods.includes(billingPeriod) ? billingPeriod : 'monthly'
 
     // Get user
     const user = await prisma.user.findUnique({
@@ -31,7 +35,8 @@ export async function POST(request: NextRequest) {
     const session = await createCheckoutSession(
       user.subscription?.stripeCustomerId || null,
       user.email,
-      user.id
+      user.id,
+      period
     )
 
     return NextResponse.json({
