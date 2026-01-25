@@ -110,7 +110,7 @@ export default function DealsSection() {
       setDeals(prevDeals =>
         prevDeals.map(deal => ({
           ...deal,
-          publishedAgo: getTimeAgo(deal.createdAt),
+          publishedAgo: deal.createdAt ? getTimeAgo(deal.createdAt) : deal.publishedAgo,
         }))
       )
     }, 60000) // 1 minute
