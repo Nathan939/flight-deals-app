@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { JetBrains_Mono } from 'next/font/google'
+import { JetBrains_Mono, Lato } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/ui/Header'
 import Footer from '@/components/ui/Footer'
@@ -9,6 +9,12 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-jetbrains-mono',
+})
+
+const lato = Lato({
+  subsets: ['latin'],
+  weight: ['300', '400', '700', '900'],
+  variable: '--font-lato',
 })
 
 export const metadata: Metadata = {
@@ -23,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="fr" className="dark">
-      <body className={jetbrainsMono.className}>
+      <body className={`${jetbrainsMono.className} ${lato.variable}`}>
         <ToastProvider>
           <Header />
           <main className="min-h-screen pt-20">{children}</main>

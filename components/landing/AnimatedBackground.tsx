@@ -11,7 +11,7 @@ export default function AnimatedBackground() {
         className="absolute w-[800px] h-[800px] rounded-full blur-[150px] animate-blob"
         style={{
           background: 'radial-gradient(circle, rgba(220,38,38,0.15) 0%, transparent 70%)',
-          top: '-10%',
+          top: '45%',
           left: '-10%',
         }}
       />

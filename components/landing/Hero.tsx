@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import Button from '../ui/Button'
+import WorldMap from '../ui/WorldMap'
 
 export default function Hero() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -25,6 +26,9 @@ export default function Hero() {
 
   return (
     <section className="relative py-20 px-4 min-h-[75vh] flex items-center overflow-hidden">
+      {/* World map background layer - between bg and content */}
+      <WorldMap />
+
       <div className="container mx-auto relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           {/* Main heading */}
@@ -35,7 +39,7 @@ export default function Hero() {
           </h1>
 
           {/* Subheading */}
-          <p className="text-xl md:text-2xl text-gray-300 mb-10 leading-relaxed animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
+          <p className="subtitle text-gray-300 mb-10 animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
             On déniche pour vous les meilleures affaires de vols et vous alerte en temps réel
           </p>
 

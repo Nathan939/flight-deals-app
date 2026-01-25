@@ -38,6 +38,8 @@ const config: Config = {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
+        impact: ['Impact', 'Arial Black', 'Helvetica Neue', 'sans-serif'],
+        lato: ['var(--font-lato)', 'Helvetica Neue', 'Arial', 'sans-serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

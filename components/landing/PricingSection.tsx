@@ -61,7 +61,7 @@ export default function PricingSection() {
               <span className="text-primary">economisent en moyenne 340€</span><br />
               par voyage
             </h2>
-            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+            <p className="subtitle text-gray-300 mb-12 max-w-2xl mx-auto">
               Rejoignez les voyageurs malins qui recoivent les meilleures offres en priorite
             </p>
           </div>
@@ -138,7 +138,7 @@ export default function PricingSection() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
               Merci d'etre <span className="text-primary">Premium</span>
             </h2>
-            <p className="text-xl text-gray-300 mb-8 max-w-xl mx-auto">
+            <p className="subtitle text-gray-300 mb-8 max-w-xl mx-auto">
               Vous profitez de tous les avantages Premium. On s'occupe de trouver les meilleurs deals pour vous.
             </p>
             <Link href="/upgrade">
@@ -165,7 +165,7 @@ export default function PricingSection() {
           <h2 className="heading-lg mb-4">
             Choisissez votre <span className="text-primary">plan</span>
           </h2>
-          <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
+          <p className="subtitle text-gray-300 max-w-2xl mx-auto">
             Commencez gratuitement, passez au premium quand vous voulez
           </p>
         </div>

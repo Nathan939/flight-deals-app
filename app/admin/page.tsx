@@ -2,8 +2,11 @@
 
 import { useState, useEffect } from 'react'
 
-// Liste des emails autorisés à accéder à l'admin
-const ADMIN_EMAILS = ['sylvain.raynaud31@orange.fr']
+// Liste des emails autorisés à accéder à l'admin (depuis variable d'environnement)
+const ADMIN_EMAILS = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map(e => e.trim().toLowerCase()).filter(Boolean)
+
+// Vérifier si on est en production (Vercel)
+const IS_PRODUCTION = process.env.NEXT_PUBLIC_VERCEL_ENV === 'production' || process.env.NODE_ENV === 'production'
 
 interface Destination {
   id: string
@@ -152,8 +155,14 @@ export default function AdminPage() {
     setLoginLoading(true)
 
     try {
-      // Si un email est fourni, essayer de se connecter avec les credentials utilisateur
-      if (email) {
+      // En production: uniquement connexion par email admin
+      if (IS_PRODUCTION) {
+        if (!email) {
+          setLoginError('Veuillez entrer votre email admin')
+          setLoginLoading(false)
+          return
+        }
+
         // Vérifier si l'email est dans la liste des admins
         if (!ADMIN_EMAILS.includes(email.toLowerCase())) {
           setLoginError('Cet email n\'est pas autorisé à accéder à l\'admin')
@@ -161,7 +170,7 @@ export default function AdminPage() {
           return
         }
 
-        // Essayer de se connecter via l'API
+        // Se connecter via l'API
         const response = await fetch('/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -171,13 +180,14 @@ export default function AdminPage() {
         if (response.ok) {
           setIsAuthenticated(true)
           sessionStorage.setItem('admin_auth', 'true')
+          sessionStorage.setItem('admin_email', email.toLowerCase())
           loadDestinations()
         } else {
           const data = await response.json()
           setLoginError(data.error || 'Email ou mot de passe incorrect')
         }
       } else {
-        // Fallback: mot de passe admin simple
+        // En local: mot de passe admin simple (pour dev uniquement)
         const adminPassword = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || 'admin123'
         if (password === adminPassword) {
           setIsAuthenticated(true)
@@ -374,21 +384,34 @@ export default function AdminPage() {
           )}
 
           <div className="space-y-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email admin"
-              className="input-glass w-full"
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
-              placeholder="Mot de passe"
-              className="input-glass w-full"
-            />
+            {IS_PRODUCTION ? (
+              <>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email admin"
+                  className="input-glass w-full"
+                />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                  placeholder="Mot de passe"
+                  className="input-glass w-full"
+                />
+              </>
+            ) : (
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                placeholder="Mot de passe admin (dev)"
+                className="input-glass w-full"
+              />
+            )}
             <button
               onClick={handleLogin}
               disabled={loginLoading}
@@ -399,7 +422,9 @@ export default function AdminPage() {
           </div>
 
           <p className="mt-4 text-center text-xs text-gray-500">
-            Connectez-vous avec votre compte admin
+            {IS_PRODUCTION
+              ? 'Connectez-vous avec votre compte admin autorise'
+              : 'Mode developpement - Mot de passe simple'}
           </p>
         </div>
       </div>

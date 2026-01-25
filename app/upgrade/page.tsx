@@ -166,7 +166,7 @@ export default function UpgradePage() {
           <h1 className="heading-xl mb-6">
             Mon <span className="text-primary">Abonnement</span>
           </h1>
-          <p className="text-xl text-gray-300">
+          <p className="subtitle text-gray-300">
             Gérez votre abonnement et vos informations de paiement
           </p>
         </div>
