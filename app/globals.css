@@ -77,37 +77,41 @@
   .heading-xl {
     @apply text-5xl md:text-7xl font-bold leading-tight tracking-tight uppercase;
     font-family: Impact, 'Arial Black', 'Helvetica Neue', sans-serif;
+    color: #e8e0c8;
   }
 
   .heading-lg {
     @apply text-4xl md:text-5xl font-bold leading-tight tracking-tight uppercase;
     font-family: Impact, 'Arial Black', 'Helvetica Neue', sans-serif;
+    color: #e8e0c8;
   }
 
   .heading-md {
     @apply text-3xl md:text-4xl font-bold leading-snug;
     font-family: Impact, 'Arial Black', 'Helvetica Neue', sans-serif;
+    color: #e8e0c8;
   }
 
   .heading-sm {
     @apply text-2xl md:text-3xl font-bold leading-snug;
     font-family: Impact, 'Arial Black', 'Helvetica Neue', sans-serif;
+    color: #e8e0c8;
   }
 
   /* Subtitles */
   .subtitle {
-    @apply text-xl md:text-2xl leading-relaxed;
-    font-family: var(--font-lato), 'Helvetica Neue', Arial, sans-serif;
+    @apply text-xl md:text-2xl leading-relaxed text-gray-300;
+    font-family: 'Times New Roman', Times, serif;
   }
 
   .subtitle-lg {
-    @apply text-2xl md:text-3xl leading-relaxed;
-    font-family: var(--font-lato), 'Helvetica Neue', Arial, sans-serif;
+    @apply text-2xl md:text-3xl leading-relaxed text-gray-300;
+    font-family: 'Times New Roman', Times, serif;
   }
 
   .subtitle-sm {
-    @apply text-lg md:text-xl leading-relaxed;
-    font-family: var(--font-lato), 'Helvetica Neue', Arial, sans-serif;
+    @apply text-lg md:text-xl leading-relaxed text-gray-300;
+    font-family: 'Times New Roman', Times, serif;
   }
 
   /* Gradients */

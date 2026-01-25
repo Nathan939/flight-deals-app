@@ -51,7 +51,7 @@ export default function DealsSection() {
           <h2 className="heading-md mb-4">
             Exemples de <span className="text-primary">deals récents</span>
           </h2>
-          <p className="subtitle text-gray-300 max-w-2xl mx-auto">
+          <p className="subtitle max-w-2xl mx-auto">
             Voici le type de deals que nos membres recoivent regulierement par email
           </p>
         </div>

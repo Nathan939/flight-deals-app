@@ -39,7 +39,7 @@ export default function Hero() {
           </h1>
 
           {/* Subheading */}
-          <p className="subtitle text-gray-300 mb-10 animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
+          <p className="subtitle mb-10 animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
             Nous analysons les prix des vols en continu pour détecter les vraies opportunités.
           </p>
 
