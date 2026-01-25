@@ -6,70 +6,65 @@ import { useInViewport } from '@/hooks/useInViewport'
 
 interface DealCardProps {
   deal: DealData
+  publishedAgo?: string
 }
 
-export default function DealCard({ deal }: DealCardProps) {
+export default function DealCard({ deal, publishedAgo }: DealCardProps) {
   const { elementRef, isInViewport } = useInViewport({ threshold: 0.2, triggerOnce: true });
 
   return (
     <div
       ref={elementRef as React.RefObject<HTMLDivElement>}
-      className="glass-card hover-lift hover-glow flex flex-col md:flex-row md:items-center md:justify-between gap-6 group"
+      className="glass-card flex flex-col md:flex-row md:items-center gap-4 md:gap-6 group cursor-pointer transition-all duration-300 hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40"
     >
-      {/* Left side: Destination */}
-      <div className="flex-shrink-0 md:w-1/3 text-center md:text-left">
-        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
-          {deal.from} →{' '}
-          <DecryptedNumber
-            value={deal.to}
-            className="text-xl md:text-2xl font-bold text-white"
-            duration={700}
-            isInViewport={isInViewport}
-          />
-        </h3>
-        <p className="text-gray-400 text-xs md:text-sm flex items-center justify-center md:justify-start gap-1">
-          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          Vol aller-retour
-        </p>
-        <p className="text-gray-500 text-xs mt-1">{deal.dates}</p>
-      </div>
-
-      {/* Center: Price section */}
-      <div className="flex-grow bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/30 rounded-xl p-5">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* Main price with PRESERVED DecryptedNumber animation */}
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl md:text-5xl font-bold text-primary font-mono">
-              <DecryptedNumber
-                value={deal.price}
-                className="text-4xl md:text-5xl font-bold text-primary font-mono"
-                duration={800}
-                isInViewport={isInViewport}
-              />
-              {deal.currency === 'EUR' ? '€' : deal.currency}
-            </span>
-            <span className="text-lg md:text-xl text-gray-400 line-through">
-              {deal.originalPrice}€
-            </span>
+      {/* LEFT: PRIX - Élément dominant */}
+      <div className="flex-shrink-0 md:min-w-[180px]">
+        <div className="flex items-baseline gap-3">
+          {/* Prix principal - glow effect on hover */}
+          <div className="text-5xl md:text-6xl font-black text-primary font-mono tracking-tight group-hover:drop-shadow-[0_0_15px_rgba(255,107,53,0.4)] transition-all duration-300">
+            <DecryptedNumber
+              value={deal.price}
+              className="text-5xl md:text-6xl font-black text-primary font-mono"
+              duration={600}
+              isInViewport={isInViewport}
+            />
+            <span className="text-4xl md:text-5xl">€</span>
           </div>
-
-          {/* Savings info */}
-          <div className="flex flex-col items-start sm:items-end text-xs md:text-sm">
-            <p className="text-gray-400">Économisez</p>
-            <p className="text-green-400 font-bold text-lg">
-              {deal.originalPrice - deal.price}€
-            </p>
-          </div>
+          {/* Ancien prix aligné en bas */}
+          <span className="text-base text-gray-500/60 line-through font-mono">
+            {deal.originalPrice}€
+          </span>
         </div>
       </div>
 
-      {/* Right side: CTA button */}
-      <div className="flex-shrink-0 md:w-auto">
-        <button className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 transform hover:scale-105 whitespace-nowrap shadow-lg shadow-primary/20 group-hover:shadow-primary/40">
-          Voir les dates
+      {/* Séparateur vertical */}
+      <div className="hidden md:block w-px h-16 bg-white/10" />
+
+      {/* CENTER: DESTINATION + Détails */}
+      <div className="flex-grow">
+        {/* Destination - mise en avant */}
+        <h3 className="text-2xl md:text-3xl font-bold text-white mb-1 tracking-tight">
+          <DecryptedNumber
+            value={deal.to}
+            className="text-2xl md:text-3xl font-bold text-white"
+            duration={500}
+            isInViewport={isInViewport}
+          />
+        </h3>
+        {/* Détails compacts */}
+        <p className="text-gray-400 text-sm">
+          Depuis {deal.from} • A/R • {deal.dates}
+        </p>
+      </div>
+
+      {/* RIGHT: CTA */}
+      <div className="flex-shrink-0 flex flex-col items-center">
+        <button className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-primary/30 uppercase tracking-wide text-sm">
+          Voir le deal
         </button>
+        {publishedAgo && (
+          <p className="text-[10px] text-gray-600 mt-1.5">Publié {publishedAgo}</p>
+        )}
       </div>
     </div>
   )
