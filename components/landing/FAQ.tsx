@@ -48,10 +48,10 @@ export default function FAQ() {
     <section ref={elementRef as React.RefObject<HTMLElement>} className="py-14 px-4 relative">
       <div className="container mx-auto max-w-4xl relative z-10">
         <div className={`text-center mb-8 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="text-4xl md:text-5xl font-bold mb-3">
+          <h2 className="heading-md mb-3">
             Questions fréquentes
           </h2>
-          <p className="text-gray-300 text-lg">
+          <p className="subtitle">
             Tout ce que vous devez savoir sur FlightDeals
           </p>
         </div>

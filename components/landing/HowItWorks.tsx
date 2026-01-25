@@ -113,7 +113,7 @@ export default function HowItWorks() {
           <h2 className="heading-md mb-4">
             Comment ca marche ?
           </h2>
-          <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
+          <p className="subtitle max-w-2xl mx-auto">
             3 etapes simples pour ne plus jamais rater un bon plan
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function HowItWorks() {
                 </div>
 
                 <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
-                <p className="text-gray-400 leading-relaxed">{step.description}</p>
+                <p className="subtitle-sm">{step.description}</p>
               </div>
             ))}
           </div>

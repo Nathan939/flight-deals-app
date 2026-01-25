@@ -135,7 +135,7 @@ export default function PricingSection() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="heading-md mb-4">
               Merci d'etre <span className="text-primary">Premium</span>
             </h2>
             <p className="subtitle text-gray-300 mb-8 max-w-xl mx-auto">

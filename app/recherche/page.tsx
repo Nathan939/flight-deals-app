@@ -385,7 +385,7 @@ export default function SearchPage() {
             <h1 className="heading-xl mb-6">
               Envie d'une destination en <span className="text-primary">particulier</span> ?
             </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+            <p className="subtitle max-w-2xl mx-auto mb-8">
               Recherchez des vols vers n'importe quelle destination et on s'occupe de trouver les meilleurs prix pour vous !
             </p>
           </div>
@@ -430,7 +430,7 @@ export default function SearchPage() {
             <h1 className="heading-xl mb-6">
               Envie d'une destination en <span className="text-primary">particulier</span> ?
             </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
+            <p className="subtitle max-w-2xl mx-auto mb-8">
               Recherchez des vols vers n'importe quelle destination et trouvez les meilleurs prix.
             </p>
           </div>
@@ -472,7 +472,7 @@ export default function SearchPage() {
           <h1 className="heading-xl mb-6">
             Envie d'une destination en <span className="text-primary">particulier</span> ?
           </h1>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <p className="subtitle max-w-2xl mx-auto">
             Recherchez des vols vers n'importe quelle destination et trouvez les meilleurs prix en quelques clics.
           </p>
         </div>
