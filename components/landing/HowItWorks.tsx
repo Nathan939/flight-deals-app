@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link'
 import { useInViewport } from '@/hooks/useInViewport';
 
 export default function HowItWorks() {
@@ -68,9 +67,49 @@ export default function HowItWorks() {
 
   return (
     <section ref={elementRef as React.RefObject<HTMLElement>} className="py-16 px-4 relative">
+      {/* Reviews Section - First */}
+      <div className={`container mx-auto max-w-6xl relative z-10 mb-20 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+        <h2 className="heading-lg text-center mb-8">Ce que disent nos membres</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {reviews.map((review, index) => (
+            <div
+              key={index}
+              className="glass-card hover-lift"
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
+              {/* Header with avatar */}
+              <div className="flex items-center gap-4 mb-4">
+                <img
+                  src={review.avatar}
+                  alt={review.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
+                />
+                <div>
+                  <div className="font-bold">{review.name}</div>
+                  <div className="text-sm text-gray-400">{review.location}</div>
+                </div>
+              </div>
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-3">
+                {[...Array(review.rating)].map((_, i) => (
+                  <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+
+              {/* Text */}
+              <p className="text-gray-300 text-sm leading-relaxed">"{review.text}"</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* How it works Section - Second */}
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
-        <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+        <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '300ms' }}>
           <h2 className="heading-lg mb-4">
             Comment ca marche ?
           </h2>
@@ -86,7 +125,7 @@ export default function HowItWorks() {
               <div
                 key={step.number}
                 className={`relative text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}
-                style={{ transitionDelay: `${index * 200}ms` }}
+                style={{ transitionDelay: `${400 + index * 200}ms` }}
               >
                 {/* Number badge with icon */}
                 <div className="relative inline-block mb-6">
@@ -106,7 +145,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Tip */}
-        <div className={`mt-12 text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '600ms' }}>
+        <div className={`mt-12 text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '1000ms' }}>
           <div className="inline-flex items-center gap-3 bg-primary/10 border border-primary/30 rounded-full px-6 py-3">
             <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -114,45 +153,6 @@ export default function HowItWorks() {
             <span className="text-gray-300">
               <span className="font-bold text-primary">Astuce :</span> Les prix peuvent tres vite varier, reservez avant qu'il ne disparaisse !
             </span>
-          </div>
-        </div>
-
-        {/* Reviews Section */}
-        <div className={`mt-14 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`} style={{ transitionDelay: '700ms' }}>
-          <h3 className="text-2xl font-bold text-center mb-8">Ce que disent nos membres</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {reviews.map((review, index) => (
-              <div
-                key={index}
-                className="glass-card hover-lift"
-                style={{ transitionDelay: `${800 + index * 100}ms` }}
-              >
-                {/* Header with avatar */}
-                <div className="flex items-center gap-4 mb-4">
-                  <img
-                    src={review.avatar}
-                    alt={review.name}
-                    className="w-12 h-12 rounded-full object-cover border-2 border-primary/30"
-                  />
-                  <div>
-                    <div className="font-bold">{review.name}</div>
-                    <div className="text-sm text-gray-400">{review.location}</div>
-                  </div>
-                </div>
-
-                {/* Rating */}
-                <div className="flex gap-1 mb-3">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-
-                {/* Text */}
-                <p className="text-gray-300 text-sm leading-relaxed">"{review.text}"</p>
-              </div>
-            ))}
           </div>
         </div>
       </div>
