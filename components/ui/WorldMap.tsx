@@ -7,7 +7,6 @@ export default function WorldMap() {
     <div
       className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden"
       style={{
-        top: '5%',
         zIndex: 1
       }}
       aria-hidden="true"
