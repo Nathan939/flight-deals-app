@@ -16,31 +16,24 @@ export default function DealCard({ deal }: DealCardProps) {
       ref={elementRef as React.RefObject<HTMLDivElement>}
       className="glass-card hover-lift hover-glow flex flex-col md:flex-row md:items-center md:justify-between gap-6 group"
     >
-      {/* Left side: Destination and discount badge */}
-      <div className="flex-shrink-0 md:w-1/3">
-        <div className="flex items-start justify-between md:flex-col md:items-start gap-2">
-          <div>
-            <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
-              {deal.from} →{' '}
-              <DecryptedNumber
-                value={deal.to}
-                className="text-xl md:text-2xl font-bold text-white"
-                duration={700}
-                isInViewport={isInViewport}
-              />
-            </h3>
-            <p className="text-gray-400 text-xs md:text-sm flex items-center gap-1">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              Vol aller-retour
-            </p>
-            <p className="text-gray-500 text-xs mt-1">{deal.dates}</p>
-          </div>
-          <div className="bg-primary text-white px-3 py-1.5 rounded-full text-sm font-bold whitespace-nowrap shadow-lg shadow-primary/30">
-            -{deal.discount}%
-          </div>
-        </div>
+      {/* Left side: Destination */}
+      <div className="flex-shrink-0 md:w-1/3 text-center md:text-left">
+        <h3 className="text-xl md:text-2xl font-bold text-white mb-1">
+          {deal.from} →{' '}
+          <DecryptedNumber
+            value={deal.to}
+            className="text-xl md:text-2xl font-bold text-white"
+            duration={700}
+            isInViewport={isInViewport}
+          />
+        </h3>
+        <p className="text-gray-400 text-xs md:text-sm flex items-center justify-center md:justify-start gap-1">
+          <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          Vol aller-retour
+        </p>
+        <p className="text-gray-500 text-xs mt-1">{deal.dates}</p>
       </div>
 
       {/* Center: Price section */}
