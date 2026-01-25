@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getUserByEmail, verifyPassword } from '@/lib/auth'
 
+// Validation email simple
+const isValidEmail = (email: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return emailRegex.test(email)
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -14,12 +20,20 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Validate email format
+    if (!isValidEmail(email)) {
+      return NextResponse.json(
+        { error: 'Format d\'email invalide' },
+        { status: 400 }
+      )
+    }
+
     // Get user
     const user = await getUserByEmail(email)
 
     if (!user) {
       return NextResponse.json(
-        { error: 'Email ou mot de passe incorrect' },
+        { error: 'Aucun compte n\'existe avec cet email' },
         { status: 401 }
       )
     }
@@ -29,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     if (!isValid) {
       return NextResponse.json(
-        { error: 'Email ou mot de passe incorrect' },
+        { error: 'Mot de passe incorrect' },
         { status: 401 }
       )
     }
