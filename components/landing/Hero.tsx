@@ -40,7 +40,7 @@ export default function Hero() {
 
           {/* Subheading */}
           <p className="subtitle text-gray-300 mb-10 animate-fade-in-up max-w-3xl mx-auto" style={{ animationDelay: '0.1s' }}>
-            On déniche pour vous les meilleures affaires de vols et vous alerte en temps réel
+            Nous analysons les prix des vols en continu pour détecter les vraies opportunités.
           </p>
 
           {/* CTA with glass effect */}
