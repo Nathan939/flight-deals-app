@@ -48,10 +48,10 @@ export default function DealsSection() {
       <div className="container mx-auto relative z-10">
         {/* Header */}
         <div className={`text-center mb-10 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="heading-lg mb-4">
+          <h2 className="heading-md mb-4">
             Exemples de <span className="text-primary">deals récents</span>
           </h2>
-          <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">
+          <p className="subtitle text-gray-300 max-w-2xl mx-auto">
             Voici le type de deals que nos membres recoivent regulierement par email
           </p>
         </div>

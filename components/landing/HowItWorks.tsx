@@ -69,7 +69,7 @@ export default function HowItWorks() {
     <section ref={elementRef as React.RefObject<HTMLElement>} className="py-16 px-4 relative">
       {/* Reviews Section - First */}
       <div className={`container mx-auto max-w-6xl relative z-10 mb-20 transition-all duration-700 ${isInViewport ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-        <h2 className="heading-lg text-center mb-8">Ce que disent nos membres</h2>
+        <h2 className="heading-md text-center mb-8">Ce que disent nos membres</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {reviews.map((review, index) => (
             <div
@@ -110,7 +110,7 @@ export default function HowItWorks() {
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
         <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '300ms' }}>
-          <h2 className="heading-lg mb-4">
+          <h2 className="heading-md mb-4">
             Comment ca marche ?
           </h2>
           <p className="text-gray-300 text-xl leading-relaxed max-w-2xl mx-auto">

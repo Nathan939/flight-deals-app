@@ -162,7 +162,7 @@ export default function PricingSection() {
       <div className="container mx-auto max-w-6xl relative z-10">
         {/* Header */}
         <div className={`text-center mb-10 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <h2 className="heading-lg mb-4">
+          <h2 className="heading-md mb-4">
             Choisissez votre <span className="text-primary">plan</span>
           </h2>
           <p className="subtitle text-gray-300 max-w-2xl mx-auto">
