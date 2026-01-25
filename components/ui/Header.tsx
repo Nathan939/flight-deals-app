@@ -52,7 +52,7 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/5">
-      <nav className="container mx-auto px-2 py-4">
+      <nav className="w-full px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo gauche */}
           <Link href="/" className="text-2xl font-bold text-white font-mono hover:text-primary transition-colors">
