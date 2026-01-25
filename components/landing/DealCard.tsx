@@ -3,6 +3,7 @@
 import { DealData } from '@/lib/types'
 import DecryptedNumber from '@/components/ui/DecryptedNumber'
 import { useInViewport } from '@/hooks/useInViewport'
+import { useRouter } from 'next/navigation'
 
 interface DealCardProps {
   deal: DealData
@@ -11,11 +12,21 @@ interface DealCardProps {
 
 export default function DealCard({ deal, publishedAgo }: DealCardProps) {
   const { elementRef, isInViewport } = useInViewport({ threshold: 0.2, triggerOnce: true });
+  const router = useRouter();
+
+  const handleClick = () => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      router.push('/historique');
+    } else {
+      router.push('/signup');
+    }
+  };
 
   return (
     <div
       ref={elementRef as React.RefObject<HTMLDivElement>}
-      className="glass-card flex flex-col md:flex-row md:items-center gap-4 md:gap-6 group cursor-pointer transition-all duration-300 hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40"
+      className="glass-card flex flex-col md:flex-row md:items-center gap-4 md:gap-6 group transition-all duration-300 hover:translate-y-[-3px] hover:shadow-2xl hover:shadow-primary/10 hover:border-primary/40"
     >
       {/* LEFT: PRIX - Élément dominant */}
       <div className="flex-shrink-0 md:min-w-[180px]">
@@ -59,7 +70,10 @@ export default function DealCard({ deal, publishedAgo }: DealCardProps) {
 
       {/* RIGHT: CTA */}
       <div className="flex-shrink-0 flex flex-col items-center">
-        <button className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-primary/30 uppercase tracking-wide text-sm">
+        <button
+          onClick={handleClick}
+          className="w-full md:w-auto bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 hover:translate-y-[-2px] hover:shadow-lg hover:shadow-primary/30 uppercase tracking-wide text-sm cursor-pointer"
+        >
           Voir le deal
         </button>
         {publishedAgo && (
