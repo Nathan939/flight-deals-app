@@ -25,8 +25,9 @@ export async function POST(request: NextRequest) {
     })
 
     if (!user) {
+      console.error('User not found for ID:', userId)
       return NextResponse.json(
-        { error: 'Utilisateur non trouvé' },
+        { error: `Utilisateur non trouvé (ID: ${userId})` },
         { status: 404 }
       )
     }
