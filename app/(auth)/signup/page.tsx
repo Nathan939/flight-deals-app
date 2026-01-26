@@ -85,7 +85,7 @@ export default function Signup() {
       <div className="container mx-auto max-w-2xl relative z-10">
         <div className="text-center mb-8 animate-fade-in-up">
           <h1 className="heading-lg mb-4">Inscription</h1>
-          <p className="text-gray-300 text-lg">
+          <p className="subtitle">
             Créez votre compte et commencez à recevoir les meilleurs deals
           </p>
         </div>
