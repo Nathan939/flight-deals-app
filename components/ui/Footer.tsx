@@ -54,8 +54,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} FlightAlert. Tous droits réservés.</p>
-          <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-gray-500 mt-2">
             FlightAlert est un service d'agrégation de deals de vols. Nous ne vendons pas de billets d'avion.
           </p>
           <p className="text-xs text-gray-500 mt-2">

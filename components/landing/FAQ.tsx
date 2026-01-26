@@ -81,11 +81,6 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className={`mt-12 text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '600ms' }}>
-          <p className="text-gray-400">
-            Vous avez d'autres questions ? <a href="mailto:contact@flightdeals.com" className="text-primary hover:text-primary-light transition-colors font-medium">contact@flightdeals.com</a>
-          </p>
-        </div>
       </div>
     </section>
   );
