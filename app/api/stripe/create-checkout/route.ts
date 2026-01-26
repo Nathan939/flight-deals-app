@@ -50,7 +50,10 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Checkout error:', error.message || error)
     return NextResponse.json(
-      { error: `Erreur checkout: ${error.message || 'Unknown error'}` },
+      {
+        error: `Erreur checkout: ${error.message || 'Unknown error'}`,
+        debug_nextauth_url: process.env.NEXTAUTH_URL || 'NOT_SET'
+      },
       { status: 500 }
     )
   }
