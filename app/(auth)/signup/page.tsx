@@ -165,7 +165,7 @@ export default function Signup() {
                   }`}
                 >
                   <div className="text-2xl mb-2 font-bold text-green-400">Gratuit</div>
-                  <div className="font-bold text-lg mb-1">0€/mois</div>
+                  <div className="font-bold text-lg mb-1" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>0€<span style={{ fontFamily: 'system-ui' }}>/mois</span></div>
                   <div className="text-sm text-gray-400">Alertes email uniquement</div>
                 </button>
                 <button
@@ -173,16 +173,16 @@ export default function Signup() {
                   onClick={() => setFormData({ ...formData, plan: 'premium' })}
                   className={`p-6 rounded-xl border-2 transition-all duration-200 transform hover:scale-105 relative ${
                     formData.plan === 'premium'
-                      ? 'border-primary bg-primary/10 shadow-lg shadow-primary/20'
+                      ? 'border-[#e8e0d0] bg-[#e8e0d0]/10 shadow-lg shadow-[#e8e0d0]/20'
                       : 'glass border-white/10 hover:border-white/20'
                   }`}
                 >
-                  <div className="absolute -top-3 -right-3 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                  <div className="absolute -top-3 -right-3 bg-[#e8e0d0] text-[#2a2a2a] text-xs font-bold px-3 py-1 rounded-full">
                     POPULAIRE
                   </div>
-                  <div className="text-2xl mb-2 font-bold text-primary">Premium</div>
-                  <div className="font-bold text-xl mb-1">3,99€/mois</div>
-                  <div className="text-sm text-gray-300 mb-1">Facturé 11,99€ par trimestre</div>
+                  <div className="text-2xl mb-2 font-bold text-[#f5f0e6]">Premium</div>
+                  <div className="font-bold text-xl mb-1 text-[#f5f0e6]" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>3,99€<span className="text-sm text-gray-500 font-normal" style={{ fontFamily: 'system-ui' }}>/mois</span></div>
+                  <div className="text-sm text-gray-400 mb-1">Facturé 11,99€ par trimestre</div>
                   <div className="text-xs text-gray-500">Autres options : 4,99€/mois • 44,99€/an</div>
                 </button>
               </div>

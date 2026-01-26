@@ -104,14 +104,14 @@ export default function PricingSection() {
           </div>
 
           <div className={`text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '300ms' }}>
-            <p className="text-4xl font-bold mb-1">
-              <span className="text-primary">3,99€</span>
-              <span className="text-lg text-gray-400 font-normal">/mois</span>
+            <p className="text-4xl font-bold mb-1" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>
+              <span className="text-[#f5f0e6]">3,99€</span>
+              <span className="text-sm text-gray-500 font-normal" style={{ fontFamily: 'inherit' }}>/mois</span>
             </p>
             <p className="text-gray-400 text-sm mb-1">Facturé 11,99€ par trimestre</p>
             <p className="text-gray-500 text-xs mb-6">Autres options : 4,99€/mois • 44,99€/an</p>
             <Link href="/upgrade">
-              <button className="bg-primary hover:bg-primary-dark text-white font-bold py-4 px-12 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30 text-lg">
+              <button className="bg-primary hover:bg-primary-dark text-white font-bold py-4 px-12 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-xl shadow-primary/40 hover:shadow-primary/50 text-lg">
                 Devenir Premium – 3,99€/mois
               </button>
             </Link>
@@ -179,7 +179,7 @@ export default function PricingSection() {
             <div className="mb-8">
               <h3 className="heading-sm mb-3">{PLANS.free.name}</h3>
               <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-6xl font-bold font-mono">
+                <span className="text-6xl font-bold" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>
                   {PLANS.free.price}€
                 </span>
                 <span className="text-gray-400 text-lg">/mois</span>
@@ -225,7 +225,7 @@ export default function PricingSection() {
           >
             {/* Popular badge */}
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-              <div className="bg-white text-black text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
+              <div className="bg-[#e8e0d0] text-[#2a2a2a] text-xs font-bold px-4 py-1.5 rounded-full shadow-lg">
                 POPULAIRE
               </div>
             </div>
@@ -233,14 +233,14 @@ export default function PricingSection() {
             <div className="mb-8">
               <h3 className="heading-sm mb-3">{PLANS.premium.name}</h3>
               {/* Prix principal - ancrage mensuel */}
-              <div className="flex items-baseline gap-2 mb-1">
-                <span className="text-6xl font-bold font-mono text-primary">
+              <div className="flex items-baseline gap-1 mb-1">
+                <span className="text-6xl font-bold text-[#f5f0e6]" style={{ fontFamily: 'Impact, Arial Black, sans-serif' }}>
                   3,99€
                 </span>
-                <span className="text-gray-400 text-lg">/mois</span>
+                <span className="text-gray-500 text-sm">/mois</span>
               </div>
               {/* Facturation trimestrielle */}
-              <p className="text-gray-300 text-sm mb-3">
+              <p className="text-gray-400 text-sm mb-3">
                 Facturé 11,99€ par trimestre
               </p>
               {/* Options secondaires - discrètes */}
@@ -262,7 +262,7 @@ export default function PricingSection() {
 
             <div className="mt-auto">
               <Link href="/signup?plan=premium">
-                <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
+                <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-xl shadow-primary/40 hover:shadow-primary/50">
                   Passer au premium – 3,99€/mois
                 </button>
               </Link>
