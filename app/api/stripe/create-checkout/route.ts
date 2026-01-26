@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Debug: log NEXTAUTH_URL
+    console.log('NEXTAUTH_URL:', process.env.NEXTAUTH_URL)
+
     // Create Stripe checkout session
     const session = await createCheckoutSession(
       user.subscription?.stripeCustomerId || null,
