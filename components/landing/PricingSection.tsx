@@ -104,16 +104,18 @@ export default function PricingSection() {
           </div>
 
           <div className={`text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '300ms' }}>
-            <p className="text-3xl font-bold mb-2">
-              <span className="text-primary">{PLANS.premium.price}€</span>
+            <p className="text-4xl font-bold mb-1">
+              <span className="text-primary">3,99€</span>
               <span className="text-lg text-gray-400 font-normal">/mois</span>
             </p>
-            <p className="text-gray-500 mb-6">Sans engagement - Annulez quand vous voulez</p>
+            <p className="text-gray-400 text-sm mb-1">Facturé 11,99€ par trimestre</p>
+            <p className="text-gray-500 text-xs mb-6">Autres options : 4,99€/mois • 44,99€/an</p>
             <Link href="/upgrade">
               <button className="bg-primary hover:bg-primary-dark text-white font-bold py-4 px-12 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30 text-lg">
-                Devenir Premium
+                Devenir Premium – 3,99€/mois
               </button>
             </Link>
+            <p className="text-gray-500 text-xs mt-4">Sans engagement • Annulation à tout moment</p>
           </div>
         </div>
       </section>
@@ -204,11 +206,16 @@ export default function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/signup?plan=free" className="mt-auto">
-              <button className="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105">
-                Commencer gratuitement
-              </button>
-            </Link>
+            <div className="mt-auto">
+              <Link href="/signup?plan=free">
+                <button className="w-full bg-white hover:bg-gray-100 text-black font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105">
+                  Commencer gratuitement
+                </button>
+              </Link>
+              <p className="text-center text-gray-500 text-xs mt-3">
+                Gratuit pour toujours
+              </p>
+            </div>
           </div>
 
           {/* Premium Plan */}
@@ -225,14 +232,20 @@ export default function PricingSection() {
 
             <div className="mb-8">
               <h3 className="text-3xl font-bold mb-3">{PLANS.premium.name}</h3>
-              <div className="flex items-baseline gap-2 mb-2">
+              {/* Prix principal - ancrage mensuel */}
+              <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-6xl font-bold font-mono text-primary">
-                  {PLANS.premium.price}€
+                  3,99€
                 </span>
                 <span className="text-gray-400 text-lg">/mois</span>
               </div>
-              <p className="text-gray-400 text-sm">
-                ou {PLANS.premium.priceQuarterly}€/trimestre ou {PLANS.premium.priceYearly}€/an
+              {/* Facturation trimestrielle */}
+              <p className="text-gray-300 text-sm mb-3">
+                Facturé 11,99€ par trimestre
+              </p>
+              {/* Options secondaires - discrètes */}
+              <p className="text-gray-500 text-xs">
+                Autres options : 4,99€/mois • 44,99€/an
               </p>
             </div>
 
@@ -247,11 +260,16 @@ export default function PricingSection() {
               ))}
             </ul>
 
-            <Link href="/signup?plan=premium" className="mt-auto">
-              <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
-                Passer au premium
-              </button>
-            </Link>
+            <div className="mt-auto">
+              <Link href="/signup?plan=premium">
+                <button className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30">
+                  Passer au premium – 3,99€/mois
+                </button>
+              </Link>
+              <p className="text-center text-gray-500 text-xs mt-3">
+                Sans engagement • Annulation à tout moment
+              </p>
+            </div>
           </div>
         </div>
 

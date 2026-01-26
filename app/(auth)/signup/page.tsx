@@ -181,8 +181,9 @@ export default function Signup() {
                     POPULAIRE
                   </div>
                   <div className="text-2xl mb-2 font-bold text-primary">Premium</div>
-                  <div className="font-bold text-lg mb-1">4,99€/mois</div>
-                  <div className="text-sm text-gray-400">ou 11,99€/trimestre ou 44,99€/an</div>
+                  <div className="font-bold text-xl mb-1">3,99€/mois</div>
+                  <div className="text-sm text-gray-300 mb-1">Facturé 11,99€ par trimestre</div>
+                  <div className="text-xs text-gray-500">Autres options : 4,99€/mois • 44,99€/an</div>
                 </button>
               </div>
             </div>
