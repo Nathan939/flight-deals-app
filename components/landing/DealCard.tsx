@@ -36,7 +36,7 @@ export default function DealCard({ deal, publishedAgo }: DealCardProps) {
             <DecryptedNumber
               value={deal.price}
               className="text-5xl md:text-6xl font-black text-primary font-mono"
-              duration={600}
+              duration={1200}
               isInViewport={isInViewport}
             />
             <span className="text-4xl md:text-5xl">€</span>
@@ -58,7 +58,7 @@ export default function DealCard({ deal, publishedAgo }: DealCardProps) {
           <DecryptedNumber
             value={deal.to}
             className="text-2xl md:text-3xl font-bold text-white"
-            duration={500}
+            duration={1000}
             isInViewport={isInViewport}
           />
         </h3>
