@@ -177,7 +177,7 @@ export default function PricingSection() {
           {/* Free Plan */}
           <div className={`glass-card hover-lift flex flex-col transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <div className="mb-8">
-              <h3 className="text-3xl font-bold mb-3">{PLANS.free.name}</h3>
+              <h3 className="heading-sm mb-3">{PLANS.free.name}</h3>
               <div className="flex items-baseline gap-2 mb-2">
                 <span className="text-6xl font-bold font-mono">
                   {PLANS.free.price}€
@@ -231,7 +231,7 @@ export default function PricingSection() {
             </div>
 
             <div className="mb-8">
-              <h3 className="text-3xl font-bold mb-3">{PLANS.premium.name}</h3>
+              <h3 className="heading-sm mb-3">{PLANS.premium.name}</h3>
               {/* Prix principal - ancrage mensuel */}
               <div className="flex items-baseline gap-2 mb-1">
                 <span className="text-6xl font-bold font-mono text-primary">
