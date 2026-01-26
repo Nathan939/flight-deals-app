@@ -52,7 +52,7 @@ export default function FAQ() {
             Questions fréquentes
           </h2>
           <p className="subtitle">
-            Tout ce que vous devez savoir sur FlightDeals
+            Tout ce que vous devez savoir sur Flight Alert
           </p>
         </div>
 
@@ -67,14 +67,14 @@ export default function FAQ() {
                 onClick={() => toggleFAQ(index)}
                 className="w-full px-6 py-4 text-left flex justify-between items-center hover:bg-white/5 transition-colors"
               >
-                <span className="font-bold text-lg pr-4">{faq.question}</span>
+                <span className="subtitle-sm font-bold pr-4">{faq.question}</span>
                 <span className="text-primary text-2xl flex-shrink-0 transition-transform duration-300" style={{ transform: openIndex === index ? 'rotate(180deg)' : 'rotate(0deg)' }}>
                   {openIndex === index ? '−' : '+'}
                 </span>
               </button>
               {openIndex === index && (
-                <div className="px-6 pb-4 text-gray-300 animate-fadeIn">
-                  <p>{faq.answer}</p>
+                <div className="px-6 pb-4 animate-fadeIn">
+                  <p className="subtitle-sm">{faq.answer}</p>
                 </div>
               )}
             </div>
