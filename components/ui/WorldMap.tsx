@@ -14,10 +14,8 @@ export default function WorldMap() {
       <div
         className="relative w-[160%] max-w-none"
         style={{
-          filter: 'blur(2px) invert(1) brightness(0.3)',
+          filter: 'blur(2px) invert(1) brightness(0.15)',
           opacity: 1,
-          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 70%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 50%, black 30%, transparent 70%)',
         }}
       >
         <Image
@@ -26,6 +24,9 @@ export default function WorldMap() {
           width={1920}
           height={1080}
           className="w-full h-auto object-contain"
+          style={{
+            clipPath: 'inset(0 0 12% 0)',
+          }}
           priority={false}
         />
       </div>
