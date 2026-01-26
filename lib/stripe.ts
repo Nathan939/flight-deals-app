@@ -34,7 +34,7 @@ export async function createCheckoutSession(
       },
     ],
     mode: 'subscription',
-    success_url: `${process.env.NEXTAUTH_URL}/upgrade?success=true`,
+    success_url: `${process.env.NEXTAUTH_URL}/confirmation/payment?plan=${billingPeriod}`,
     cancel_url: `${process.env.NEXTAUTH_URL}/upgrade?canceled=true`,
     metadata: {
       userId,

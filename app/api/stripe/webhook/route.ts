@@ -35,15 +35,39 @@ export async function POST(request: NextRequest) {
         const session = event.data.object as any
         const userId = session.metadata.userId
 
-        // Update user subscription
-        await prisma.subscription.update({
+        if (!userId) {
+          console.error('No userId in session metadata')
+          break
+        }
+
+        // Retrieve the subscription from Stripe to get currentPeriodEnd
+        let currentPeriodEnd = null
+        if (session.subscription) {
+          try {
+            const stripeSubscription = await stripe.subscriptions.retrieve(session.subscription)
+            currentPeriodEnd = new Date(stripeSubscription.current_period_end * 1000)
+          } catch (e) {
+            console.error('Error fetching subscription:', e)
+          }
+        }
+
+        // Upsert user subscription (create if not exists, update if exists)
+        await prisma.subscription.upsert({
           where: { userId },
-          data: {
+          update: {
             plan: 'sms',
             status: 'active',
             stripeCustomerId: session.customer,
             stripeSubscriptionId: session.subscription,
-            currentPeriodEnd: new Date(session.current_period_end * 1000),
+            currentPeriodEnd,
+          },
+          create: {
+            userId,
+            plan: 'sms',
+            status: 'active',
+            stripeCustomerId: session.customer,
+            stripeSubscriptionId: session.subscription,
+            currentPeriodEnd,
           },
         })
         break

@@ -66,7 +66,7 @@ export default function Signup() {
       // Trigger auth change event for header update
       window.dispatchEvent(new Event('auth-change'))
 
-      router.push('/destinations')
+      router.push('/recherche')
     } catch (err: any) {
       setError(err.message)
     } finally {

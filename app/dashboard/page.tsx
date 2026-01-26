@@ -7,8 +7,8 @@ export default function Dashboard() {
   const router = useRouter()
 
   useEffect(() => {
-    // Redirect to destinations page
-    router.replace('/destinations')
+    // Redirect to search page
+    router.replace('/recherche')
   }, [router])
 
   return (
