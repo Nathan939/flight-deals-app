@@ -14,7 +14,7 @@ export default function WorldMap() {
       <div
         className="relative w-[160%] max-w-none"
         style={{
-          filter: 'blur(2px) invert(1) brightness(0.15)',
+          filter: 'blur(2px) invert(1) brightness(0.25)',
           opacity: 1,
         }}
       >
