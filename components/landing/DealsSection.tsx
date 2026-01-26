@@ -124,7 +124,7 @@ export default function DealsSection() {
         {/* Header minimal */}
         <div className={`text-center mb-8 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <h2 className="heading-md">
-            <span className="text-primary">Deals</span> du moment
+            Les <span className="text-primary">Deals</span> du moment
           </h2>
         </div>
 
