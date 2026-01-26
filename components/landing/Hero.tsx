@@ -47,19 +47,19 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up mb-8" style={{ animationDelay: '0.2s' }}>
             {isLoggedIn ? (
               <Link href="/recherche">
-                <Button variant="primary" size="large" className="text-xl px-12 py-4 shadow-lg shadow-primary/30">
+                <Button variant="primary" size="large" className="text-xl px-12 py-4 shadow-lg shadow-primary/30 tracking-wide" style={{ fontFamily: 'Impact, Arial Narrow, sans-serif', fontWeight: 400 }}>
                   Rechercher des vols
                 </Button>
               </Link>
             ) : (
               <>
                 <Link href="/signup">
-                  <Button variant="primary" size="large" className="text-xl px-12 py-4 shadow-lg shadow-primary/30">
+                  <Button variant="primary" size="large" className="text-xl px-12 py-4 shadow-lg shadow-primary/30 tracking-wide" style={{ fontFamily: 'Impact, Arial Narrow, sans-serif', fontWeight: 400 }}>
                     S'inscrire gratuitement
                   </Button>
                 </Link>
                 <Link href="#tarifs">
-                  <Button variant="glass" size="large" className="text-xl px-12 py-4">
+                  <Button variant="glass" size="large" className="text-xl px-12 py-4 tracking-wide" style={{ fontFamily: 'Impact, Arial Narrow, sans-serif', fontWeight: 400 }}>
                     Voir les tarifs
                   </Button>
                 </Link>
