@@ -223,7 +223,7 @@ export default function HowItWorks() {
                   </div>
                 </div>
 
-                <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
+                <h3 className="subtitle-lg font-extrabold mb-4">{step.title}</h3>
                 <p className="subtitle-sm">{step.description}</p>
               </div>
             ))}
@@ -236,7 +236,7 @@ export default function HowItWorks() {
             <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <span className="text-gray-300">
+            <span className="subtitle">
               <span className="font-bold text-primary">Astuce :</span> Les prix peuvent très vite varier, réservez avant qu'il ne disparaisse !
             </span>
           </div>

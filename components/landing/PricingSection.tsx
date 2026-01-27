@@ -56,13 +56,13 @@ export default function PricingSection() {
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className={`text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
             <p className="text-primary font-medium mb-4 tracking-wide">PASSEZ À LA VITESSE SUPÉRIEURE</p>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h2 className="heading-md mb-6">
               Nos membres Premium<br />
               <span className="text-primary">économisent en moyenne 340€</span><br />
               par voyage
             </h2>
-            <p className="subtitle text-gray-300 mb-12 max-w-2xl mx-auto">
-              Rejoignez les voyageurs malins qui reçoivent les meilleures offres en priorité
+            <p className="subtitle mb-12 max-w-2xl mx-auto">
+              Rejoignez des centaines de voyageurs qui reçoivent les meilleures offres en priorité
             </p>
           </div>
 
@@ -73,8 +73,8 @@ export default function PricingSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Accès prioritaire</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="subtitle-lg font-extrabold mb-2">Accès prioritaire</h3>
+              <p className="subtitle-sm">
                 Recevez les deals avant tout le monde. Les meilleures offres partent en quelques heures.
               </p>
             </div>
@@ -85,8 +85,8 @@ export default function PricingSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Vos destinations</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="subtitle-lg font-extrabold mb-2">Vos destinations</h3>
+              <p className="subtitle-sm">
                 On scrute les prix pour vos destinations préférées. Vous rêvez de Bali ? On surveille pour vous.
               </p>
             </div>
@@ -96,8 +96,8 @@ export default function PricingSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Économies garanties</h3>
-              <p className="text-gray-400 leading-relaxed">
+              <h3 className="subtitle-lg font-extrabold mb-2">Économies garanties</h3>
+              <p className="subtitle-sm">
                 Un seul vol réservé grâce à nos alertes rembourse votre abonnement pour l'année entière.
               </p>
             </div>
