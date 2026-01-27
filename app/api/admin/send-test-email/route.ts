@@ -28,12 +28,20 @@ export async function POST(request: NextRequest) {
       createdAt: new Date(),
     }
 
+    // Check if Resend is configured
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json(
+        { error: 'RESEND_API_KEY non configurée' },
+        { status: 500 }
+      )
+    }
+
     // Send test email
     const success = await sendDealEmail(email, testDeal)
 
     if (!success) {
       return NextResponse.json(
-        { error: 'Erreur lors de l\'envoi de l\'email' },
+        { error: 'Erreur lors de l\'envoi de l\'email. Vérifiez les logs.' },
         { status: 500 }
       )
     }
@@ -45,7 +53,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Send test email error:', error)
     return NextResponse.json(
-      { error: 'Erreur lors de l\'envoi' },
+      { error: `Erreur: ${error.message || 'Unknown error'}` },
       { status: 500 }
     )
   }
