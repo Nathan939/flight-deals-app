@@ -281,7 +281,7 @@ export default function AdminPage() {
 
       if (res.ok) {
         const result = await res.json()
-        alert(`Offre envoyee avec succes a ${result.notificationsSent} utilisateur(s) !`)
+        alert(`Offre envoyée avec succès à ${result.notificationsSent} utilisateur(s) !`)
 
         // Réinitialiser le formulaire
         setOfferForm({

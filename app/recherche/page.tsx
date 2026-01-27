@@ -29,7 +29,7 @@ interface FlightResult {
   route: any[]
 }
 
-// Liste des aeroports populaires
+// Liste des aéroports populaires
 const popularAirports = [
   { code: 'CDG', city: 'Paris', country: 'France' },
   { code: 'ORY', city: 'Paris Orly', country: 'France' },
@@ -49,33 +49,33 @@ const popularAirports = [
   { code: 'BER', city: 'Berlin', country: 'Allemagne' },
   { code: 'DUB', city: 'Dublin', country: 'Irlande' },
   { code: 'REK', city: 'Reykjavik', country: 'Islande' },
-  { code: 'ATH', city: 'Athenes', country: 'Grece' },
-  { code: 'PRG', city: 'Prague', country: 'Republique Tcheque' },
+  { code: 'ATH', city: 'Athènes', country: 'Grèce' },
+  { code: 'PRG', city: 'Prague', country: 'République Tchèque' },
   { code: 'VIE', city: 'Vienne', country: 'Autriche' },
   { code: 'BUD', city: 'Budapest', country: 'Hongrie' },
   { code: 'MAR', city: 'Marrakech', country: 'Maroc' },
   { code: 'TUN', city: 'Tunis', country: 'Tunisie' },
-  { code: 'DXB', city: 'Dubai', country: 'Emirats arabes unis' },
-  { code: 'BKK', city: 'Bangkok', country: 'Thailande' },
+  { code: 'DXB', city: 'Dubaï', country: 'Émirats arabes unis' },
+  { code: 'BKK', city: 'Bangkok', country: 'Thaïlande' },
   { code: 'TYO', city: 'Tokyo', country: 'Japon' },
-  { code: 'NYC', city: 'New York', country: 'Etats-Unis' },
-  { code: 'LAX', city: 'Los Angeles', country: 'Etats-Unis' },
-  { code: 'MIA', city: 'Miami', country: 'Etats-Unis' },
+  { code: 'NYC', city: 'New York', country: 'États-Unis' },
+  { code: 'LAX', city: 'Los Angeles', country: 'États-Unis' },
+  { code: 'MIA', city: 'Miami', country: 'États-Unis' },
 ]
 
 const months = [
   { value: '01', label: 'Janvier' },
-  { value: '02', label: 'Fevrier' },
+  { value: '02', label: 'Février' },
   { value: '03', label: 'Mars' },
   { value: '04', label: 'Avril' },
   { value: '05', label: 'Mai' },
   { value: '06', label: 'Juin' },
   { value: '07', label: 'Juillet' },
-  { value: '08', label: 'Aout' },
+  { value: '08', label: 'Août' },
   { value: '09', label: 'Septembre' },
   { value: '10', label: 'Octobre' },
   { value: '11', label: 'Novembre' },
-  { value: '12', label: 'Decembre' },
+  { value: '12', label: 'Décembre' },
 ]
 
 export default function SearchPage() {
@@ -441,10 +441,10 @@ export default function SearchPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
             </div>
-            <h3 className="subtitle-lg font-extrabold mb-2">Fonctionnalite Premium</h3>
+            <h3 className="subtitle-lg font-extrabold mb-2">Fonctionnalité Premium</h3>
             <p className="subtitle-sm max-w-md mx-auto mb-6">
-              La recherche de vols personnalisee est reservee aux membres Premium.
-              Passez au Premium pour debloquer cette fonctionnalite.
+              La recherche de vols personnalisée est réservée aux membres Premium.
+              Passez au Premium pour débloquer cette fonctionnalité.
             </p>
             <Link
               href="/upgrade"
@@ -486,7 +486,7 @@ export default function SearchPage() {
             </svg>
             <h3 className="text-3xl font-bold mb-4">Commencez votre recherche</h3>
             <p className="text-gray-400 max-w-md mx-auto mb-8">
-              Trouvez les meilleurs vols en definissant vos criteres de recherche etape par etape.
+              Trouvez les meilleurs vols en définissant vos critères de recherche étape par étape.
             </p>
             <button
               onClick={startNewSearch}
@@ -609,13 +609,13 @@ export default function SearchPage() {
             {!searchLoading && !searchError && (
               <>
                 <h2 className="text-2xl font-bold mb-6">
-                  {results.length > 0 ? `${results.length} vols trouves` : 'Aucun vol trouve'}
+                  {results.length > 0 ? `${results.length} vols trouvés` : 'Aucun vol trouvé'}
                 </h2>
 
                 {results.length === 0 ? (
                   <div className="glass-card text-center py-12">
-                    <p className="text-gray-300 text-lg mb-2">Aucun vol trouve</p>
-                    <p className="text-gray-400">Essayez de modifier vos criteres de recherche</p>
+                    <p className="text-gray-300 text-lg mb-2">Aucun vol trouvé</p>
+                    <p className="text-gray-400">Essayez de modifier vos critères de recherche</p>
                   </div>
                 ) : (
                   <div className="flex flex-col gap-4">
@@ -754,7 +754,7 @@ export default function SearchPage() {
                 {/* No Results */}
                 {airportSearch.length >= 2 && airportResults.length === 0 && !airportSearchLoading && (
                   <div className="text-center py-8 text-gray-400">
-                    Aucun aeroport trouve pour "{airportSearch}"
+                    Aucun aéroport trouvé pour "{airportSearch}"
                   </div>
                 )}
 
@@ -830,7 +830,7 @@ export default function SearchPage() {
                 {/* No Results */}
                 {airportSearch.length >= 2 && airportResults.length === 0 && !airportSearchLoading && (
                   <div className="text-center py-8 text-gray-400">
-                    Aucun aeroport trouve pour "{airportSearch}"
+                    Aucun aéroport trouvé pour "{airportSearch}"
                   </div>
                 )}
 
@@ -1070,7 +1070,7 @@ export default function SearchPage() {
             {currentStep === 5 && (
               <div className="animate-fade-in-up">
                 <h2 className="text-2xl font-bold mb-2">Bagages et confirmation</h2>
-                <p className="text-gray-400 mb-6">Derniere etape avant la recherche</p>
+                <p className="text-gray-400 mb-6">Dernière étape avant la recherche</p>
 
                 <div className="space-y-6">
                   {/* Checked Baggage */}

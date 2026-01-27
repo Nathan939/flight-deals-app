@@ -35,9 +35,9 @@ function PaymentConfirmationContent() {
       price: '4,99',
       period: 'mois',
       features: [
-        'Alertes SMS instantanees',
-        'Destinations illimitees',
-        'Priorite sur les deals',
+        'Alertes SMS instantanées',
+        'Destinations illimitées',
+        'Priorité sur les deals',
         'Support prioritaire'
       ]
     },
@@ -46,11 +46,11 @@ function PaymentConfirmationContent() {
       price: '11,99',
       period: 'trimestre',
       features: [
-        'Alertes SMS instantanees',
-        'Destinations illimitees',
-        'Priorite sur les deals',
+        'Alertes SMS instantanées',
+        'Destinations illimitées',
+        'Priorité sur les deals',
         'Support prioritaire',
-        'Economie de 20%!'
+        'Économie de 20%!'
       ]
     },
     yearly: {
@@ -58,9 +58,9 @@ function PaymentConfirmationContent() {
       price: '44,99',
       period: 'an',
       features: [
-        'Alertes SMS instantanees',
-        'Destinations illimitees',
-        'Priorite sur les deals',
+        'Alertes SMS instantanées',
+        'Destinations illimitées',
+        'Priorité sur les deals',
         'Support prioritaire',
         '2 mois gratuits!'
       ]
@@ -73,7 +73,7 @@ function PaymentConfirmationContent() {
     <ConfirmationLayout
       icon="🎉"
       title="Bienvenue dans le club Premium!"
-      message="Votre abonnement a ete active avec succes. Vous pouvez maintenant profiter de toutes les fonctionnalites Premium."
+      message="Votre abonnement a été activé avec succès. Vous pouvez maintenant profiter de toutes les fonctionnalités Premium."
       details={
         <div className="space-y-4">
           <div className="flex justify-between items-center">
@@ -107,7 +107,7 @@ function PaymentConfirmationContent() {
         href: '/recherche'
       }}
       secondaryAction={{
-        label: 'Retour a l\'accueil',
+        label: 'Retour à l\'accueil',
         href: '/'
       }}
     />

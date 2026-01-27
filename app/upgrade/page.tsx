@@ -443,11 +443,11 @@ export default function UpgradePage() {
                     Redirection vers le paiement...
                   </span>
                 ) : (
-                  `Passer a Premium - ${PRICING[selectedPlan].price}€`
+                  `Passer à Premium - ${PRICING[selectedPlan].price}€`
                 )}
               </button>
               <p className="text-sm text-gray-500 mt-4">
-                Paiement securise par Stripe
+                Paiement sécurisé par Stripe
               </p>
             </div>
 
@@ -470,7 +470,7 @@ export default function UpgradePage() {
                   </svg>
                 </div>
                 <h3 className="font-bold mb-1">Vos destinations</h3>
-                <p className="text-sm text-gray-400">On surveille vos destinations preferees</p>
+                <p className="text-sm text-gray-400">On surveille vos destinations préférées</p>
               </div>
               <div className="text-center">
                 <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-3">

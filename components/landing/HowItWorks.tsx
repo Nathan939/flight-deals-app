@@ -17,7 +17,7 @@ export default function HowItWorks() {
       ),
       title: 'Inscrivez-vous gratuitement',
       description:
-        'Creez votre compte en 30 secondes. Choisissez vos destinations preferees ou suivez le monde entier.',
+        'Créez votre compte en 30 secondes. Choisissez vos destinations préférées ou suivez le monde entier.',
     },
     {
       number: '2',
@@ -28,7 +28,7 @@ export default function HowItWorks() {
       ),
       title: 'Nous trouvons les deals',
       description:
-        'Nous scannons les meilleures offres de vols pour denicher les meilleurs prix et erreurs tarifaires.',
+        'Nous scannons les meilleures offres de vols pour dénicher les meilleurs prix et erreurs tarifaires.',
     },
     {
       number: '3',
@@ -49,56 +49,56 @@ export default function HowItWorks() {
       location: 'Paris',
       avatar: 'https://randomuser.me/api/portraits/women/44.jpg',
       rating: 5,
-      text: 'J\'ai economise plus de 400€ sur mon vol pour Bangkok ! Le deal est arrive dans ma boite mail et j\'ai reserve dans la foulee. Incroyable service.',
+      text: 'J\'ai économisé plus de 400€ sur mon vol pour Bangkok ! Le deal est arrivé dans ma boîte mail et j\'ai réservé dans la foulée. Incroyable service.',
     },
     {
       name: 'Thomas D.',
       location: 'Lyon',
       avatar: 'https://randomuser.me/api/portraits/men/32.jpg',
       rating: 5,
-      text: 'Grace a FlightAlert, j\'ai pu partir a New York pour 280€ A/R au lieu de 650€. Je recommande a tous les voyageurs !',
+      text: 'Grâce à FlightAlert, j\'ai pu partir à New York pour 280€ A/R au lieu de 650€. Je recommande à tous les voyageurs !',
     },
     {
       name: 'Sophie M.',
       location: 'Bordeaux',
       avatar: 'https://randomuser.me/api/portraits/women/68.jpg',
       rating: 5,
-      text: 'En 6 mois, j\'ai fait 3 voyages grace aux deals recus. Marrakech, Lisbonne et Rome pour moins de 200€ au total. Merci FlightAlert !',
+      text: 'En 6 mois, j\'ai fait 3 voyages grâce aux deals reçus. Marrakech, Lisbonne et Rome pour moins de 200€ au total. Merci FlightAlert !',
     },
     {
       name: 'Lucas P.',
       location: 'Marseille',
       avatar: 'https://randomuser.me/api/portraits/men/52.jpg',
       rating: 5,
-      text: 'Tokyo pour 380€ A/R, je n\'y croyais pas ! J\'ai reserve immediatement et c\'etait bien reel. FlightAlert est devenu indispensable.',
+      text: 'Tokyo pour 380€ A/R, je n\'y croyais pas ! J\'ai réservé immédiatement et c\'était bien réel. FlightAlert est devenu indispensable.',
     },
     {
       name: 'Camille R.',
       location: 'Toulouse',
       avatar: 'https://randomuser.me/api/portraits/women/33.jpg',
       rating: 5,
-      text: 'Super service ! J\'ai recu une alerte pour Bali a 450€ A/R. Le reve est devenu realite grace a FlightAlert.',
+      text: 'Super service ! J\'ai reçu une alerte pour Bali à 450€ A/R. Le rêve est devenu réalité grâce à FlightAlert.',
     },
     {
       name: 'Antoine B.',
       location: 'Nantes',
       avatar: 'https://randomuser.me/api/portraits/men/45.jpg',
       rating: 5,
-      text: 'Abonne depuis 1 an, j\'ai economise plus de 1200€ sur mes voyages. Le meilleur investissement pour les amoureux du voyage.',
+      text: 'Abonné depuis 1 an, j\'ai économisé plus de 1200€ sur mes voyages. Le meilleur investissement pour les amoureux du voyage.',
     },
     {
       name: 'Julie F.',
       location: 'Lille',
       avatar: 'https://randomuser.me/api/portraits/women/22.jpg',
       rating: 5,
-      text: 'Erreur tarifaire sur un vol business pour Dubai, 200€ au lieu de 2000€ ! Merci FlightAlert pour cette pepite.',
+      text: 'Erreur tarifaire sur un vol business pour Dubaï, 200€ au lieu de 2000€ ! Merci FlightAlert pour cette pépite.',
     },
     {
       name: 'Maxime G.',
       location: 'Strasbourg',
       avatar: 'https://randomuser.me/api/portraits/men/67.jpg',
       rating: 5,
-      text: 'Interface simple, alertes pertinentes. J\'ai fait decouvrir FlightAlert a toute ma famille, tout le monde est fan !',
+      text: 'Interface simple, alertes pertinentes. J\'ai fait découvrir FlightAlert à toute ma famille, tout le monde est fan !',
     },
   ]
 
@@ -197,10 +197,10 @@ export default function HowItWorks() {
         {/* Header */}
         <div className={`text-center mb-12 transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: '300ms' }}>
           <h2 className="heading-md mb-4">
-            Comment ca marche ?
+            Comment ça marche ?
           </h2>
           <p className="subtitle max-w-2xl mx-auto">
-            3 etapes simples pour ne plus jamais rater un bon plan
+            3 étapes simples pour ne plus jamais rater un bon plan
           </p>
         </div>
 
@@ -237,7 +237,7 @@ export default function HowItWorks() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span className="text-gray-300">
-              <span className="font-bold text-primary">Astuce :</span> Les prix peuvent tres vite varier, reservez avant qu'il ne disparaisse !
+              <span className="font-bold text-primary">Astuce :</span> Les prix peuvent très vite varier, réservez avant qu'il ne disparaisse !
             </span>
           </div>
         </div>

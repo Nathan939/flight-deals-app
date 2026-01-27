@@ -40,9 +40,9 @@ export default function ForgotPassword() {
               <svg className="w-16 h-16 mx-auto mb-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <h3 className="text-xl font-bold mb-2">Email envoye !</h3>
+              <h3 className="text-xl font-bold mb-2">Email envoyé !</h3>
               <p className="text-gray-400 mb-6">
-                Si un compte existe avec cette adresse email, vous recevrez un lien pour reinitialiser votre mot de passe.
+                Si un compte existe avec cette adresse email, vous recevrez un lien pour réinitialiser votre mot de passe.
               </p>
               <Link
                 href="/login"

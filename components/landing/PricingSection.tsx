@@ -55,14 +55,14 @@ export default function PricingSection() {
       >
         <div className="container mx-auto max-w-4xl relative z-10">
           <div className={`text-center transition-all duration-700 ${isInViewport ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <p className="text-primary font-medium mb-4 tracking-wide">PASSEZ A LA VITESSE SUPERIEURE</p>
+            <p className="text-primary font-medium mb-4 tracking-wide">PASSEZ À LA VITESSE SUPÉRIEURE</p>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
               Nos membres Premium<br />
-              <span className="text-primary">economisent en moyenne 340€</span><br />
+              <span className="text-primary">économisent en moyenne 340€</span><br />
               par voyage
             </h2>
             <p className="subtitle text-gray-300 mb-12 max-w-2xl mx-auto">
-              Rejoignez les voyageurs malins qui recoivent les meilleures offres en priorite
+              Rejoignez les voyageurs malins qui reçoivent les meilleures offres en priorité
             </p>
           </div>
 
@@ -73,7 +73,7 @@ export default function PricingSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Acces prioritaire</h3>
+              <h3 className="text-xl font-bold mb-2">Accès prioritaire</h3>
               <p className="text-gray-400 leading-relaxed">
                 Recevez les deals avant tout le monde. Les meilleures offres partent en quelques heures.
               </p>
@@ -87,7 +87,7 @@ export default function PricingSection() {
               </div>
               <h3 className="text-xl font-bold mb-2">Vos destinations</h3>
               <p className="text-gray-400 leading-relaxed">
-                On scrute les prix pour vos destinations preferees. Vous revez de Bali ? On surveille pour vous.
+                On scrute les prix pour vos destinations préférées. Vous rêvez de Bali ? On surveille pour vous.
               </p>
             </div>
             <div className="text-center">
@@ -96,9 +96,9 @@ export default function PricingSection() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold mb-2">Economies garanties</h3>
+              <h3 className="text-xl font-bold mb-2">Économies garanties</h3>
               <p className="text-gray-400 leading-relaxed">
-                Un seul vol reserve grace a nos alertes rembourse votre abonnement pour l'annee entiere.
+                Un seul vol réservé grâce à nos alertes rembourse votre abonnement pour l'année entière.
               </p>
             </div>
           </div>
@@ -138,14 +138,14 @@ export default function PricingSection() {
               </svg>
             </div>
             <h2 className="heading-md mb-4">
-              Merci d'etre <span className="text-primary">Premium</span>
+              Merci d'être <span className="text-primary">Premium</span>
             </h2>
             <p className="subtitle text-gray-300 mb-8 max-w-xl mx-auto">
               Vous profitez de tous les avantages Premium. On s'occupe de trouver les meilleurs deals pour vous.
             </p>
             <Link href="/upgrade">
               <button className="bg-white/10 hover:bg-white/20 text-white font-bold py-3 px-8 rounded-lg transition-all duration-200 border border-white/20">
-                Gerer mon abonnement
+                Gérer mon abonnement
               </button>
             </Link>
           </div>
@@ -280,7 +280,7 @@ export default function PricingSection() {
               <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
-              <span>Annulation a tout moment</span>
+              <span>Annulation à tout moment</span>
             </div>
             <div className="flex items-center gap-2">
               <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -292,7 +292,7 @@ export default function PricingSection() {
               <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
-              <span>Paiement securise par Stripe</span>
+              <span>Paiement sécurisé par Stripe</span>
             </div>
           </div>
         </div>

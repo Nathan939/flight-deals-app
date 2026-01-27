@@ -86,7 +86,7 @@ export default function RGPD() {
 
             <div className="space-y-4 mt-4">
               <div className="bg-white/5 p-4 rounded-lg">
-                <h3 className="font-bold text-white mb-2">Droit d'acces (Article 15)</h3>
+                <h3 className="font-bold text-white mb-2">Droit d'accès (Article 15)</h3>
                 <p className="text-sm">
                   Vous pouvez obtenir une copie de toutes vos données personnelles que nous détenons.
                 </p>

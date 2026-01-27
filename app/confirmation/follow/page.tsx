@@ -14,14 +14,14 @@ function FollowConfirmationContent() {
     email: {
       icon: '📧',
       name: 'Email',
-      description: 'Vous recevrez les alertes dans votre boite mail',
-      example: 'Un email sera envoye des qu\'un deal interessant est disponible'
+      description: 'Vous recevrez les alertes dans votre boîte mail',
+      example: 'Un email sera envoyé dès qu\'un deal intéressant est disponible'
     },
     sms: {
       icon: '📱',
       name: 'SMS',
-      description: 'Vous recevrez les alertes par SMS instantanement',
-      example: 'Un SMS sera envoye immediatement pour les meilleurs deals'
+      description: 'Vous recevrez les alertes par SMS instantanément',
+      example: 'Un SMS sera envoyé immédiatement pour les meilleurs deals'
     }
   }
 
@@ -30,8 +30,8 @@ function FollowConfirmationContent() {
   return (
     <ConfirmationLayout
       icon="⭐"
-      title="Destination ajoutee a vos favoris!"
-      message={`Vous suivez maintenant ${city}. Nous vous avertirons des que de bons deals seront disponibles.`}
+      title="Destination ajoutée à vos favoris!"
+      message={`Vous suivez maintenant ${city}. Nous vous avertirons dès que de bons deals seront disponibles.`}
       details={
         <div className="space-y-4">
           <div className="flex justify-between items-center">
@@ -52,11 +52,11 @@ function FollowConfirmationContent() {
 
           {/* Example Notification Preview */}
           <div className="bg-gray-800/50 border border-white/10 rounded-lg p-4 mt-4">
-            <p className="text-xs text-gray-500 mb-2">Apercu d'une notification:</p>
+            <p className="text-xs text-gray-500 mb-2">Aperçu d'une notification:</p>
             <div className="bg-black/50 rounded-lg p-3">
               {channel === 'sms' ? (
                 <p className="text-sm text-white">
-                  🔥 DEAL ALERT: Paris → {city} a 99euro (-75%)! Reservez vite: https://flightalert.fr/...
+                  🔥 DEAL ALERT: Paris → {city} à 99€ (-75%)! Réservez vite: https://flightalert.fr/...
                 </p>
               ) : (
                 <div>
@@ -64,7 +64,7 @@ function FollowConfirmationContent() {
                     ✈️ Nouveau deal pour {city}!
                   </p>
                   <p className="text-xs text-gray-400">
-                    Paris → {city} a partir de 99euro • -75% de reduction
+                    Paris → {city} à partir de 99€ • -75% de réduction
                   </p>
                 </div>
               )}

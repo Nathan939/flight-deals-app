@@ -42,8 +42,8 @@ export const PLANS = {
     price: 0,
     features: [
       'Alertes email',
-      'Recevez 30% des deals trouves',
-      'Acces aux deals publics',
+      'Recevez 30% des deals trouvés',
+      'Accès aux deals publics',
     ],
     limitations: [
       'Pas de choix sur la destination',
@@ -56,11 +56,11 @@ export const PLANS = {
     priceYearly: 44.99,
     features: [
       'Tout du plan gratuit',
-      'Acces prioritaire aux deals',
-      'Alertes SMS instantanees',
-      'Destinations illimitees',
+      'Accès prioritaire aux deals',
+      'Alertes SMS instantanées',
+      'Destinations illimitées',
       'Filtre de recherche',
-      'Deals envoyes en temps reel',
+      'Deals envoyés en temps réel',
       'Support prioritaire',
     ],
   },
