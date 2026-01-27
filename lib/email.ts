@@ -1,11 +1,9 @@
-import twilio from 'twilio'
 import { DealData } from './types'
 
-// Note: Twilio utilise SendGrid pour les emails
-// Vous devez configurer un domaine vérifié dans Twilio SendGrid
+// SendGrid est utilisé pour les emails
+// Vous devez configurer un domaine vérifié dans SendGrid
 const isConfigured = !!(
-  process.env.TWILIO_ACCOUNT_SID &&
-  process.env.TWILIO_AUTH_TOKEN &&
+  process.env.EMAIL_API_KEY &&
   process.env.EMAIL_FROM
 )
 
@@ -143,17 +141,12 @@ ${process.env.NEXTAUTH_URL || 'http://localhost:3050'}
   }
 
   try {
-    const client = twilio(
-      process.env.TWILIO_ACCOUNT_SID!,
-      process.env.TWILIO_AUTH_TOKEN!
-    )
-
-    // Twilio utilise SendGrid pour les emails
-    // Documentation: https://www.twilio.com/docs/sendgrid/api/mail-send/mail-send
+    // SendGrid API pour l'envoi d'emails
+    // Documentation: https://docs.sendgrid.com/api-reference/mail-send/mail-send
     const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.TWILIO_AUTH_TOKEN}`,
+        'Authorization': `Bearer ${process.env.EMAIL_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -297,7 +290,7 @@ ${process.env.NEXTAUTH_URL || 'http://localhost:3050'}
     const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.TWILIO_AUTH_TOKEN}`,
+        'Authorization': `Bearer ${process.env.EMAIL_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
