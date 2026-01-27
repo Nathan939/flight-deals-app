@@ -37,11 +37,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Send test email
-    const success = await sendDealEmail(email, testDeal)
+    const result = await sendDealEmail(email, testDeal)
 
-    if (!success) {
+    if (!result.success) {
       return NextResponse.json(
-        { error: 'Erreur lors de l\'envoi de l\'email. Vérifiez les logs.' },
+        { error: result.error || 'Erreur inconnue' },
         { status: 500 }
       )
     }

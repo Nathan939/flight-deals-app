@@ -14,7 +14,7 @@ export async function sendDealEmail(
   to: string,
   deal: DealData,
   userName?: string
-) {
+): Promise<{ success: boolean; error?: string }> {
   const emailHtml = `
     <!DOCTYPE html>
     <html>
@@ -111,16 +111,10 @@ export async function sendDealEmail(
   `
 
   if (!isConfigured || !resend) {
-    console.log('⚠️ Resend not configured')
-    console.log('To:', to)
-    console.log('Subject:', `🔥 ${deal.from} → ${deal.to} à ${deal.price}${deal.currency === 'EUR' ? '€' : deal.currency}`)
-    return false
+    return { success: false, error: 'Resend not configured - RESEND_API_KEY missing' }
   }
 
   try {
-    console.log('📧 Sending email to:', to)
-    console.log('📧 From:', `${FROM_NAME} <${FROM_EMAIL}>`)
-
     const { data, error } = await resend.emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: [to],
@@ -129,15 +123,13 @@ export async function sendDealEmail(
     })
 
     if (error) {
-      console.error('❌ Error sending email:', JSON.stringify(error))
-      return false
+      return { success: false, error: `Resend error: ${error.message || JSON.stringify(error)}` }
     }
 
     console.log('✅ Email sent successfully to:', to, 'ID:', data?.id)
-    return true
+    return { success: true }
   } catch (error: any) {
-    console.error('❌ Exception sending email:', error.message, error)
-    return false
+    return { success: false, error: `Exception: ${error.message || error}` }
   }
 }
 
