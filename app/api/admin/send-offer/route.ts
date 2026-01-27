@@ -117,17 +117,17 @@ export async function POST(request: NextRequest) {
         }
       } else {
         // Sinon envoyer un email
-        const emailSuccess = await sendDealEmail(user.email, dealData, user.name || undefined)
+        const emailResult = await sendDealEmail(user.email, dealData, user.name || undefined)
 
         notifications.push({
           userId: user.id,
           type: 'email',
-          success: emailSuccess,
+          success: emailResult.success,
           email: user.email
         })
 
         // Créer un enregistrement d'alerte
-        if (emailSuccess) {
+        if (emailResult.success) {
           await prisma.alert.create({
             data: {
               userId: user.id,
