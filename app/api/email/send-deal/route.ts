@@ -40,9 +40,17 @@ export async function POST(request: NextRequest) {
 
     // Send email
     const dealData = {
-      ...deal,
+      id: deal.id,
+      from: deal.from,
+      to: deal.to,
+      toCity: deal.toCity || undefined,
+      price: deal.price,
+      originalPrice: deal.originalPrice,
+      currency: deal.currency,
+      discount: deal.discount,
       dates: deal.dates || undefined,
-      url: deal.url || undefined
+      url: deal.url || undefined,
+      createdAt: deal.createdAt,
     }
     const success = await sendDealEmail(user.email, dealData, user.name || undefined)
 
