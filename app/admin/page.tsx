@@ -52,8 +52,15 @@ export default function AdminPage() {
     price: '',
     originalPrice: '',
     url: '',
-    dates: ''
+    toCountry: '',
+    flag: '',
+    description: '',
+    activities: '',
+    airline: '',
   })
+  const [dateRows, setDateRows] = useState<Array<{ month: string; date: string; price: string; url: string }>>([
+    { month: '', date: '', price: '', url: '' }
+  ])
 
   // Airport search state
   const [fromSearch, setFromSearch] = useState('')
@@ -234,6 +241,22 @@ export default function AdminPage() {
     }
   }
 
+  const updateDateRow = (idx: number, field: string, value: string) => {
+    const updated = [...dateRows]
+    updated[idx] = { ...updated[idx], [field]: value }
+    setDateRows(updated)
+  }
+
+  const removeDateRow = (idx: number) => {
+    if (dateRows.length <= 1) return
+    setDateRows(dateRows.filter((_, i) => i !== idx))
+  }
+
+  const addDateRow = () => {
+    const lastRow = dateRows[dateRows.length - 1]
+    setDateRows([...dateRows, { month: lastRow?.month || '', date: '', price: '', url: lastRow?.url || '' }])
+  }
+
   const handleSendOffer = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -258,15 +281,43 @@ export default function AdminPage() {
         100
     )
 
+    // Group date rows by month
+    const validRows = dateRows.filter(r => r.date && r.price)
+    let structuredDates: Record<string, Array<{ date: string; price: number; url: string }>> | undefined
+    if (validRows.length > 0) {
+      structuredDates = {}
+      for (const row of validRows) {
+        const monthKey = row.month || 'Dates'
+        if (!structuredDates[monthKey]) structuredDates[monthKey] = []
+        structuredDates[monthKey].push({
+          date: row.date,
+          price: parseFloat(row.price),
+          url: row.url || offerForm.url || ''
+        })
+      }
+    }
+
+    // Parse activities
+    const activitiesArray = offerForm.activities
+      .split('\n')
+      .map(a => a.trim())
+      .filter(Boolean)
+
     const offerData = {
       from: offerForm.from,
+      fromCity: offerForm.fromCity || undefined,
       to: selectedDestCode,
       toCity: selectedDestCity,
+      toCountry: offerForm.toCountry || undefined,
+      flag: offerForm.flag || undefined,
+      description: offerForm.description || undefined,
+      activities: activitiesArray.length > 0 ? JSON.stringify(activitiesArray) : undefined,
+      airline: offerForm.airline || undefined,
       price: parseFloat(offerForm.price),
       originalPrice: parseFloat(offerForm.originalPrice),
       currency: 'EUR',
       discount,
-      dates: offerForm.dates || undefined,
+      dates: structuredDates ? JSON.stringify(structuredDates) : undefined,
       url: offerForm.url || undefined
     }
 
@@ -290,8 +341,13 @@ export default function AdminPage() {
           price: '',
           originalPrice: '',
           url: '',
-          dates: ''
+          toCountry: '',
+          flag: '',
+          description: '',
+          activities: '',
+          airline: '',
         })
+        setDateRows([{ month: '', date: '', price: '', url: '' }])
         setSelectedDestCode('')
         setSelectedDestCity('')
         setFromSearch('')
@@ -624,10 +680,45 @@ export default function AdminPage() {
                   )}
                 </div>
 
+                {/* Pays / Drapeau / Compagnie */}
+                <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-gray-300">Pays</label>
+                    <input
+                      type="text"
+                      value={offerForm.toCountry}
+                      onChange={(e) => setOfferForm({ ...offerForm, toCountry: e.target.value })}
+                      placeholder="Thaïlande"
+                      className="input-glass w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-gray-300">Code pays</label>
+                    <input
+                      type="text"
+                      value={offerForm.flag}
+                      onChange={(e) => setOfferForm({ ...offerForm, flag: e.target.value.toUpperCase().slice(0, 2) })}
+                      placeholder="TH"
+                      maxLength={2}
+                      className="input-glass w-full"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-2 text-gray-300">Compagnie</label>
+                    <input
+                      type="text"
+                      value={offerForm.airline}
+                      onChange={(e) => setOfferForm({ ...offerForm, airline: e.target.value })}
+                      placeholder="Thai Airways"
+                      className="input-glass w-full"
+                    />
+                  </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium mb-2 text-gray-300">
-                      Prix de l'offre (€)
+                      Prix de l&apos;offre (€)
                     </label>
                     <input
                       type="number"
@@ -658,7 +749,7 @@ export default function AdminPage() {
 
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Lien de l'offre
+                    Lien principal de l&apos;offre
                   </label>
                   <input
                     type="url"
@@ -669,15 +760,86 @@ export default function AdminPage() {
                   />
                 </div>
 
+                {/* Multi-date rows */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2 text-gray-300">
+                    Dates et prix disponibles
+                  </label>
+                  <div className="space-y-2">
+                    {dateRows.map((row, idx) => (
+                      <div key={idx} className="grid grid-cols-12 gap-2 items-center">
+                        <input
+                          type="text"
+                          value={row.month}
+                          onChange={(e) => updateDateRow(idx, 'month', e.target.value)}
+                          placeholder="Mars 2026"
+                          className="input-glass col-span-3 text-xs"
+                        />
+                        <input
+                          type="text"
+                          value={row.date}
+                          onChange={(e) => updateDateRow(idx, 'date', e.target.value)}
+                          placeholder="15-22 Mars"
+                          className="input-glass col-span-3 text-xs"
+                        />
+                        <input
+                          type="number"
+                          value={row.price}
+                          onChange={(e) => updateDateRow(idx, 'price', e.target.value)}
+                          placeholder="249"
+                          className="input-glass col-span-2 text-xs"
+                        />
+                        <input
+                          type="url"
+                          value={row.url}
+                          onChange={(e) => updateDateRow(idx, 'url', e.target.value)}
+                          placeholder="URL (optionnel)"
+                          className="input-glass col-span-3 text-xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeDateRow(idx)}
+                          className="col-span-1 text-red-400 hover:text-red-300 text-center text-lg"
+                          title="Supprimer"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={addDateRow}
+                    className="mt-2 text-primary hover:text-primary/80 text-sm font-medium"
+                  >
+                    + Ajouter une date
+                  </button>
+                </div>
+
+                {/* Description */}
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2 text-gray-300">
+                    Description de la destination
+                  </label>
+                  <textarea
+                    value={offerForm.description}
+                    onChange={(e) => setOfferForm({ ...offerForm, description: e.target.value })}
+                    rows={3}
+                    placeholder="Bangkok, la capitale vibrante de la Thaïlande..."
+                    className="input-glass w-full"
+                  />
+                </div>
+
+                {/* Activities */}
                 <div className="mb-6">
                   <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Dates disponibles (optionnel)
+                    Activités (une par ligne)
                   </label>
-                  <input
-                    type="text"
-                    value={offerForm.dates}
-                    onChange={(e) => setOfferForm({ ...offerForm, dates: e.target.value })}
-                    placeholder="15-22 Mars 2026"
+                  <textarea
+                    value={offerForm.activities}
+                    onChange={(e) => setOfferForm({ ...offerForm, activities: e.target.value })}
+                    rows={4}
+                    placeholder={"Visite du Grand Palais\nCroisière sur le fleuve\nDécouverte de la street food"}
                     className="input-glass w-full"
                   />
                 </div>
@@ -685,13 +847,18 @@ export default function AdminPage() {
                 {offerForm.price && offerForm.originalPrice && (
                   <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-lg">
                     <p className="text-sm text-gray-300">
-                      Réduction: <span className="text-primary font-bold text-lg">
+                      Réduction : <span className="text-primary font-bold text-lg">
                         {Math.round(
                           ((parseFloat(offerForm.originalPrice) - parseFloat(offerForm.price)) /
                             parseFloat(offerForm.originalPrice)) *
                             100
                         )}%
                       </span>
+                      {dateRows.filter(r => r.date && r.price).length > 0 && (
+                        <span className="ml-3 text-gray-400">
+                          · {dateRows.filter(r => r.date && r.price).length} date(s)
+                        </span>
+                      )}
                     </p>
                   </div>
                 )}

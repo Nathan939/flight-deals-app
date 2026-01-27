@@ -5,8 +5,14 @@ import { sendDealEmail } from '@/lib/email'
 
 interface OfferData {
   from: string
+  fromCity?: string
   to: string
   toCity: string
+  toCountry?: string
+  flag?: string
+  description?: string
+  activities?: string
+  airline?: string
   price: number
   originalPrice: number
   currency: string
@@ -33,7 +39,14 @@ export async function POST(request: NextRequest) {
     const deal = await prisma.deal.create({
       data: {
         from: offerData.from,
+        fromCity: offerData.fromCity || null,
         to: offerData.to,
+        toCity: offerData.toCity || null,
+        toCountry: offerData.toCountry || null,
+        flag: offerData.flag || null,
+        description: offerData.description || null,
+        activities: offerData.activities || null,
+        airline: offerData.airline || null,
         price: offerData.price,
         originalPrice: offerData.originalPrice,
         currency: offerData.currency,

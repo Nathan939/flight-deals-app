@@ -51,12 +51,19 @@ model Deal {
   id            String   @id @default(cuid())
   from          String
   to            String
+  fromCity      String?
+  toCity        String?
+  toCountry     String?
+  flag          String?          // 2-letter ISO country code e.g. "TH"
+  description   String?          // Destination description
+  activities    String?          // JSON string array e.g. '["Visite du temple","Street food"]'
+  airline       String?
   price         Float
   originalPrice Float
   currency      String   @default("EUR")
-  dates         String?  // JSON string with available dates
+  dates         String?          // JSON structured dates or plain string for legacy
   url           String?
-  discount      Int      // percentage
+  discount      Int              // percentage
   createdAt     DateTime @default(now())
   expiresAt     DateTime?
   alerts        Alert[]

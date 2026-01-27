@@ -13,6 +13,36 @@ export function calculateDiscount(originalPrice: number, currentPrice: number): 
   return Math.round(((originalPrice - currentPrice) / originalPrice) * 100)
 }
 
+// Deal dates types and helpers
+
+export interface DateEntry {
+  date: string
+  price: number
+  url: string
+}
+
+export type DatesMap = Record<string, DateEntry[]>
+
+export function parseDates(dates: string | null | undefined): DatesMap | string | null {
+  if (!dates) return null
+  try {
+    const parsed = JSON.parse(dates)
+    if (typeof parsed === 'object' && !Array.isArray(parsed)) return parsed as DatesMap
+    return dates
+  } catch {
+    return dates
+  }
+}
+
+export function flagToEmoji(code: string): string {
+  if (!code || code.length !== 2) return ''
+  return code
+    .toUpperCase()
+    .split('')
+    .map(c => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65))
+    .join('')
+}
+
 export const DESTINATIONS = [
   { code: 'REK', city: 'Reykjavik', country: 'Islande' },
   { code: 'MAD', city: 'Madrid', country: 'Espagne' },

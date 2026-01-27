@@ -8,11 +8,15 @@ interface DealHistory {
   id: string
   from: string
   to: string
+  fromCity?: string
+  toCity?: string
+  toCountry?: string
+  airline?: string
   price: number
   originalPrice: number
   currency: string
   discount: number
-  dates: string[] | null
+  dates: Record<string, Array<{ date: string; price: number; url: string }>> | string | null
   url: string | null
   sentAt: string | null
   channel: string
@@ -135,7 +139,7 @@ export default function DealsHistory() {
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-xl font-bold">
-                        {deal.from} → {deal.to}
+                        {deal.fromCity || deal.from} → {deal.toCity || deal.to}
                       </h3>
                       {deal.isExpired && (
                         <span className="text-xs bg-red-500/20 text-red-400 px-2 py-1 rounded">
@@ -167,22 +171,21 @@ export default function DealsHistory() {
                           {formatDate(deal.expiresAt)}
                         </div>
                       )}
-                      {deal.dates && deal.dates.length > 0 && (
+                      {deal.dates && (
                         <div className="mt-2">
-                          <span className="text-gray-300 font-medium">Dates disponibles:</span>
+                          <span className="text-gray-300 font-medium">Dates disponibles :</span>
                           <div className="flex flex-wrap gap-2 mt-1">
-                            {deal.dates.slice(0, 5).map((date: string, idx: number) => (
-                              <span
-                                key={idx}
-                                className="text-xs bg-white/5 px-2 py-1 rounded"
-                              >
-                                {date}
-                              </span>
-                            ))}
-                            {deal.dates.length > 5 && (
-                              <span className="text-xs text-gray-500 px-2 py-1">
-                                +{deal.dates.length - 5} autres
-                              </span>
+                            {typeof deal.dates === 'string' ? (
+                              <span className="text-xs bg-white/5 px-2 py-1 rounded">{deal.dates}</span>
+                            ) : (
+                              Object.keys(deal.dates).map((month) => (
+                                <span
+                                  key={month}
+                                  className="text-xs bg-white/5 px-2 py-1 rounded"
+                                >
+                                  {month}
+                                </span>
+                              ))
                             )}
                           </div>
                         </div>
@@ -192,28 +195,19 @@ export default function DealsHistory() {
 
                   {/* CTA */}
                   <div className="flex flex-col gap-2">
-                    {deal.url && !deal.isExpired ? (
-                      <a
-                        href={deal.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    {!deal.isExpired ? (
+                      <Link
+                        href={`/deals/${deal.id}`}
                         className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 text-center whitespace-nowrap"
                       >
                         Voir le deal →
-                      </a>
-                    ) : deal.isExpired ? (
+                      </Link>
+                    ) : (
                       <button
                         disabled
                         className="bg-gray-700 text-gray-400 font-bold py-3 px-6 rounded-lg cursor-not-allowed"
                       >
                         Deal expiré
-                      </button>
-                    ) : (
-                      <button
-                        disabled
-                        className="bg-gray-700 text-gray-400 font-bold py-3 px-6 rounded-lg cursor-not-allowed text-sm"
-                      >
-                        Lien indisponible
                       </button>
                     )}
                   </div>
