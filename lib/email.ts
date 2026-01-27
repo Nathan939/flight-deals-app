@@ -118,6 +118,9 @@ export async function sendDealEmail(
   }
 
   try {
+    console.log('📧 Sending email to:', to)
+    console.log('📧 From:', `${FROM_NAME} <${FROM_EMAIL}>`)
+
     const { data, error } = await resend.emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: [to],
@@ -126,14 +129,14 @@ export async function sendDealEmail(
     })
 
     if (error) {
-      console.error('❌ Error sending email:', error)
+      console.error('❌ Error sending email:', JSON.stringify(error))
       return false
     }
 
     console.log('✅ Email sent successfully to:', to, 'ID:', data?.id)
     return true
   } catch (error: any) {
-    console.error('❌ Error sending email:', error)
+    console.error('❌ Exception sending email:', error.message, error)
     return false
   }
 }
