@@ -664,7 +664,7 @@ export default function SearchPage() {
                               rel="noopener noreferrer"
                               className="md:ml-auto bg-primary hover:bg-primary-dark text-white font-bold py-2 px-6 rounded-lg transition-all duration-200 transform group-hover:scale-105 whitespace-nowrap text-center"
                             >
-                              Reserver
+                              Réserver
                             </a>
                           </div>
                         </div>
@@ -685,7 +685,7 @@ export default function SearchPage() {
             {/* Progress */}
             <div className="mb-8">
               <div className="flex justify-between items-center mb-4">
-                <span className="text-sm text-gray-400">Etape {currentStep} sur {totalSteps}</span>
+                <span className="text-sm text-gray-400">Étape {currentStep} sur {totalSteps}</span>
                 <button
                   onClick={() => setShowWizard(false)}
                   className="text-gray-400 hover:text-white transition-colors"
@@ -706,8 +706,8 @@ export default function SearchPage() {
             {/* Step 1: Departure Airport */}
             {currentStep === 1 && (
               <div className="animate-fade-in-up">
-                <h2 className="text-2xl font-bold mb-2">D'ou partez-vous ?</h2>
-                <p className="text-gray-400 mb-6">Recherchez votre aeroport de depart</p>
+                <h2 className="heading-sm text-center mb-2">D'où partez-vous ?</h2>
+                <p className="subtitle text-center mb-6">Recherchez votre aéroport de départ</p>
 
                 {/* Search Input */}
                 <div className="relative mb-6">
@@ -718,7 +718,7 @@ export default function SearchPage() {
                       setAirportSearch(e.target.value)
                       searchAirports(e.target.value)
                     }}
-                    placeholder="Rechercher une ville ou un aeroport..."
+                    placeholder="Rechercher une ville ou un aéroport..."
                     className="input-glass w-full pl-12"
                     autoFocus
                   />
@@ -754,27 +754,8 @@ export default function SearchPage() {
                 {/* No Results */}
                 {airportSearch.length >= 2 && airportResults.length === 0 && !airportSearchLoading && (
                   <div className="text-center py-8 text-gray-400">
-                    Aucun aéroport trouvé pour "{airportSearch}"
+                    Aucun aéroport trouvé pour &quot;{airportSearch}&quot;
                   </div>
-                )}
-
-                {/* Popular Airports (shown when no search) */}
-                {airportSearch.length < 2 && (
-                  <>
-                    <p className="text-sm text-gray-400 mb-3">Aeroports populaires</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto">
-                      {popularAirports.filter(a => a.country === 'France').map((airport) => (
-                        <button
-                          key={airport.code}
-                          onClick={() => handleSelectAirport(airport.code, airport.city, 'from')}
-                          className="p-3 rounded-xl border-2 border-white/10 hover:border-primary hover:bg-primary/10 transition-all text-left"
-                        >
-                          <div className="font-bold">{airport.code}</div>
-                          <div className="text-xs text-gray-400">{airport.city}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </>
                 )}
               </div>
             )}
@@ -782,8 +763,8 @@ export default function SearchPage() {
             {/* Step 2: Destination Airport */}
             {currentStep === 2 && (
               <div className="animate-fade-in-up">
-                <h2 className="text-2xl font-bold mb-2">Ou souhaitez-vous aller ?</h2>
-                <p className="text-gray-400 mb-6">Recherchez votre destination</p>
+                <h2 className="heading-sm text-center mb-2">Où souhaitez-vous aller ?</h2>
+                <p className="subtitle text-center mb-6">Recherchez votre destination</p>
 
                 {/* Search Input */}
                 <div className="relative mb-6">
@@ -794,7 +775,7 @@ export default function SearchPage() {
                       setAirportSearch(e.target.value)
                       searchAirports(e.target.value)
                     }}
-                    placeholder="Rechercher une ville ou un aeroport..."
+                    placeholder="Rechercher une ville ou un aéroport..."
                     className="input-glass w-full pl-12"
                     autoFocus
                   />
@@ -830,27 +811,8 @@ export default function SearchPage() {
                 {/* No Results */}
                 {airportSearch.length >= 2 && airportResults.length === 0 && !airportSearchLoading && (
                   <div className="text-center py-8 text-gray-400">
-                    Aucun aéroport trouvé pour "{airportSearch}"
+                    Aucun aéroport trouvé pour &quot;{airportSearch}&quot;
                   </div>
-                )}
-
-                {/* Popular Airports (shown when no search) */}
-                {airportSearch.length < 2 && (
-                  <>
-                    <p className="text-sm text-gray-400 mb-3">Destinations populaires</p>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 max-h-[300px] overflow-y-auto">
-                      {popularAirports.filter(a => a.code !== criteria.from).slice(0, 12).map((airport) => (
-                        <button
-                          key={airport.code}
-                          onClick={() => handleSelectAirport(airport.code, airport.city, 'to')}
-                          className="p-3 rounded-xl border-2 border-white/10 hover:border-primary hover:bg-primary/10 transition-all text-left"
-                        >
-                          <div className="font-bold">{airport.code}</div>
-                          <div className="text-xs text-gray-400">{airport.city}</div>
-                        </button>
-                      ))}
-                    </div>
-                  </>
                 )}
 
                 <button
@@ -872,110 +834,99 @@ export default function SearchPage() {
             {/* Step 3: Month Range Selection */}
             {currentStep === 3 && (
               <div className="animate-fade-in-up">
-                <h2 className="text-2xl font-bold mb-2">De quel mois a quel mois souhaitez-vous partir ?</h2>
-                <p className="text-gray-400 mb-6">Selectionnez votre periode de voyage</p>
+                <h2 className="heading-sm text-center mb-2">Vers quelle période de l'année souhaitez-vous partir ?</h2>
+                <p className="subtitle text-center mb-6">Sélectionnez votre période de voyage</p>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Departure Month */}
-                  <div className="bg-white/5 rounded-xl p-4">
-                    <h3 className="font-bold mb-3 flex items-center gap-2">
-                      <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      Mois de depart
-                    </h3>
-                    {criteria.departureMonth ? (
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/20 border border-primary">
-                        <span className="font-medium">{getMonthLabel(criteria.departureMonth)}</span>
-                        <button
-                          onClick={() => setCriteria({ ...criteria, departureMonth: '' })}
-                          className="text-primary hover:text-white transition-colors"
-                        >
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="max-h-[200px] overflow-y-auto space-y-4">
-                        {years.map((year) => (
-                          <div key={year}>
-                            <div className="text-xs font-semibold text-primary mb-2">{year}</div>
-                            <div className="grid grid-cols-3 gap-2">
-                              {months.map((month) => {
-                                const disabled = isMonthDisabled(year, month.value)
-                                return (
-                                  <button
-                                    key={`dep-${year}-${month.value}`}
-                                    disabled={disabled}
-                                    onClick={() => handleSelectMonth(year, month.value, 'departure')}
-                                    className={`py-2 px-2 rounded-lg border text-sm transition-all ${
-                                      disabled
-                                        ? 'border-white/5 text-gray-600 cursor-not-allowed'
-                                        : 'border-white/10 hover:border-primary hover:bg-primary/10 text-white'
-                                    }`}
-                                  >
-                                    {month.label.slice(0, 4)}
-                                  </button>
-                                )
-                              })}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
+                {/* Selected range display */}
+                {criteria.departureMonth && (
+                  <div className="flex items-center justify-center gap-2 mb-6">
+                    <span className="bg-primary/20 border border-primary text-white px-4 py-2 rounded-lg font-medium">
+                      {getMonthLabel(criteria.departureMonth)}
+                    </span>
+                    {criteria.returnMonth && criteria.returnMonth !== criteria.departureMonth && (
+                      <>
+                        <span className="text-gray-400">→</span>
+                        <span className="bg-primary/20 border border-primary text-white px-4 py-2 rounded-lg font-medium">
+                          {getMonthLabel(criteria.returnMonth)}
+                        </span>
+                      </>
                     )}
+                    <button
+                      onClick={() => setCriteria({ ...criteria, departureMonth: '', returnMonth: '' })}
+                      className="ml-2 text-gray-400 hover:text-white transition-colors"
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
                   </div>
+                )}
 
-                  {/* Return Month */}
-                  <div className="bg-white/5 rounded-xl p-4">
-                    <h3 className="font-bold mb-3 flex items-center gap-2">
-                      <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      Mois de retour
-                      <span className="text-xs text-gray-400 font-normal">(optionnel)</span>
-                    </h3>
-                    {criteria.returnMonth ? (
-                      <div className="flex items-center justify-between p-3 rounded-lg bg-primary/20 border border-primary">
-                        <span className="font-medium">{getMonthLabel(criteria.returnMonth)}</span>
-                        <button
-                          onClick={() => setCriteria({ ...criteria, returnMonth: '' })}
-                          className="text-primary hover:text-white transition-colors"
-                        >
-                          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
+                {/* Single calendar for month range */}
+                <div className="space-y-6">
+                  {years.map((year) => (
+                    <div key={year}>
+                      <div className="text-sm font-semibold text-primary mb-3 text-center">{year}</div>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {months.map((month) => {
+                          const disabled = isMonthDisabled(year, month.value)
+                          const monthKey = `${year}-${month.value}`
+                          const isStart = criteria.departureMonth === monthKey
+                          const isEnd = criteria.returnMonth === monthKey
+                          const isSelected = isStart || isEnd
+
+                          // Check if month is in range between departure and return
+                          let isInRange = false
+                          if (criteria.departureMonth && criteria.returnMonth) {
+                            const start = criteria.departureMonth
+                            const end = criteria.returnMonth
+                            const minMonth = start < end ? start : end
+                            const maxMonth = start < end ? end : start
+                            isInRange = monthKey >= minMonth && monthKey <= maxMonth
+                          }
+
+                          return (
+                            <button
+                              key={`range-${year}-${month.value}`}
+                              disabled={disabled}
+                              onClick={() => {
+                                if (!criteria.departureMonth) {
+                                  // First click: set start month
+                                  setCriteria({ ...criteria, departureMonth: monthKey, returnMonth: '' })
+                                } else if (!criteria.returnMonth || criteria.returnMonth === criteria.departureMonth) {
+                                  // Second click: set end month (ensure correct order)
+                                  if (monthKey === criteria.departureMonth) {
+                                    // Clicked same month - just keep single month selected
+                                    return
+                                  }
+                                  const start = criteria.departureMonth
+                                  if (monthKey < start) {
+                                    setCriteria({ ...criteria, departureMonth: monthKey, returnMonth: start })
+                                  } else {
+                                    setCriteria({ ...criteria, returnMonth: monthKey })
+                                  }
+                                } else {
+                                  // Third click: reset and start new selection
+                                  setCriteria({ ...criteria, departureMonth: monthKey, returnMonth: '' })
+                                }
+                              }}
+                              className={`py-3 px-2 rounded-lg border text-sm font-medium transition-all ${
+                                disabled
+                                  ? 'border-white/5 text-gray-600 cursor-not-allowed'
+                                  : isSelected
+                                    ? 'border-primary bg-primary text-white'
+                                    : isInRange
+                                      ? 'border-primary/50 bg-primary/20 text-white'
+                                      : 'border-white/10 hover:border-primary hover:bg-primary/10 text-white'
+                              }`}
+                            >
+                              {month.label.slice(0, 4)}
+                            </button>
+                          )
+                        })}
                       </div>
-                    ) : (
-                      <div className="max-h-[200px] overflow-y-auto space-y-4">
-                        {years.map((year) => (
-                          <div key={year}>
-                            <div className="text-xs font-semibold text-primary mb-2">{year}</div>
-                            <div className="grid grid-cols-3 gap-2">
-                              {months.map((month) => {
-                                const disabled = isMonthDisabled(year, month.value)
-                                return (
-                                  <button
-                                    key={`ret-${year}-${month.value}`}
-                                    disabled={disabled}
-                                    onClick={() => handleSelectMonth(year, month.value, 'return')}
-                                    className={`py-2 px-2 rounded-lg border text-sm transition-all ${
-                                      disabled
-                                        ? 'border-white/5 text-gray-600 cursor-not-allowed'
-                                        : 'border-white/10 hover:border-primary hover:bg-primary/10 text-white'
-                                    }`}
-                                  >
-                                    {month.label.slice(0, 4)}
-                                  </button>
-                                )
-                              })}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="flex gap-4 mt-8">
@@ -1003,8 +954,8 @@ export default function SearchPage() {
             {/* Step 4: Trip Type & Budget */}
             {currentStep === 4 && (
               <div className="animate-fade-in-up">
-                <h2 className="text-2xl font-bold mb-2">Options de voyage</h2>
-                <p className="text-gray-400 mb-6">Configurez vos preferences</p>
+                <h2 className="heading-sm text-center mb-2">Options de voyage</h2>
+                <p className="subtitle text-center mb-6">Configurez vos préférences</p>
 
                 <div className="space-y-6">
                   {/* Trip Type */}
@@ -1069,8 +1020,8 @@ export default function SearchPage() {
             {/* Step 5: Baggage & Confirm */}
             {currentStep === 5 && (
               <div className="animate-fade-in-up">
-                <h2 className="text-2xl font-bold mb-2">Bagages et confirmation</h2>
-                <p className="text-gray-400 mb-6">Dernière étape avant la recherche</p>
+                <h2 className="heading-sm text-center mb-2">Bagages et confirmation</h2>
+                <p className="subtitle text-center mb-6">Dernière étape avant la recherche</p>
 
                 <div className="space-y-6">
                   {/* Checked Baggage */}
@@ -1091,38 +1042,38 @@ export default function SearchPage() {
 
                   {/* Summary */}
                   <div className="bg-white/5 rounded-xl p-6">
-                    <h3 className="font-bold mb-4">Resume de votre recherche</h3>
+                    <h3 className="font-bold mb-4">Résumé de votre recherche</h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Depart:</span>
+                        <span className="text-gray-400">Départ :</span>
                         <span>{criteria.fromCity} ({criteria.from})</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Destination:</span>
+                        <span className="text-gray-400">Destination :</span>
                         <span>{criteria.toCity} ({criteria.to})</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Mois de depart:</span>
+                        <span className="text-gray-400">Mois de départ :</span>
                         <span>{getMonthLabel(criteria.departureMonth)}</span>
                       </div>
                       {criteria.tripType === 'return' && criteria.returnMonth && (
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Mois de retour:</span>
+                          <span className="text-gray-400">Mois de retour :</span>
                           <span>{getMonthLabel(criteria.returnMonth)}</span>
                         </div>
                       )}
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Type:</span>
+                        <span className="text-gray-400">Type :</span>
                         <span>{criteria.tripType === 'return' ? 'Aller-retour' : 'Aller simple'}</span>
                       </div>
                       {criteria.maxPrice && (
                         <div className="flex justify-between">
-                          <span className="text-gray-400">Budget max:</span>
+                          <span className="text-gray-400">Budget max :</span>
                           <span>{criteria.maxPrice}€</span>
                         </div>
                       )}
                       <div className="flex justify-between">
-                        <span className="text-gray-400">Bagage en soute:</span>
+                        <span className="text-gray-400">Bagage en soute :</span>
                         <span>{criteria.checkedBaggage ? 'Oui' : 'Non'}</span>
                       </div>
                     </div>
