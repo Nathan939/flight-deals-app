@@ -441,8 +441,8 @@ export default function SearchPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold mb-2">Fonctionnalite Premium</h3>
-            <p className="text-gray-400 max-w-md mx-auto mb-6">
+            <h3 className="subtitle-lg font-extrabold mb-2">Fonctionnalite Premium</h3>
+            <p className="subtitle-sm max-w-md mx-auto mb-6">
               La recherche de vols personnalisee est reservee aux membres Premium.
               Passez au Premium pour debloquer cette fonctionnalite.
             </p>
@@ -450,8 +450,9 @@ export default function SearchPage() {
               href="/upgrade"
               className="inline-block bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-lg font-bold transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/20"
             >
-              Passer au Premium - 4,99€/mois
+              Passer au Premium - 3,99€/mois
             </Link>
+            <p className="text-gray-500 text-xs mt-3">Facturé 11,99€ par trimestre</p>
           </div>
         </div>
       </div>
