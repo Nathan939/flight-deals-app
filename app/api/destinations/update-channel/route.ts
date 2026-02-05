@@ -27,7 +27,11 @@ export async function POST(request: NextRequest) {
         include: { subscription: true }
       })
 
-      if (!user || !user.subscription || (user.subscription.plan !== 'premium' && user.subscription.plan !== 'sms')) {
+      // Admin emails get premium access
+      const adminEmails = (process.env.NEXT_PUBLIC_ADMIN_EMAILS || '').split(',').map((e: string) => e.trim().toLowerCase())
+      const isAdmin = user?.email ? adminEmails.includes(user.email.toLowerCase()) : false
+
+      if (!isAdmin && (!user || !user.subscription || (user.subscription.plan !== 'premium' && user.subscription.plan !== 'sms'))) {
         return NextResponse.json(
           { error: 'SMS notifications require a premium subscription' },
           { status: 403 }

@@ -43,7 +43,9 @@ export default function AdminPage() {
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(false)
   const [loadingUsers, setLoadingUsers] = useState(false)
-  const [activeTab, setActiveTab] = useState<'offers' | 'users' | 'tests'>('offers')
+  const [activeTab, setActiveTab] = useState<'offers' | 'users' | 'searches' | 'tests'>('offers')
+  const [searchRequests, setSearchRequests] = useState<any[]>([])
+  const [loadingSearches, setLoadingSearches] = useState(false)
   const [selectedDestCode, setSelectedDestCode] = useState('')
   const [selectedDestCity, setSelectedDestCity] = useState('')
   const [offerForm, setOfferForm] = useState({
@@ -155,6 +157,9 @@ export default function AdminPage() {
     if (isAuthenticated && activeTab === 'users') {
       loadUsers()
     }
+    if (isAuthenticated && activeTab === 'searches') {
+      loadSearchRequests()
+    }
   }, [isAuthenticated, activeTab])
 
   const handleLogin = async () => {
@@ -255,6 +260,21 @@ export default function AdminPage() {
   const addDateRow = () => {
     const lastRow = dateRows[dateRows.length - 1]
     setDateRows([...dateRows, { month: lastRow?.month || '', date: '', price: '', url: lastRow?.url || '' }])
+  }
+
+  const loadSearchRequests = async () => {
+    setLoadingSearches(true)
+    try {
+      const res = await fetch('/api/admin/search-requests')
+      if (res.ok) {
+        const data = await res.json()
+        setSearchRequests(data.searchRequests || [])
+      }
+    } catch (error) {
+      console.error('Error loading search requests:', error)
+    } finally {
+      setLoadingSearches(false)
+    }
   }
 
   const handleSendOffer = async (e: React.FormEvent) => {
@@ -560,6 +580,16 @@ export default function AdminPage() {
               }`}
             >
               Utilisateurs ({users.length})
+            </button>
+            <button
+              onClick={() => setActiveTab('searches')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'searches'
+                  ? 'bg-primary text-white'
+                  : 'text-gray-400 hover:text-white hover:bg-white/5'
+              }`}
+            >
+              Recherches
             </button>
             <button
               onClick={() => setActiveTab('tests')}
@@ -997,6 +1027,91 @@ export default function AdminPage() {
                 {users.length === 0 && (
                   <div className="text-center py-12 text-gray-400">
                     Aucun utilisateur pour le moment
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Searches Tab */}
+        {activeTab === 'searches' && (
+          <div className="glass-card">
+            <h2 className="text-2xl font-bold mb-6">Recherches des utilisateurs</h2>
+            {loadingSearches ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-gray-400">Chargement...</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Utilisateur</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Trajet</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Type</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Dates</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Budget max</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Statut</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {searchRequests.map((req) => (
+                      <tr key={req.id} className="border-b border-white/5 hover:bg-white/5">
+                        <td className="py-4 px-4">
+                          <div className="text-sm">{req.userName || '-'}</div>
+                          <div className="text-xs text-gray-400">{req.userEmail}</div>
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className="font-medium">{req.fromCity}</span>
+                          <span className="text-gray-400 mx-2">&rarr;</span>
+                          <span className="font-medium">{req.toCity}</span>
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className={`px-2 py-1 rounded text-xs ${
+                            req.tripType === 'return'
+                              ? 'bg-blue-500/20 text-blue-400'
+                              : 'bg-purple-500/20 text-purple-400'
+                          }`}>
+                            {req.tripType === 'return' ? 'A/R' : 'Aller simple'}
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-sm text-gray-400">
+                          {req.departureMonth || '-'}
+                          {req.returnMonth ? ` / ${req.returnMonth}` : ''}
+                        </td>
+                        <td className="py-4 px-4">
+                          {req.maxPrice ? `${req.maxPrice}€` : '-'}
+                        </td>
+                        <td className="py-4 px-4">
+                          <span className={`px-2 py-1 rounded text-xs ${
+                            req.status === 'pending'
+                              ? 'bg-yellow-500/20 text-yellow-400'
+                              : req.status === 'processed'
+                              ? 'bg-blue-500/20 text-blue-400'
+                              : 'bg-green-500/20 text-green-400'
+                          }`}>
+                            {req.status === 'pending' ? 'En attente' : req.status === 'processed' ? 'Traité' : 'Envoyé'}
+                          </span>
+                        </td>
+                        <td className="py-4 px-4 text-gray-400 text-sm">
+                          {new Date(req.createdAt).toLocaleDateString('fr-FR', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit'
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {searchRequests.length === 0 && (
+                  <div className="text-center py-12 text-gray-400">
+                    Aucune recherche pour le moment
                   </div>
                 )}
               </div>

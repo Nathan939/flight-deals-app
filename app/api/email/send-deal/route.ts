@@ -52,11 +52,11 @@ export async function POST(request: NextRequest) {
       url: deal.url || undefined,
       createdAt: deal.createdAt,
     }
-    const success = await sendDealEmail(user.email, dealData, user.name || undefined)
+    const result = await sendDealEmail(user.email, dealData, user.name || undefined)
 
-    if (!success) {
+    if (!result.success) {
       return NextResponse.json(
-        { error: 'Erreur lors de l\'envoi de l\'email' },
+        { error: result.error || 'Erreur lors de l\'envoi de l\'email' },
         { status: 500 }
       )
     }

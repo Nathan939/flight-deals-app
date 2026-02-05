@@ -4,11 +4,11 @@ import { prisma } from '@/lib/prisma'
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { userId, code, city, country } = body
+    const { userId, code, city, country, notifyChannel } = body
 
-    if (!userId || !code || !city || !country) {
+    if (!userId || !code || !city) {
       return NextResponse.json(
-        { error: 'Tous les champs sont requis' },
+        { error: 'userId, code et city sont requis' },
         { status: 400 }
       )
     }
@@ -34,7 +34,8 @@ export async function POST(request: NextRequest) {
         userId,
         code,
         city,
-        country
+        country: country || '',
+        notifyChannel: notifyChannel || 'email'
       }
     })
 

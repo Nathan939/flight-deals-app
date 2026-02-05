@@ -72,7 +72,7 @@ export async function notifyUsersForDeal(deal: DealNotification) {
           }
         } else {
           // Envoyer email pour les utilisateurs gratuits
-          const emailSuccess = await sendDealEmail(user.email, {
+          const emailResult = await sendDealEmail(user.email, {
             from: deal.from,
             to: deal.to,
             toCity: deal.toCity,
@@ -83,7 +83,7 @@ export async function notifyUsersForDeal(deal: DealNotification) {
             url: deal.url
           })
 
-          if (emailSuccess) {
+          if (emailResult.success) {
             notifications.push({
               userId: user.id,
               type: 'email',

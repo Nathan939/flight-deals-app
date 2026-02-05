@@ -6,6 +6,7 @@ import Tooltip from './Tooltip'
 interface FollowButtonProps {
   destination: string  // Airport code
   destinationCity?: string  // Full city name
+  destinationCountry?: string  // Country name
   userPlan: 'free' | 'premium' | 'sms'
   onSuccess?: () => void
   compact?: boolean
@@ -15,6 +16,7 @@ interface FollowButtonProps {
 export default function FollowButton({
   destination,
   destinationCity,
+  destinationCountry,
   userPlan,
   onSuccess,
   compact = false,
@@ -23,25 +25,39 @@ export default function FollowButton({
   const [isFollowing, setIsFollowing] = useState(false)
   const [selectedChannel, setSelectedChannel] = useState<'email' | 'sms'>('email')
   const [loading, setLoading] = useState(false)
-  const [showChannelDropdown, setShowChannelDropdown] = useState(false)
+  const [userId, setUserId] = useState<string | null>(null)
+  const [destinationId, setDestinationId] = useState<string | null>(null)
 
   const isPremium = userPlan === 'premium' || userPlan === 'sms'
 
+  // Get userId from localStorage
+  useEffect(() => {
+    try {
+      const userStr = localStorage.getItem('user')
+      if (userStr) {
+        const user = JSON.parse(userStr)
+        setUserId(user.id)
+      }
+    } catch (e) {
+      console.error('Error reading user from localStorage:', e)
+    }
+  }, [])
+
   // Check if destination is already followed
   useEffect(() => {
+    if (!userId) return
+
     const checkFollowStatus = async () => {
       try {
-        const res = await fetch('/api/destinations/followed')
+        const res = await fetch(`/api/destinations/followed?userId=${userId}`)
         if (res.ok) {
           const data = await res.json()
-          const followed = data.destinations?.some((d: any) => d.code === destination)
-          setIsFollowing(followed)
+          const followedDest = data.destinations?.find((d: any) => d.code === destination)
+          setIsFollowing(!!followedDest)
 
-          if (followed) {
-            const dest = data.destinations.find((d: any) => d.code === destination)
-            if (dest) {
-              setSelectedChannel(dest.notifyChannel || 'email')
-            }
+          if (followedDest) {
+            setDestinationId(followedDest.id)
+            setSelectedChannel(followedDest.notifyChannel || 'email')
           }
         }
       } catch (error) {
@@ -50,9 +66,14 @@ export default function FollowButton({
     }
 
     checkFollowStatus()
-  }, [destination])
+  }, [destination, userId])
 
   const handleFollow = async () => {
+    if (!userId) {
+      alert('Veuillez vous connecter pour suivre une destination')
+      return
+    }
+
     setLoading(true)
 
     try {
@@ -60,55 +81,55 @@ export default function FollowButton({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          userId,
           code: destination,
           city: destinationCity || destination,
-          country: 'Unknown',
-          notifyChannel: selectedChannel
+          country: destinationCountry || ''
         })
       })
 
       if (res.ok) {
+        const data = await res.json()
         setIsFollowing(true)
+        setDestinationId(data.destination?.id || null)
         onSuccess?.()
-
-        // Show success message
-        alert(`✅ Destination suivie! Vous recevrez des alertes par ${selectedChannel === 'email' ? 'email 📧' : 'SMS 📱'}`)
+        alert(`Destination suivie! Vous recevrez des alertes par ${selectedChannel === 'email' ? 'email' : 'SMS'}`)
       } else {
         const data = await res.json()
-        alert(`❌ Erreur: ${data.error || 'Impossible de suivre cette destination'}`)
+        alert(`Erreur: ${data.error || 'Impossible de suivre cette destination'}`)
       }
     } catch (error) {
       console.error('Error following destination:', error)
-      alert('❌ Erreur de connexion')
+      alert('Erreur de connexion')
     } finally {
       setLoading(false)
     }
   }
 
   const handleUnfollow = async () => {
-    if (!confirm('Êtes-vous sûr de vouloir arrêter de suivre cette destination?')) {
-      return
-    }
+    if (!userId) return
+    if (!confirm('Arrêter de suivre cette destination?')) return
 
     setLoading(true)
 
     try {
       const res = await fetch('/api/destinations/unfollow', {
-        method: 'POST',
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code: destination })
+        body: JSON.stringify({ userId, code: destination })
       })
 
       if (res.ok) {
         setIsFollowing(false)
+        setDestinationId(null)
         setSelectedChannel('email')
         onSuccess?.()
       } else {
-        alert('❌ Erreur lors de l\'arrêt du suivi')
+        alert('Erreur lors de la suppression du suivi')
       }
     } catch (error) {
       console.error('Error unfollowing destination:', error)
-      alert('❌ Erreur de connexion')
+      alert('Erreur de connexion')
     } finally {
       setLoading(false)
     }
@@ -116,9 +137,10 @@ export default function FollowButton({
 
   const handleChangeChannel = async (newChannel: 'email' | 'sms') => {
     if (newChannel === 'sms' && !isPremium) {
-      alert('📱 Les alertes SMS sont réservées aux membres Premium')
+      alert('Les alertes SMS sont réservées aux membres Premium')
       return
     }
+    if (!userId || !destinationId) return
 
     setLoading(true)
 
@@ -127,21 +149,21 @@ export default function FollowButton({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          code: destination,
-          notifyChannel: newChannel
+          userId,
+          destinationId,
+          channel: newChannel
         })
       })
 
       if (res.ok) {
         setSelectedChannel(newChannel)
-        alert(`✅ Canal de notification changé: ${newChannel === 'email' ? 'Email 📧' : 'SMS 📱'}`)
       } else {
         const data = await res.json()
-        alert(`❌ ${data.error || 'Erreur'}`)
+        alert(`${data.error || 'Erreur'}`)
       }
     } catch (error) {
       console.error('Error changing channel:', error)
-      alert('❌ Erreur de connexion')
+      alert('Erreur de connexion')
     } finally {
       setLoading(false)
     }
@@ -153,7 +175,7 @@ export default function FollowButton({
         {!isFollowing ? (
           <button
             onClick={handleFollow}
-            disabled={loading}
+            disabled={loading || !userId}
             className="w-full px-4 py-2 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-primary/50 rounded-lg text-white text-sm font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? '...' : '⭐ Suivre'}
@@ -180,7 +202,7 @@ export default function FollowButton({
                       : 'bg-white/10 text-gray-400 hover:bg-white/20'
                   }`}
                 >
-                  📧 Email
+                  Email
                 </button>
                 <button
                   onClick={() => selectedChannel !== 'sms' && handleChangeChannel('sms')}
@@ -191,7 +213,7 @@ export default function FollowButton({
                       : 'bg-white/10 text-gray-400 hover:bg-white/20'
                   }`}
                 >
-                  📱 SMS
+                  SMS
                 </button>
               </div>
             )}
@@ -200,7 +222,7 @@ export default function FollowButton({
             {!isPremium && (
               <Tooltip content="Passez Premium pour recevoir des alertes SMS">
                 <div className="text-xs text-gray-500 text-center">
-                  📧 Email uniquement
+                  Email uniquement
                 </div>
               </Tooltip>
             )}
@@ -216,7 +238,7 @@ export default function FollowButton({
       {!isFollowing ? (
         <button
           onClick={handleFollow}
-          disabled={loading}
+          disabled={loading || !userId}
           className="w-full px-6 py-3 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary text-white font-bold rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
         >
           {loading ? 'Chargement...' : '⭐ Suivre cette destination'}
@@ -247,7 +269,7 @@ export default function FollowButton({
                     : 'bg-white/10 text-gray-400 hover:bg-white/20 border border-white/20'
                 }`}
               >
-                📧 Email
+                Email
               </button>
 
               <Tooltip
@@ -264,7 +286,7 @@ export default function FollowButton({
                       : 'bg-white/5 text-gray-600 cursor-not-allowed border border-white/10'
                   }`}
                 >
-                  📱 SMS {!isPremium && '🔒'}
+                  SMS {!isPremium && '🔒'}
                 </button>
               </Tooltip>
             </div>
