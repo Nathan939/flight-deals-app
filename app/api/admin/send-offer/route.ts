@@ -157,6 +157,21 @@ export async function POST(request: NextRequest) {
     // Compter les notifications envoyées avec succès
     const notificationsSent = notifications.filter(n => n.success).length
 
+    // Marquer les recherches correspondant à cette destination comme "sent"
+    try {
+      await prisma.searchRequest.updateMany({
+        where: {
+          to: offerData.to,
+          status: { in: ['pending', 'processed'] }
+        },
+        data: {
+          status: 'sent'
+        }
+      })
+    } catch (e) {
+      console.error('Error updating search request statuses:', e)
+    }
+
     return NextResponse.json({
       success: true,
       deal: {

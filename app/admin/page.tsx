@@ -74,6 +74,45 @@ export default function AdminPage() {
   const [showFromDropdown, setShowFromDropdown] = useState(false)
   const [showToDropdown, setShowToDropdown] = useState(false)
 
+  // Function to target a search request: pre-fill offer form and switch to offers tab
+  const handleTargetSearch = (req: any) => {
+    // Pre-fill destination
+    setSelectedDestCode(req.to)
+    setSelectedDestCity(req.toCity)
+    setToSearch(`${req.toCity} (${req.to})`)
+
+    // Pre-fill departure
+    setOfferForm(prev => ({
+      ...prev,
+      from: req.from,
+      fromCity: req.fromCity,
+    }))
+    setFromSearch(`${req.fromCity} (${req.from})`)
+
+    // Mark as processed
+    updateSearchStatus(req.id, 'processed')
+
+    // Switch to offers tab
+    setActiveTab('offers')
+  }
+
+  // Update search request status
+  const updateSearchStatus = async (id: string, status: string) => {
+    try {
+      await fetch('/api/admin/search-requests', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      })
+      // Update local state
+      setSearchRequests(prev =>
+        prev.map(r => r.id === id ? { ...r, status } : r)
+      )
+    } catch (error) {
+      console.error('Error updating search status:', error)
+    }
+  }
+
   // Search airports function
   const searchAirports = async (query: string, type: 'from' | 'to') => {
     if (!query || query.length < 2) {
@@ -150,6 +189,7 @@ export default function AdminPage() {
     if (authStatus === 'true') {
       setIsAuthenticated(true)
       loadDestinations()
+      loadSearchRequests()
     }
   }, [])
 
@@ -194,6 +234,7 @@ export default function AdminPage() {
           sessionStorage.setItem('admin_auth', 'true')
           sessionStorage.setItem('admin_email', email.toLowerCase())
           loadDestinations()
+          loadSearchRequests()
         } else {
           const data = await response.json()
           setLoginError(data.error || 'Email ou mot de passe incorrect')
@@ -205,6 +246,7 @@ export default function AdminPage() {
           setIsAuthenticated(true)
           sessionStorage.setItem('admin_auth', 'true')
           loadDestinations()
+          loadSearchRequests()
         } else {
           setLoginError('Mot de passe incorrect')
         }
@@ -353,6 +395,9 @@ export default function AdminPage() {
       if (res.ok) {
         const result = await res.json()
         alert(`Offre envoyée avec succès à ${result.notificationsSent} utilisateur(s) !`)
+
+        // Rafraîchir les recherches (statuts mis à jour automatiquement)
+        loadSearchRequests()
 
         // Réinitialiser le formulaire
         setOfferForm({
@@ -538,6 +583,8 @@ export default function AdminPage() {
 
   const destinationList = Object.values(destinationGroups)
 
+  const pendingSearchCount = searchRequests.filter(r => r.status === 'pending').length
+
   return (
     <div className="min-h-screen relative bg-gradient-to-b from-black via-gray-900 to-black">
       <div className="fixed inset-0 bg-gradient-to-b from-black via-gray-900/20 to-black pointer-events-none" />
@@ -583,13 +630,18 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('searches')}
-              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+              className={`px-6 py-3 rounded-lg font-medium transition-all relative ${
                 activeTab === 'searches'
                   ? 'bg-primary text-white'
                   : 'text-gray-400 hover:text-white hover:bg-white/5'
               }`}
             >
               Recherches
+              {pendingSearchCount > 0 && (
+                <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold rounded-full bg-yellow-500 text-black">
+                  {pendingSearchCount}
+                </span>
+              )}
             </button>
             <button
               onClick={() => setActiveTab('tests')}
@@ -1055,6 +1107,7 @@ export default function AdminPage() {
                       <th className="text-left py-4 px-4 font-medium text-gray-300">Budget max</th>
                       <th className="text-left py-4 px-4 font-medium text-gray-300">Statut</th>
                       <th className="text-left py-4 px-4 font-medium text-gray-300">Date</th>
+                      <th className="text-left py-4 px-4 font-medium text-gray-300">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1103,6 +1156,22 @@ export default function AdminPage() {
                             hour: '2-digit',
                             minute: '2-digit'
                           })}
+                        </td>
+                        <td className="py-4 px-4">
+                          <div className="flex gap-2">
+                            {req.status !== 'sent' && (
+                              <button
+                                onClick={() => handleTargetSearch(req)}
+                                className="px-3 py-1.5 bg-primary/20 text-primary hover:bg-primary/30 rounded-lg text-xs font-bold transition-colors"
+                                title="Pre-remplir le formulaire d'offre avec cette recherche"
+                              >
+                                Cibler
+                              </button>
+                            )}
+                            {req.status === 'sent' && (
+                              <span className="text-xs text-green-400 font-medium">Offre envoyee</span>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}

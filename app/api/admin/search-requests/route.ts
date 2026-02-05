@@ -59,3 +59,38 @@ export async function GET() {
     )
   }
 }
+
+// PATCH - Update search request status
+export async function PATCH(request: NextRequest) {
+  try {
+    const data = await request.json()
+    const { id, status } = data
+
+    if (!id || !status) {
+      return NextResponse.json(
+        { error: 'id and status are required' },
+        { status: 400 }
+      )
+    }
+
+    if (!['pending', 'processed', 'sent'].includes(status)) {
+      return NextResponse.json(
+        { error: 'Invalid status' },
+        { status: 400 }
+      )
+    }
+
+    const updated = await prisma.searchRequest.update({
+      where: { id },
+      data: { status }
+    })
+
+    return NextResponse.json({ success: true, searchRequest: updated })
+  } catch (error: any) {
+    console.error('Error updating search request:', error)
+    return NextResponse.json(
+      { error: 'Error updating search request', details: error.message },
+      { status: 500 }
+    )
+  }
+}
