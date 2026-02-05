@@ -28,9 +28,9 @@ export async function POST(request: NextRequest) {
     // Validation
     if (!offerData.from || !offerData.to || !offerData.toCity ||
         !offerData.price || !offerData.originalPrice ||
-        !offerData.currency || !offerData.discount) {
+        !offerData.currency || offerData.discount == null) {
       return NextResponse.json(
-        { error: 'Tous les champs requis manquants' },
+        { error: 'Champs requis manquants: from, to, toCity, price, originalPrice, currency, discount' },
         { status: 400 }
       )
     }
@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Send offer error:', error)
     return NextResponse.json(
-      { error: 'Error sending offer', details: error.message },
+      { error: `Erreur: ${error.message || 'Erreur inconnue'}` },
       { status: 500 }
     )
   }

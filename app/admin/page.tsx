@@ -323,12 +323,12 @@ export default function AdminPage() {
     e.preventDefault()
 
     if (!offerForm.from) {
-      alert('Veuillez sélectionner un aéroport de départ')
+      alert('Veuillez selectionner un aeroport de depart')
       return
     }
 
     if (!selectedDestCode || !selectedDestCity) {
-      alert('Veuillez sélectionner une destination')
+      alert('Veuillez selectionner une destination')
       return
     }
 
@@ -337,55 +337,26 @@ export default function AdminPage() {
       return
     }
 
-    const discount = Math.round(
-      ((parseFloat(offerForm.originalPrice) - parseFloat(offerForm.price)) /
-        parseFloat(offerForm.originalPrice)) *
-        100
-    )
-
-    // Group date rows by month
-    const validRows = dateRows.filter(r => r.date && r.price)
-    let structuredDates: Record<string, Array<{ date: string; price: number; url: string }>> | undefined
-    if (validRows.length > 0) {
-      structuredDates = {}
-      for (const row of validRows) {
-        const monthKey = row.month || 'Dates'
-        if (!structuredDates[monthKey]) structuredDates[monthKey] = []
-        structuredDates[monthKey].push({
-          date: row.date,
-          price: parseFloat(row.price),
-          url: row.url || offerForm.url || ''
-        })
-      }
-    }
-
-    // Parse activities
-    const activitiesArray = offerForm.activities
-      .split('\n')
-      .map(a => a.trim())
-      .filter(Boolean)
+    const price = parseFloat(offerForm.price)
+    const originalPrice = parseFloat(offerForm.originalPrice)
+    const discount = originalPrice > 0
+      ? Math.round(((originalPrice - price) / originalPrice) * 100)
+      : 0
 
     const offerData = {
       from: offerForm.from,
       fromCity: offerForm.fromCity || undefined,
       to: selectedDestCode,
       toCity: selectedDestCity,
-      toCountry: offerForm.toCountry || undefined,
-      flag: offerForm.flag || undefined,
-      description: offerForm.description || undefined,
-      activities: activitiesArray.length > 0 ? JSON.stringify(activitiesArray) : undefined,
-      airline: offerForm.airline || undefined,
-      price: parseFloat(offerForm.price),
-      originalPrice: parseFloat(offerForm.originalPrice),
+      price,
+      originalPrice,
       currency: 'EUR',
       discount,
-      dates: structuredDates ? JSON.stringify(structuredDates) : undefined,
       url: offerForm.url || undefined
     }
 
     setLoading(true)
     try {
-      // Créer le deal dans la base de données et envoyer les notifications
       const res = await fetch('/api/admin/send-offer', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -394,12 +365,12 @@ export default function AdminPage() {
 
       if (res.ok) {
         const result = await res.json()
-        alert(`Offre envoyée avec succès à ${result.notificationsSent} utilisateur(s) !`)
+        alert(`Offre envoyee ! ${result.notificationsSent} notification(s) envoyee(s) sur ${result.totalUsers} utilisateur(s) suivant cette destination.`)
 
-        // Rafraîchir les recherches (statuts mis à jour automatiquement)
+        // Rafraichir les recherches (statuts mis a jour automatiquement)
         loadSearchRequests()
 
-        // Réinitialiser le formulaire
+        // Reinitialiser le formulaire
         setOfferForm({
           from: '',
           fromCity: '',
@@ -412,18 +383,17 @@ export default function AdminPage() {
           activities: '',
           airline: '',
         })
-        setDateRows([{ month: '', date: '', price: '', url: '' }])
         setSelectedDestCode('')
         setSelectedDestCity('')
         setFromSearch('')
         setToSearch('')
       } else {
-        const error = await res.json()
-        alert(`Erreur: ${error.error}`)
+        const errorData = await res.json()
+        alert(`Erreur: ${errorData.error}`)
       }
     } catch (error) {
       console.error('Error sending offer:', error)
-      alert('Une erreur est survenue')
+      alert('Erreur de connexion au serveur')
     } finally {
       setLoading(false)
     }
@@ -663,11 +633,19 @@ export default function AdminPage() {
             <div className="glass-card">
               <h2 className="text-2xl font-bold mb-6">Envoyer une offre de vol</h2>
 
+              {/* Pre-filled info banner */}
+              {offerForm.from && selectedDestCode && (
+                <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded-lg text-sm">
+                  <span className="text-blue-400 font-medium">Pre-rempli : </span>
+                  <span className="text-white">{fromSearch} → {toSearch}</span>
+                </div>
+              )}
+
               <form onSubmit={handleSendOffer}>
                 {/* Departure Airport Search */}
                 <div className="mb-4 relative">
                   <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Départ de
+                    Depart de *
                   </label>
                   <div className="relative">
                     <input
@@ -680,7 +658,7 @@ export default function AdminPage() {
                         }
                       }}
                       onFocus={() => fromResults.length > 0 && setShowFromDropdown(true)}
-                      placeholder="Rechercher un aéroport de départ..."
+                      placeholder="Rechercher un aeroport..."
                       className="input-glass w-full"
                       autoComplete="off"
                     />
@@ -690,7 +668,6 @@ export default function AdminPage() {
                       </div>
                     )}
                   </div>
-                  {/* From Results Dropdown */}
                   {showFromDropdown && fromResults.length > 0 && (
                     <div className="absolute z-50 w-full mt-1 bg-gray-900 border border-white/20 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                       {fromResults.map((airport) => (
@@ -715,7 +692,7 @@ export default function AdminPage() {
                 {/* Destination Airport Search */}
                 <div className="mb-4 relative">
                   <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Destination
+                    Destination *
                   </label>
                   <div className="relative">
                     <input
@@ -729,7 +706,7 @@ export default function AdminPage() {
                         }
                       }}
                       onFocus={() => toResults.length > 0 && setShowToDropdown(true)}
-                      placeholder="Rechercher un aéroport de destination..."
+                      placeholder="Rechercher un aeroport..."
                       className="input-glass w-full"
                       autoComplete="off"
                     />
@@ -739,7 +716,6 @@ export default function AdminPage() {
                       </div>
                     )}
                   </div>
-                  {/* To Results Dropdown */}
                   {showToDropdown && toResults.length > 0 && (
                     <div className="absolute z-50 w-full mt-1 bg-gray-900 border border-white/20 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                       {toResults.map((airport) => (
@@ -762,45 +738,11 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                {/* Pays / Drapeau / Compagnie */}
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-300">Pays</label>
-                    <input
-                      type="text"
-                      value={offerForm.toCountry}
-                      onChange={(e) => setOfferForm({ ...offerForm, toCountry: e.target.value })}
-                      placeholder="Thaïlande"
-                      className="input-glass w-full"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-300">Code pays</label>
-                    <input
-                      type="text"
-                      value={offerForm.flag}
-                      onChange={(e) => setOfferForm({ ...offerForm, flag: e.target.value.toUpperCase().slice(0, 2) })}
-                      placeholder="TH"
-                      maxLength={2}
-                      className="input-glass w-full"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium mb-2 text-gray-300">Compagnie</label>
-                    <input
-                      type="text"
-                      value={offerForm.airline}
-                      onChange={(e) => setOfferForm({ ...offerForm, airline: e.target.value })}
-                      placeholder="Thai Airways"
-                      className="input-glass w-full"
-                    />
-                  </div>
-                </div>
-
+                {/* Prix */}
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-sm font-medium mb-2 text-gray-300">
-                      Prix de l&apos;offre (€)
+                      Prix offre (EUR) *
                     </label>
                     <input
                       type="number"
@@ -812,10 +754,9 @@ export default function AdminPage() {
                       required
                     />
                   </div>
-
                   <div>
                     <label className="block text-sm font-medium mb-2 text-gray-300">
-                      Prix original (€)
+                      Prix original (EUR) *
                     </label>
                     <input
                       type="number"
@@ -829,9 +770,10 @@ export default function AdminPage() {
                   </div>
                 </div>
 
+                {/* Lien */}
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Lien principal de l&apos;offre
+                    Lien de l&apos;offre
                   </label>
                   <input
                     type="url"
@@ -842,105 +784,17 @@ export default function AdminPage() {
                   />
                 </div>
 
-                {/* Multi-date rows */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Dates et prix disponibles
-                  </label>
-                  <div className="space-y-2">
-                    {dateRows.map((row, idx) => (
-                      <div key={idx} className="grid grid-cols-12 gap-2 items-center">
-                        <input
-                          type="text"
-                          value={row.month}
-                          onChange={(e) => updateDateRow(idx, 'month', e.target.value)}
-                          placeholder="Mars 2026"
-                          className="input-glass col-span-3 text-xs"
-                        />
-                        <input
-                          type="text"
-                          value={row.date}
-                          onChange={(e) => updateDateRow(idx, 'date', e.target.value)}
-                          placeholder="15-22 Mars"
-                          className="input-glass col-span-3 text-xs"
-                        />
-                        <input
-                          type="number"
-                          value={row.price}
-                          onChange={(e) => updateDateRow(idx, 'price', e.target.value)}
-                          placeholder="249"
-                          className="input-glass col-span-2 text-xs"
-                        />
-                        <input
-                          type="url"
-                          value={row.url}
-                          onChange={(e) => updateDateRow(idx, 'url', e.target.value)}
-                          placeholder="URL (optionnel)"
-                          className="input-glass col-span-3 text-xs"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => removeDateRow(idx)}
-                          className="col-span-1 text-red-400 hover:text-red-300 text-center text-lg"
-                          title="Supprimer"
-                        >
-                          ×
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={addDateRow}
-                    className="mt-2 text-primary hover:text-primary/80 text-sm font-medium"
-                  >
-                    + Ajouter une date
-                  </button>
-                </div>
-
-                {/* Description */}
-                <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Description de la destination
-                  </label>
-                  <textarea
-                    value={offerForm.description}
-                    onChange={(e) => setOfferForm({ ...offerForm, description: e.target.value })}
-                    rows={3}
-                    placeholder="Bangkok, la capitale vibrante de la Thaïlande..."
-                    className="input-glass w-full"
-                  />
-                </div>
-
-                {/* Activities */}
-                <div className="mb-6">
-                  <label className="block text-sm font-medium mb-2 text-gray-300">
-                    Activités (une par ligne)
-                  </label>
-                  <textarea
-                    value={offerForm.activities}
-                    onChange={(e) => setOfferForm({ ...offerForm, activities: e.target.value })}
-                    rows={4}
-                    placeholder={"Visite du Grand Palais\nCroisière sur le fleuve\nDécouverte de la street food"}
-                    className="input-glass w-full"
-                  />
-                </div>
-
+                {/* Reduction preview */}
                 {offerForm.price && offerForm.originalPrice && (
-                  <div className="mb-4 p-4 bg-primary/10 border border-primary/30 rounded-lg">
+                  <div className="mb-4 p-3 bg-primary/10 border border-primary/30 rounded-lg">
                     <p className="text-sm text-gray-300">
-                      Réduction : <span className="text-primary font-bold text-lg">
+                      Reduction : <span className="text-primary font-bold text-lg">
                         {Math.round(
                           ((parseFloat(offerForm.originalPrice) - parseFloat(offerForm.price)) /
                             parseFloat(offerForm.originalPrice)) *
                             100
                         )}%
                       </span>
-                      {dateRows.filter(r => r.date && r.price).length > 0 && (
-                        <span className="ml-3 text-gray-400">
-                          · {dateRows.filter(r => r.date && r.price).length} date(s)
-                        </span>
-                      )}
                     </p>
                   </div>
                 )}
@@ -974,7 +828,11 @@ export default function AdminPage() {
                           ? 'border-primary/50 bg-primary/10'
                           : 'border-white/10 hover:border-primary/30'
                       }`}
-                      onClick={() => setSelectedDestCode(dest.code)}
+                      onClick={() => {
+                        setSelectedDestCode(dest.code)
+                        setSelectedDestCity(dest.city)
+                        setToSearch(`${dest.city} (${dest.code})`)
+                      }}
                     >
                       <div className="flex items-center justify-between mb-3">
                         <div>
