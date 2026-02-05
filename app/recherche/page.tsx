@@ -247,8 +247,61 @@ export default function SearchPage() {
     setShowWizard(false)
     setSearchCompleted(true)
 
+    // 1. Save destination + search request immediately (independent of flight search)
+    const userStr = localStorage.getItem('user')
+    if (userStr) {
+      try {
+        const user = JSON.parse(userStr)
+
+        // Save destination to follow (if not already saved)
+        const alreadySaved = savedDestinations.some(d => d.code === criteria.to)
+        if (!alreadySaved) {
+          const followRes = await fetch('/api/destinations/follow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              userId: user.id,
+              code: criteria.to,
+              city: criteria.toCity,
+              country: '',
+              notifyChannel: 'sms'
+            })
+          })
+          const followData = await followRes.json()
+          if (followRes.ok && followData.destination) {
+            setSavedDestinations(prev => [...prev, followData.destination])
+          }
+          // If already followed (400), that's fine
+          setDestinationSaved(true)
+        } else {
+          setDestinationSaved(true)
+        }
+
+        // Save search request for admin
+        await fetch('/api/admin/search-requests', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.id,
+            userEmail: user.email,
+            userName: user.name,
+            from: criteria.from,
+            fromCity: criteria.fromCity,
+            to: criteria.to,
+            toCity: criteria.toCity,
+            departureMonth: criteria.departureMonth,
+            returnMonth: criteria.returnMonth,
+            tripType: criteria.tripType,
+            maxPrice: criteria.maxPrice
+          })
+        })
+      } catch (e) {
+        console.error('Error saving search request:', e)
+      }
+    }
+
+    // 2. Try flight search (optional bonus - may fail if API key expired)
     try {
-      // Convert months to date ranges
       const monthToDateRange = (monthStr: string) => {
         if (!monthStr) return { from: '', to: '' }
         const [year, month] = monthStr.split('-')
@@ -285,14 +338,13 @@ export default function SearchPage() {
       const response = await fetch(`/api/flights/search?${params.toString()}`)
       const data = await response.json()
 
-      if (!data.success) {
-        throw new Error(data.error || 'Erreur lors de la recherche')
+      if (data.success) {
+        setResults(data.data || [])
       }
-
-      setResults(data.data || [])
+      // If search fails, we just don't show results - the destination is already saved
     } catch (err: any) {
-      setSearchError(err.message)
-      setResults([])
+      console.error('Flight search error (non-blocking):', err.message)
+      // Don't show error to user - destination save is what matters
     } finally {
       setSearchLoading(false)
     }
