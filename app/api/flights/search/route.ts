@@ -189,12 +189,26 @@ export async function GET(request: NextRequest) {
     if (!response.ok) {
       const errorText = await response.text()
       console.error('Kiwi API error:', response.status, errorText)
+
+      // Don't propagate Kiwi's status code directly to client
+      // Map to appropriate user-facing error
+      let userError = 'Erreur lors de la recherche de vols. Veuillez réessayer.'
+      let statusCode = 502 // Bad Gateway - upstream API failure
+
+      if (response.status === 401 || response.status === 403) {
+        userError = 'Service de recherche temporairement indisponible. Notre équipe a été notifiée.'
+        statusCode = 503
+      } else if (response.status === 429) {
+        userError = 'Trop de recherches en cours. Veuillez patienter quelques instants.'
+        statusCode = 429
+      }
+
       return NextResponse.json(
         {
           success: false,
-          error: `Erreur API Kiwi: ${response.status} ${response.statusText}`
+          error: userError
         },
-        { status: response.status }
+        { status: statusCode }
       )
     }
 

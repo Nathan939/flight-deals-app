@@ -116,8 +116,12 @@ export default function SearchPage() {
   // Destination save state
   const [destinationSaved, setDestinationSaved] = useState(false)
   const [savingDestination, setSavingDestination] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
-  // Check auth and premium status
+  // Saved destinations from DB (persist across refresh)
+  const [savedDestinations, setSavedDestinations] = useState<Array<{ id: string; code: string; city: string; country: string; notifyChannel: string; createdAt: string }>>([])
+
+  // Check auth and premium status, then load saved destinations
   useEffect(() => {
     const checkAuth = async () => {
       const userStr = localStorage.getItem('user')
@@ -130,26 +134,31 @@ export default function SearchPage() {
         const user = JSON.parse(userStr)
         setIsLoggedIn(true)
 
-        // First check localStorage subscription
-        const localSub = user.subscription
-        console.log('LocalStorage subscription:', localSub)
-
-        // Also fetch from API for most up-to-date data
+        // Fetch subscription from API (server-side handles admin check)
         const planRes = await fetch(`/api/user/subscription?userId=${user.id}`)
         if (planRes.ok) {
           const planData = await planRes.json()
-          console.log('API subscription data:', planData.subscription)
-          const sub = planData.subscription || localSub
-          // Check if premium/sms plan AND active status
+          const sub = planData.subscription
           const isPremiumPlan = sub?.plan === 'premium' || sub?.plan === 'sms'
           const isActive = sub?.status === 'active'
-          console.log('isPremiumPlan:', isPremiumPlan, 'isActive:', isActive, 'Plan:', sub?.plan, 'Status:', sub?.status)
           setIsPremium(isPremiumPlan && isActive)
         } else {
-          // Fallback to localStorage if API fails
+          // Fallback to localStorage
+          const localSub = user.subscription
           const isPremiumPlan = localSub?.plan === 'premium' || localSub?.plan === 'sms'
           const isActive = localSub?.status === 'active'
           setIsPremium(isPremiumPlan && isActive)
+        }
+
+        // Load saved destinations from DB
+        try {
+          const destRes = await fetch(`/api/destinations/followed?userId=${user.id}`)
+          if (destRes.ok) {
+            const destData = await destRes.json()
+            setSavedDestinations(destData.destinations || [])
+          }
+        } catch (e) {
+          console.error('Error loading saved destinations:', e)
         }
       } catch (e) {
         console.error('Error checking auth:', e)
@@ -321,6 +330,7 @@ export default function SearchPage() {
     try {
       const user = JSON.parse(userStr)
       setSavingDestination(true)
+      setSaveError('')
 
       // Save the destination to follow
       const response = await fetch('/api/destinations/follow', {
@@ -330,13 +340,19 @@ export default function SearchPage() {
           userId: user.id,
           code: criteria.to,
           city: criteria.toCity,
-          country: '', // Will be looked up by API
+          country: '',
           notifyChannel: 'sms'
         })
       })
 
+      const responseData = await response.json()
+
       if (response.ok) {
         setDestinationSaved(true)
+        // Add to local saved destinations list
+        if (responseData.destination) {
+          setSavedDestinations(prev => [...prev, responseData.destination])
+        }
 
         // Also save the search request to admin
         await fetch('/api/admin/search-requests', {
@@ -356,9 +372,15 @@ export default function SearchPage() {
             maxPrice: criteria.maxPrice
           })
         })
+      } else if (response.status === 400 && responseData.error?.includes('déjà suivie')) {
+        // Destination already followed - treat as success
+        setDestinationSaved(true)
+      } else {
+        setSaveError(responseData.error || 'Erreur lors de la sauvegarde')
       }
     } catch (error) {
       console.error('Error saving destination:', error)
+      setSaveError('Erreur de connexion. Veuillez réessayer.')
     } finally {
       setSavingDestination(false)
     }
@@ -480,20 +502,55 @@ export default function SearchPage() {
 
         {/* CTA Card - Initial State */}
         {!searchCompleted && !showWizard && (
-          <div className="glass-card text-center py-16 animate-scale-in">
-            <svg className="w-20 h-20 mx-auto mb-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
-            </svg>
-            <h3 className="text-3xl font-bold mb-4">Commencez votre recherche</h3>
-            <p className="text-gray-400 max-w-md mx-auto mb-8">
-              Trouvez les meilleurs vols en définissant vos critères de recherche étape par étape.
-            </p>
-            <button
-              onClick={startNewSearch}
-              className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-lg font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30"
-            >
-              Nouvelle recherche
-            </button>
+          <div className="space-y-6">
+            <div className="glass-card text-center py-16 animate-scale-in">
+              <svg className="w-20 h-20 mx-auto mb-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+              <h3 className="text-3xl font-bold mb-4">Commencez votre recherche</h3>
+              <p className="text-gray-400 max-w-md mx-auto mb-8">
+                Trouvez les meilleurs vols en définissant vos critères de recherche étape par étape.
+              </p>
+              <button
+                onClick={startNewSearch}
+                className="bg-primary hover:bg-primary-dark text-white px-10 py-4 rounded-lg font-bold text-lg transition-all duration-200 transform hover:scale-105 shadow-lg shadow-primary/30"
+              >
+                Nouvelle recherche
+              </button>
+            </div>
+
+            {/* Saved destinations */}
+            {savedDestinations.length > 0 && (
+              <div className="glass-card animate-fade-in-up">
+                <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  Vos destinations suivies
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {savedDestinations.map((dest) => (
+                    <div
+                      key={dest.id}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-green-500/10 border border-green-500/20"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
+                        <span className="text-green-400 font-bold text-sm">{dest.code}</span>
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white font-medium truncate">{dest.city}</p>
+                        <p className="text-gray-400 text-xs">
+                          Alerte {dest.notifyChannel === 'sms' ? 'SMS' : 'Email'} active
+                        </p>
+                      </div>
+                      <svg className="w-4 h-4 text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -537,7 +594,7 @@ export default function SearchPage() {
                 </div>
 
                 {/* Notification message or Save button */}
-                {destinationSaved ? (
+                {destinationSaved || savedDestinations.some(d => d.code === criteria.to) ? (
                   <div className="flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/30">
                     <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center flex-shrink-0">
                       <svg className="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -552,27 +609,32 @@ export default function SearchPage() {
                     </div>
                   </div>
                 ) : (
-                  <button
-                    onClick={saveDestination}
-                    disabled={savingDestination}
-                    className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer w-full text-left"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                      {savingDestination ? (
-                        <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full"></div>
-                      ) : (
-                        <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-primary font-medium">Recevoir une alerte pour cette destination</p>
-                      <p className="text-gray-400 text-sm">
-                        On s'occupe de tout ! Vous recevrez une notification SMS des qu'un vol a prix bas sera disponible.
-                      </p>
-                    </div>
-                  </button>
+                  <div>
+                    <button
+                      onClick={saveDestination}
+                      disabled={savingDestination}
+                      className="flex items-center gap-3 p-4 rounded-xl bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all cursor-pointer w-full text-left"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                        {savingDestination ? (
+                          <div className="animate-spin h-5 w-5 border-2 border-primary border-t-transparent rounded-full"></div>
+                        ) : (
+                          <svg className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                          </svg>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-primary font-medium">Recevoir une alerte pour cette destination</p>
+                        <p className="text-gray-400 text-sm">
+                          On s'occupe de tout ! Vous recevrez une notification SMS des qu'un vol a prix bas sera disponible.
+                        </p>
+                      </div>
+                    </button>
+                    {saveError && (
+                      <p className="text-red-400 text-sm mt-2 px-4">{saveError}</p>
+                    )}
+                  </div>
                 )}
 
                 {/* Add another destination button */}
