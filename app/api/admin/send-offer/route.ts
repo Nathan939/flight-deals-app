@@ -36,48 +36,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Créer le deal dans la base de données
-    let deal
-    try {
-      deal = await prisma.deal.create({
-        data: {
-          from: offerData.from,
-          fromCity: offerData.fromCity || null,
-          to: offerData.to,
-          toCity: offerData.toCity || null,
-          toCountry: offerData.toCountry || null,
-          flag: offerData.flag || null,
-          description: offerData.description || null,
-          activities: offerData.activities || null,
-          airline: offerData.airline || null,
-          price: offerData.price,
-          originalPrice: offerData.originalPrice,
-          currency: offerData.currency,
-          discount: offerData.discount,
-          dates: offerData.dates || null,
-          url: offerData.url || null,
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-        }
-      })
-    } catch (createError: any) {
-      // If optional columns don't exist in production DB yet, retry with core fields only
-      if (createError.message?.includes('does not exist')) {
-        console.log('Retrying deal creation with core fields only:', createError.message)
-        deal = await prisma.deal.create({
-          data: {
-            from: offerData.from,
-            to: offerData.to,
-            price: offerData.price,
-            originalPrice: offerData.originalPrice,
-            currency: offerData.currency,
-            discount: offerData.discount,
-            url: offerData.url || null,
-            expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-          }
-        })
-      } else {
-        throw createError
+    const deal = await prisma.deal.create({
+      data: {
+        from: offerData.from,
+        fromCity: offerData.fromCity || null,
+        to: offerData.to,
+        toCity: offerData.toCity || null,
+        toCountry: offerData.toCountry || null,
+        flag: offerData.flag || null,
+        description: offerData.description || null,
+        activities: offerData.activities || null,
+        airline: offerData.airline || null,
+        price: offerData.price,
+        originalPrice: offerData.originalPrice,
+        currency: offerData.currency,
+        discount: offerData.discount,
+        dates: offerData.dates || null,
+        url: offerData.url || null,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
       }
-    }
+    })
 
     // Trouver tous les utilisateurs qui ont ajouté cette destination en favoris
     const destinations = await prisma.destination.findMany({
