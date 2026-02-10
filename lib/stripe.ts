@@ -52,3 +52,12 @@ export async function cancelSubscription(subscriptionId: string) {
 export async function getSubscription(subscriptionId: string) {
   return stripe.subscriptions.retrieve(subscriptionId)
 }
+
+export async function createBillingPortalSession(customerId: string) {
+  const session = await stripe.billingPortal.sessions.create({
+    customer: customerId,
+    return_url: `${process.env.NEXTAUTH_URL}/upgrade`,
+  })
+
+  return session
+}

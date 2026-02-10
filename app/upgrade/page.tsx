@@ -135,9 +135,30 @@ export default function UpgradePage() {
     }
   }
 
-  const handleManageBilling = () => {
-    // Rediriger vers le portail client Stripe
-    window.open('https://billing.stripe.com/p/login/test_YOUR_PORTAL_ID', '_blank')
+  const handleManageBilling = async () => {
+    if (!user) return
+
+    setActionLoading(true)
+    try {
+      const response = await fetch('/api/stripe/billing-portal', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id })
+      })
+
+      const data = await response.json()
+
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        alert(data.error || 'Erreur lors de l\'ouverture du portail de facturation')
+      }
+    } catch (error) {
+      console.error('Erreur billing portal:', error)
+      alert('Une erreur est survenue')
+    } finally {
+      setActionLoading(false)
+    }
   }
 
   if (loading) {
@@ -304,9 +325,10 @@ export default function UpgradePage() {
               )}
               <button
                 onClick={handleManageBilling}
-                className="flex-1 glass hover:bg-white/10 text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 border border-white/20"
+                disabled={actionLoading}
+                className="flex-1 glass hover:bg-white/10 text-white px-6 py-4 rounded-lg font-bold transition-all duration-200 border border-white/20 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Gerer la facturation
+                {actionLoading ? 'Chargement...' : 'Gérer la facturation'}
               </button>
             </div>
           )}
