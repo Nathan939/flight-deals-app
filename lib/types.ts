@@ -3,6 +3,7 @@ export type Plan = 'free' | 'sms'
 export interface DealData {
   id?: string
   from: string
+  fromCity?: string
   to: string
   toCity?: string
   price: number

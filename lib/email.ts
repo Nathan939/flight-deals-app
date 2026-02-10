@@ -15,6 +15,10 @@ export async function sendDealEmail(
   deal: DealData,
   userName?: string
 ): Promise<{ success: boolean; error?: string }> {
+  // Use city names if available, fallback to airport codes
+  const fromDisplay = deal.fromCity || deal.from
+  const toDisplay = deal.toCity || deal.to
+
   const emailHtml = `
     <!DOCTYPE html>
     <html>
@@ -49,7 +53,7 @@ export async function sendDealEmail(
 
             <!-- Route -->
             <h2 style="color: #FFFFFF; font-size: 28px; margin: 0 0 15px 0; text-align: center;">
-              ${deal.from} → ${deal.to}
+              ${fromDisplay} → ${toDisplay}
             </h2>
 
             <!-- Price -->
@@ -118,7 +122,7 @@ export async function sendDealEmail(
     const { data, error } = await resend.emails.send({
       from: `${FROM_NAME} <${FROM_EMAIL}>`,
       to: [to],
-      subject: `🔥 ${deal.from} → ${deal.to} à ${deal.price}${deal.currency === 'EUR' ? '€' : deal.currency}`,
+      subject: `🔥 ${fromDisplay} → ${toDisplay} à ${deal.price}${deal.currency === 'EUR' ? '€' : deal.currency}`,
       html: emailHtml,
     })
 

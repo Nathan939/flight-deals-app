@@ -5,7 +5,12 @@ import twilio from 'twilio'
  * Envoie un SMS de deal via Twilio
  */
 export async function sendDealSMS(to: string, deal: DealData) {
-  const message = `🔥 DEAL ALERT: ${deal.from} → ${deal.to} à ${deal.price}${deal.currency} (-${deal.discount}%) au lieu de ${deal.originalPrice}${deal.currency}. Réservez vite!`
+  // Use city names if available, fallback to airport codes
+  const fromDisplay = deal.fromCity || deal.from
+  const toDisplay = deal.toCity || deal.to
+  const currencySymbol = deal.currency === 'EUR' ? '€' : deal.currency
+
+  const message = `🔥 DEAL ALERT: ${fromDisplay} → ${toDisplay} à ${deal.price}${currencySymbol} (-${deal.discount}%) au lieu de ${deal.originalPrice}${currencySymbol}. Réservez vite!`
 
   try {
     // Check if Twilio is configured

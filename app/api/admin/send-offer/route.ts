@@ -87,10 +87,11 @@ export async function POST(request: NextRequest) {
         continue
       }
 
-      // Préparer les données du deal
+      // Préparer les données du deal (avec noms de villes pour les notifications)
       const dealData = {
         id: deal.id,
         from: deal.from,
+        fromCity: offerData.fromCity || undefined,
         to: deal.to,
         toCity: offerData.toCity,
         price: deal.price,
